@@ -1,8 +1,11 @@
 import sys
-from layouts.wrapper import Wrapper, QtGui
+from layouts.main_window_wrapper import MainWindowWrapper, QtGui
+import db_adapter
 
 if __name__ == '__main__':
+    db_adapter.init()
+
     app = QtGui.QApplication(sys.argv)
-    main_window = Wrapper()
+    main_window = MainWindowWrapper()
     main_window.show()
     sys.exit(app.exec_())

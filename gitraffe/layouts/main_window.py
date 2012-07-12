@@ -2,8 +2,8 @@
 
 # Form implementation generated from reading ui file 'main_window.ui'
 #
-# Created: Mon Jul  9 21:55:42 2012
-#      by: PyQt4 UI code generator 4.9.1
+# Created: Thu Jul 12 20:14:43 2012
+#      by: PyQt4 UI code generator 4.9.4
 #
 # WARNING! All changes made in this file will be lost!
 
@@ -17,13 +17,18 @@ except AttributeError:
 class Ui_MainWindow(object):
     def setupUi(self, MainWindow):
         MainWindow.setObjectName(_fromUtf8("MainWindow"))
-        MainWindow.resize(700, 499)
+        MainWindow.resize(800, 525)
         self.centralwidget = QtGui.QWidget(MainWindow)
         self.centralwidget.setAutoFillBackground(False)
         self.centralwidget.setObjectName(_fromUtf8("centralwidget"))
         self.horizontalLayout_2 = QtGui.QHBoxLayout(self.centralwidget)
         self.horizontalLayout_2.setObjectName(_fromUtf8("horizontalLayout_2"))
         self.repositoriesListView = QtGui.QListView(self.centralwidget)
+        sizePolicy = QtGui.QSizePolicy(QtGui.QSizePolicy.Maximum, QtGui.QSizePolicy.Expanding)
+        sizePolicy.setHorizontalStretch(150)
+        sizePolicy.setVerticalStretch(0)
+        sizePolicy.setHeightForWidth(self.repositoriesListView.sizePolicy().hasHeightForWidth())
+        self.repositoriesListView.setSizePolicy(sizePolicy)
         self.repositoriesListView.setObjectName(_fromUtf8("repositoriesListView"))
         self.horizontalLayout_2.addWidget(self.repositoriesListView)
         self.repositoryLayout = QtGui.QVBoxLayout()
@@ -52,6 +57,9 @@ class Ui_MainWindow(object):
         self.commitButton = QtGui.QPushButton(self.centralwidget)
         self.commitButton.setObjectName(_fromUtf8("commitButton"))
         self.changesetButtonsLayout.addWidget(self.commitButton)
+        self.stashButton = QtGui.QPushButton(self.centralwidget)
+        self.stashButton.setObjectName(_fromUtf8("stashButton"))
+        self.changesetButtonsLayout.addWidget(self.stashButton)
         self.pushButton = QtGui.QPushButton(self.centralwidget)
         self.pushButton.setObjectName(_fromUtf8("pushButton"))
         self.changesetButtonsLayout.addWidget(self.pushButton)
@@ -66,7 +74,7 @@ class Ui_MainWindow(object):
         self.horizontalLayout_2.addLayout(self.repositoryLayout)
         MainWindow.setCentralWidget(self.centralwidget)
         self.menubar = QtGui.QMenuBar(MainWindow)
-        self.menubar.setGeometry(QtCore.QRect(0, 0, 700, 25))
+        self.menubar.setGeometry(QtCore.QRect(0, 0, 800, 22))
         self.menubar.setObjectName(_fromUtf8("menubar"))
         self.menuFile = QtGui.QMenu(self.menubar)
         self.menuFile.setObjectName(_fromUtf8("menuFile"))
@@ -81,9 +89,9 @@ class Ui_MainWindow(object):
         self.statusbar.setObjectName(_fromUtf8("statusbar"))
         MainWindow.setStatusBar(self.statusbar)
         self.toolBar = QtGui.QToolBar(MainWindow)
+        self.toolBar.setMovable(False)
         self.toolBar.setObjectName(_fromUtf8("toolBar"))
         MainWindow.addToolBar(QtCore.Qt.TopToolBarArea, self.toolBar)
-        MainWindow.insertToolBarBreak(self.toolBar)
         self.actionClone_repository = QtGui.QAction(MainWindow)
         self.actionClone_repository.setObjectName(_fromUtf8("actionClone_repository"))
         self.actionExit = QtGui.QAction(MainWindow)
@@ -118,6 +126,8 @@ class Ui_MainWindow(object):
         self.actionClone_repository_3.setObjectName(_fromUtf8("actionClone_repository_3"))
         self.actionAdd_existing_repository_2 = QtGui.QAction(MainWindow)
         self.actionAdd_existing_repository_2.setObjectName(_fromUtf8("actionAdd_existing_repository_2"))
+        self.actionStash = QtGui.QAction(MainWindow)
+        self.actionStash.setObjectName(_fromUtf8("actionStash"))
         self.menuFile.addAction(self.actionClone_repository_2)
         self.menuFile.addAction(self.actionAdd_existing_repository)
         self.menuFile.addSeparator()
@@ -127,6 +137,7 @@ class Ui_MainWindow(object):
         self.menuView.addAction(self.actionRefresh)
         self.menuRepository.addAction(self.actionPull)
         self.menuRepository.addAction(self.actionCommit)
+        self.menuRepository.addAction(self.actionStash)
         self.menuRepository.addAction(self.actionPush)
         self.menuRepository.addSeparator()
         self.menuRepository.addAction(self.actionChange_branch)
@@ -148,6 +159,7 @@ class Ui_MainWindow(object):
         self.unstageButton.setText(QtGui.QApplication.translate("MainWindow", "Unstage", None, QtGui.QApplication.UnicodeUTF8))
         self.pullButton.setText(QtGui.QApplication.translate("MainWindow", "Pull", None, QtGui.QApplication.UnicodeUTF8))
         self.commitButton.setText(QtGui.QApplication.translate("MainWindow", " Commit", None, QtGui.QApplication.UnicodeUTF8))
+        self.stashButton.setText(QtGui.QApplication.translate("MainWindow", "Stash", None, QtGui.QApplication.UnicodeUTF8))
         self.pushButton.setText(QtGui.QApplication.translate("MainWindow", "Push", None, QtGui.QApplication.UnicodeUTF8))
         self.menuFile.setTitle(QtGui.QApplication.translate("MainWindow", "File", None, QtGui.QApplication.UnicodeUTF8))
         self.menuView.setTitle(QtGui.QApplication.translate("MainWindow", "View", None, QtGui.QApplication.UnicodeUTF8))
@@ -171,4 +183,5 @@ class Ui_MainWindow(object):
         self.actionAbout_Gitraffe.setText(QtGui.QApplication.translate("MainWindow", "About Gitraffe", None, QtGui.QApplication.UnicodeUTF8))
         self.actionClone_repository_3.setText(QtGui.QApplication.translate("MainWindow", "Clone repository...", None, QtGui.QApplication.UnicodeUTF8))
         self.actionAdd_existing_repository_2.setText(QtGui.QApplication.translate("MainWindow", "Add existing repository", None, QtGui.QApplication.UnicodeUTF8))
+        self.actionStash.setText(QtGui.QApplication.translate("MainWindow", "Stash", None, QtGui.QApplication.UnicodeUTF8))
 
