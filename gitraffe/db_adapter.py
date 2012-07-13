@@ -1,7 +1,11 @@
 import sqlite3
 from structures import Repository
-
 conn = sqlite3.connect('database.db')
+
+def execute_query(query):
+    cur = conn.cursor()
+    cur.execute(query)
+    cur.close()
 
 def init():
     query = 'CREATE TABLE IF NOT EXISTS repositories (id INTEGER PRIMARY KEY AUTOINCREMENT, name TEXT, path TEXT);'
@@ -20,8 +24,3 @@ def get_repositories():
         repositories.append(Repository(row[0], row[1], row[2]))
     cur.close()
     return repositories
-
-def execute_query(query):
-    cur = conn.cursor()
-    cur.execute(query)
-    cur.close()
