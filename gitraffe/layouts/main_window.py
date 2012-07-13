@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'main_window.ui'
 #
-# Created: Thu Jul 12 20:14:43 2012
+# Created: Fri Jul 13 20:46:49 2012
 #      by: PyQt4 UI code generator 4.9.4
 #
 # WARNING! All changes made in this file will be lost!
@@ -21,16 +21,16 @@ class Ui_MainWindow(object):
         self.centralwidget = QtGui.QWidget(MainWindow)
         self.centralwidget.setAutoFillBackground(False)
         self.centralwidget.setObjectName(_fromUtf8("centralwidget"))
-        self.horizontalLayout_2 = QtGui.QHBoxLayout(self.centralwidget)
-        self.horizontalLayout_2.setObjectName(_fromUtf8("horizontalLayout_2"))
-        self.repositoriesListView = QtGui.QListView(self.centralwidget)
+        self.horizontalLayout = QtGui.QHBoxLayout(self.centralwidget)
+        self.horizontalLayout.setObjectName(_fromUtf8("horizontalLayout"))
+        self.listWidget = QtGui.QListWidget(self.centralwidget)
         sizePolicy = QtGui.QSizePolicy(QtGui.QSizePolicy.Maximum, QtGui.QSizePolicy.Expanding)
-        sizePolicy.setHorizontalStretch(150)
+        sizePolicy.setHorizontalStretch(200)
         sizePolicy.setVerticalStretch(0)
-        sizePolicy.setHeightForWidth(self.repositoriesListView.sizePolicy().hasHeightForWidth())
-        self.repositoriesListView.setSizePolicy(sizePolicy)
-        self.repositoriesListView.setObjectName(_fromUtf8("repositoriesListView"))
-        self.horizontalLayout_2.addWidget(self.repositoriesListView)
+        sizePolicy.setHeightForWidth(self.listWidget.sizePolicy().hasHeightForWidth())
+        self.listWidget.setSizePolicy(sizePolicy)
+        self.listWidget.setObjectName(_fromUtf8("listWidget"))
+        self.horizontalLayout.addWidget(self.listWidget)
         self.repositoryLayout = QtGui.QVBoxLayout()
         self.repositoryLayout.setObjectName(_fromUtf8("repositoryLayout"))
         self.treeColumnView = QtGui.QColumnView(self.centralwidget)
@@ -71,7 +71,7 @@ class Ui_MainWindow(object):
         self.diffTextEdit.setObjectName(_fromUtf8("diffTextEdit"))
         self.changesetLayout.addWidget(self.diffTextEdit)
         self.repositoryLayout.addLayout(self.changesetLayout)
-        self.horizontalLayout_2.addLayout(self.repositoryLayout)
+        self.horizontalLayout.addLayout(self.repositoryLayout)
         MainWindow.setCentralWidget(self.centralwidget)
         self.menubar = QtGui.QMenuBar(MainWindow)
         self.menubar.setGeometry(QtCore.QRect(0, 0, 800, 22))
