@@ -18,8 +18,9 @@ class MainWindowWrapper(QMainWindow):
         QObject.connect(self.ui.actionDelete_repository, SIGNAL('triggered()'), self.delete_listWidgetitem)
     def browse(self):
         directory = QFileDialog.getExistingDirectory(self, QDir.homePath(), QDir.homePath())
-        if directory!="" and check_repository(directory):
-            directory = check_repository(directory)
+        path = check_repository(directory)
+        if directory!="" and path[0]:
+            directory = path[1]
             name = QInputDialog().getText(self, 'Name', 'Put your repository name:', text=os.path.basename(directory))
             if name[1]:
                 repo = QListWidgetItem(QIcon(os.path.dirname(main_window.__file__)+'/icons/Git-Icon-Black.png'), name[0], self.ui.listWidget)

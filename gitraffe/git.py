@@ -5,11 +5,10 @@ def check_repository(path):
     os.chdir(path)
     output = subprocess.getoutput('git rev-parse --git-dir')
     if output == '.git':
-        return path
+        return (True, path)
     elif output[-4:] == '.git': 
-        path = output[:-5]
-        return path
-    else: return False
+        return (True, output[:-5])
+    else: return (False, '')
 
 def open_repository(path):
     os.chdir(path)
