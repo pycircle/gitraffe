@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'main_window.ui'
 #
-# Created: Fri Jul 13 20:46:49 2012
+# Created: Mon Jul 16 19:07:44 2012
 #      by: PyQt4 UI code generator 4.9.4
 #
 # WARNING! All changes made in this file will be lost!
@@ -128,6 +128,8 @@ class Ui_MainWindow(object):
         self.actionAdd_existing_repository_2.setObjectName(_fromUtf8("actionAdd_existing_repository_2"))
         self.actionStash = QtGui.QAction(MainWindow)
         self.actionStash.setObjectName(_fromUtf8("actionStash"))
+        self.actionDelete_repository = QtGui.QAction(MainWindow)
+        self.actionDelete_repository.setObjectName(_fromUtf8("actionDelete_repository"))
         self.menuFile.addAction(self.actionClone_repository_2)
         self.menuFile.addAction(self.actionAdd_existing_repository)
         self.menuFile.addSeparator()
@@ -149,6 +151,7 @@ class Ui_MainWindow(object):
         self.menubar.addAction(self.menuHelp.menuAction())
         self.toolBar.addAction(self.actionClone_repository_3)
         self.toolBar.addAction(self.actionAdd_existing_repository_2)
+        self.toolBar.addAction(self.actionDelete_repository)
 
         self.retranslateUi(MainWindow)
         QtCore.QMetaObject.connectSlotsByName(MainWindow)
@@ -184,4 +187,5 @@ class Ui_MainWindow(object):
         self.actionClone_repository_3.setText(QtGui.QApplication.translate("MainWindow", "Clone repository...", None, QtGui.QApplication.UnicodeUTF8))
         self.actionAdd_existing_repository_2.setText(QtGui.QApplication.translate("MainWindow", "Add existing repository", None, QtGui.QApplication.UnicodeUTF8))
         self.actionStash.setText(QtGui.QApplication.translate("MainWindow", "Stash", None, QtGui.QApplication.UnicodeUTF8))
+        self.actionDelete_repository.setText(QtGui.QApplication.translate("MainWindow", "Delete repository", None, QtGui.QApplication.UnicodeUTF8))
 

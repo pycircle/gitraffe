@@ -165,6 +165,7 @@
    </attribute>
    <addaction name="actionClone_repository_3"/>
    <addaction name="actionAdd_existing_repository_2"/>
+   <addaction name="actionDelete_repository"/>
   </widget>
   <action name="actionClone_repository">
    <property name="text">
@@ -254,6 +255,11 @@
   <action name="actionStash">
    <property name="text">
     <string>Stash</string>
+   </property>
+  </action>
+  <action name="actionDelete_repository">
+   <property name="text">
+    <string>Delete repository</string>
    </property>
   </action>
  </widget>
