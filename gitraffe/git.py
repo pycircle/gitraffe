@@ -1,6 +1,16 @@
 import os
 import subprocess
 
+def check_repository(path):
+    os.chdir(path)
+    output = subprocess.getoutput('git rev-parse --git-dir')
+    if output == '.git':
+        return path
+    elif output[-4:] == '.git': 
+        path = output[:-5]
+        return path
+    else: return False
+
 def open_repository(path):
     os.chdir(path)
 
@@ -62,7 +72,7 @@ def diff(filename):
 
 # TODO -> HERE WE HAVE TO HANDLE MERGES
 def pull():
-    command - 'git pull'
+    command = 'git pull'
     output = subprocess.getoutput(command)
 
 def commit(message):
