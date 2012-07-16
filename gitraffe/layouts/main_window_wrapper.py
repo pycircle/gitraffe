@@ -1,9 +1,10 @@
-from PyQt4.QtGui import QMainWindow, QFileDialog, qApp, QListWidgetItem, QMessageBox, QInputDialog
+from PyQt4.QtGui import QMainWindow, QFileDialog, qApp, QListWidgetItem, QMessageBox, QInputDialog, QIcon
 from PyQt4.QtCore import QDir, QObject, SIGNAL
 from PyQt4 import QtGui
 from layouts.main_window import Ui_MainWindow
 from git import check_repository
 import os
+from layouts import main_window
 
 class MainWindowWrapper(QMainWindow):
     def __init__(self, parent=None):
@@ -20,6 +21,6 @@ class MainWindowWrapper(QMainWindow):
             directory = check_repository(directory)
             name = QInputDialog().getText(self, 'Name', 'Put your repository name:', text=os.path.basename(directory))
             if name[1]:
-                repo = QListWidgetItem(name[0], self.ui.listWidget)
+                repo = QListWidgetItem(QIcon(os.path.dirname(main_window.__file__)+'/icons/Git-Icon-Black.png'), name[0], self.ui.listWidget)
                 repo.setStatusTip(directory)
         else: QMessageBox.critical(self, "Error", "That directory is not a git repository", QMessageBox.Ok)
