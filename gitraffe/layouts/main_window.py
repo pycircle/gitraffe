@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'main_window.ui'
 #
-# Created: Mon Jul 16 19:07:44 2012
+# Created: Tue Jul 17 19:34:49 2012
 #      by: PyQt4 UI code generator 4.9.4
 #
 # WARNING! All changes made in this file will be lost!
@@ -33,9 +33,11 @@ class Ui_MainWindow(object):
         self.horizontalLayout.addWidget(self.listWidget)
         self.repositoryLayout = QtGui.QVBoxLayout()
         self.repositoryLayout.setObjectName(_fromUtf8("repositoryLayout"))
-        self.treeColumnView = QtGui.QColumnView(self.centralwidget)
-        self.treeColumnView.setObjectName(_fromUtf8("treeColumnView"))
-        self.repositoryLayout.addWidget(self.treeColumnView)
+        self.tableWidget = QtGui.QTableWidget(self.centralwidget)
+        self.tableWidget.setObjectName(_fromUtf8("tableWidget"))
+        self.tableWidget.setColumnCount(0)
+        self.tableWidget.setRowCount(0)
+        self.repositoryLayout.addWidget(self.tableWidget)
         self.changesetLayout = QtGui.QHBoxLayout()
         self.changesetLayout.setObjectName(_fromUtf8("changesetLayout"))
         self.changesetButtonsLayout = QtGui.QVBoxLayout()
