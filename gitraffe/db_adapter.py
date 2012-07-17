@@ -5,6 +5,7 @@ conn = sqlite3.connect('database.db')
 def execute_query(query):
     cur = conn.cursor()
     cur.execute(query)
+    conn.commit()
     cur.close()
 
 def init():
@@ -24,3 +25,12 @@ def get_repositories():
         repositories.append(Repository(row[0], row[1], row[2]))
     cur.close()
     return repositories
+
+def get_repository_by_name(name):
+    cur = conn.cursor()
+    query = 'SELECT * FROM repositories WHERE name = "' + name + '";'
+    cur.execute(query)
+    row = cur.fetchone()
+    repository = Repository(row[0], row[1], row[2])
+    cur.close()
+    return repository

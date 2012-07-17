@@ -31,7 +31,7 @@
     <item>
      <layout class="QVBoxLayout" name="repositoryLayout">
       <item>
-       <widget class="QColumnView" name="treeColumnView"/>
+       <widget class="QTableWidget" name="tableWidget"/>
       </item>
       <item>
        <layout class="QHBoxLayout" name="changesetLayout">

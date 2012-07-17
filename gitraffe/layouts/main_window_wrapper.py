@@ -3,19 +3,35 @@ from PyQt4.QtCore import QDir, QObject, SIGNAL, Qt
 from PyQt4 import QtGui
 from layouts.main_window import Ui_MainWindow
 from git import check_repository
+from git import open_repository
+from git import get_graph
+import db_adapter
 import os
 from layouts import main_window
+from structures import Repository
 
 class MainWindowWrapper(QMainWindow):
     def __init__(self, parent=None):
         QtGui.QWidget.__init__(self, parent)
         self.ui = Ui_MainWindow()
         self.ui.setupUi(self)
+        # Repository list
         self.ui.listWidget.setMouseTracking(True)
+        self.ui.listWidget.itemClicked.connect(self.view_repository)
+        self.list_all_repositories()
+        # Menu/toolbar
         QObject.connect(self.ui.actionAdd_existing_repository, SIGNAL('triggered()'), self.browse)
         QObject.connect(self.ui.actionAdd_existing_repository_2, SIGNAL('triggered()'), self.browse)
         QObject.connect(self.ui.actionExit, SIGNAL('triggered()'), qApp.exit)
         QObject.connect(self.ui.actionDelete_repository, SIGNAL('triggered()'), self.delete_listWidgetitem)
+
+    def list_all_repositories(self):
+        repositories = db_adapter.get_repositories()
+        for repository in repositories:
+            repo = QListWidgetItem(QIcon(os.path.dirname(main_window.__file__)+'/icons/Git-Icon-Black.png'), repository.name, self.ui.listWidget)
+            repo.setStatusTip(repository.path)
+            repo.setFlags(repo.flags() | Qt.ItemIsEditable)
+
     def browse(self):
         directory = QFileDialog.getExistingDirectory(self, QDir.homePath(), QDir.homePath())
         path = check_repository(directory)
@@ -23,11 +39,13 @@ class MainWindowWrapper(QMainWindow):
             directory = path[1]
             name = QInputDialog().getText(self, 'Name', 'Put your repository name:', text=os.path.basename(directory))
             if name[1]:
+                db_adapter.add_repository(name[0], directory)
                 repo = QListWidgetItem(QIcon(os.path.dirname(main_window.__file__)+'/icons/Git-Icon-Black.png'), name[0], self.ui.listWidget)
                 repo.setStatusTip(directory)
                 repo.setFlags(repo.flags() | Qt.ItemIsEditable)
         elif directory=="": pass
         else: QMessageBox.critical(self, "Error", "That directory is not a git repository", QMessageBox.Ok)
+
     def delete_listWidgetitem(self):
         if self.ui.listWidget.count()!=0:
             respond = QMessageBox.question(self, "Delete", 
@@ -36,4 +54,9 @@ class MainWindowWrapper(QMainWindow):
             if respond==QMessageBox.Ok:
                 self.ui.listWidget.takeItem(self.ui.listWidget.currentRow())
     
-    
+    def view_repository(self):
+        name = self.ui.listWidget.item(self.ui.listWidget.currentRow()).text()
+        repository = db_adapter.get_repository_by_name(name)
+        open_repository(repository.path)
+        print(get_graph())
+        

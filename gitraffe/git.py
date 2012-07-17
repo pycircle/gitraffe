@@ -49,7 +49,7 @@ def parse_graph_line(line):
         else:
             break
     tree = tree[:-1]
-    line = line[:i]
+    line = line[i:]
     commit = line.split(' ', 1)
     commit.insert(0, tree)
     return commit
