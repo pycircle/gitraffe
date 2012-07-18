@@ -6,7 +6,7 @@ def check_repository(path):
     output = subprocess.getoutput('git rev-parse --git-dir')
     if output == '.git':
         return (True, path)
-    elif output[-4:] == '.git': 
+    elif output.endswith('.git'):
         return (True, output[:-5])
     else: return (False, '')
 
