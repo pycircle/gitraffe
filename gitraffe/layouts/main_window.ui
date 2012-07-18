@@ -31,7 +31,23 @@
     <item>
      <layout class="QVBoxLayout" name="repositoryLayout">
       <item>
-       <widget class="QTableWidget" name="tableWidget"/>
+       <widget class="QTableWidget" name="repositoryTableWidget">
+        <column>
+         <property name="text">
+          <string/>
+         </property>
+        </column>
+        <column>
+         <property name="text">
+          <string>Commit</string>
+         </property>
+        </column>
+        <column>
+         <property name="text">
+          <string>Message</string>
+         </property>
+        </column>
+       </widget>
       </item>
       <item>
        <layout class="QHBoxLayout" name="changesetLayout">

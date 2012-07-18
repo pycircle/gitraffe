@@ -1,2 +1,5 @@
 */__pycache__/*
 *.db
+gitraffe/database.db
+gitraffe/layouts/__pycache__/
+
