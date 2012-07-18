@@ -1,10 +1,8 @@
-from PyQt4.QtGui import QMainWindow, QFileDialog, qApp, QListWidgetItem, QMessageBox, QInputDialog, QIcon
+from PyQt4.QtGui import QMainWindow, QFileDialog, qApp, QListWidgetItem, QMessageBox, QInputDialog, QIcon, QTableWidgetItem
 from PyQt4.QtCore import QDir, QObject, SIGNAL, Qt
 from PyQt4 import QtGui
 from layouts.main_window import Ui_MainWindow
-from git import check_repository
-from git import open_repository
-from git import get_graph
+from git import check_repository, open_repository, get_graph
 import db_adapter
 import os
 from layouts import main_window
@@ -54,9 +52,22 @@ class MainWindowWrapper(QMainWindow):
             if respond==QMessageBox.Ok:
                 self.ui.listWidget.takeItem(self.ui.listWidget.currentRow())
     
+    def graph(self):
+        i = 0
+        graph = get_graph()
+        self.ui.repositoryTableWidget.setRowCount(len(graph))
+        for row in graph:
+            j = 0
+            for col in row:
+                item = QTableWidgetItem(col)
+                self.ui.repositoryTableWidget.setItem(i, j, item)
+                j += 1
+            i += 1
+
     def view_repository(self):
         name = self.ui.listWidget.item(self.ui.listWidget.currentRow()).text()
         repository = db_adapter.get_repository_by_name(name)
         open_repository(repository.path)
         print(get_graph())
+        self.graph()
         

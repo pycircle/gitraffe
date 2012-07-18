@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'main_window.ui'
 #
-# Created: Tue Jul 17 19:34:49 2012
+# Created: Wed Jul 18 14:36:30 2012
 #      by: PyQt4 UI code generator 4.9.4
 #
 # WARNING! All changes made in this file will be lost!
@@ -33,11 +33,17 @@ class Ui_MainWindow(object):
         self.horizontalLayout.addWidget(self.listWidget)
         self.repositoryLayout = QtGui.QVBoxLayout()
         self.repositoryLayout.setObjectName(_fromUtf8("repositoryLayout"))
-        self.tableWidget = QtGui.QTableWidget(self.centralwidget)
-        self.tableWidget.setObjectName(_fromUtf8("tableWidget"))
-        self.tableWidget.setColumnCount(0)
-        self.tableWidget.setRowCount(0)
-        self.repositoryLayout.addWidget(self.tableWidget)
+        self.repositoryTableWidget = QtGui.QTableWidget(self.centralwidget)
+        self.repositoryTableWidget.setObjectName(_fromUtf8("repositoryTableWidget"))
+        self.repositoryTableWidget.setColumnCount(3)
+        self.repositoryTableWidget.setRowCount(0)
+        item = QtGui.QTableWidgetItem()
+        self.repositoryTableWidget.setHorizontalHeaderItem(0, item)
+        item = QtGui.QTableWidgetItem()
+        self.repositoryTableWidget.setHorizontalHeaderItem(1, item)
+        item = QtGui.QTableWidgetItem()
+        self.repositoryTableWidget.setHorizontalHeaderItem(2, item)
+        self.repositoryLayout.addWidget(self.repositoryTableWidget)
         self.changesetLayout = QtGui.QHBoxLayout()
         self.changesetLayout.setObjectName(_fromUtf8("changesetLayout"))
         self.changesetButtonsLayout = QtGui.QVBoxLayout()
@@ -160,6 +166,10 @@ class Ui_MainWindow(object):
 
     def retranslateUi(self, MainWindow):
         MainWindow.setWindowTitle(QtGui.QApplication.translate("MainWindow", "Gitraffe", None, QtGui.QApplication.UnicodeUTF8))
+        item = self.repositoryTableWidget.horizontalHeaderItem(1)
+        item.setText(QtGui.QApplication.translate("MainWindow", "Commit", None, QtGui.QApplication.UnicodeUTF8))
+        item = self.repositoryTableWidget.horizontalHeaderItem(2)
+        item.setText(QtGui.QApplication.translate("MainWindow", "Message", None, QtGui.QApplication.UnicodeUTF8))
         self.stageButton.setText(QtGui.QApplication.translate("MainWindow", "Stage", None, QtGui.QApplication.UnicodeUTF8))
         self.unstageButton.setText(QtGui.QApplication.translate("MainWindow", "Unstage", None, QtGui.QApplication.UnicodeUTF8))
         self.pullButton.setText(QtGui.QApplication.translate("MainWindow", "Pull", None, QtGui.QApplication.UnicodeUTF8))
