@@ -13,6 +13,12 @@ def check_repository(path):
 def open_repository(path):
     os.chdir(path)
 
+def clone_repository(source, destination):
+    command = 'git clone ' + source + " " + destination
+    output = subprocess.getoutput(command)
+    if not output.endswith('done.'): return (False, output)
+    else: return (True, output)
+
 def change_branch(branch):
     command = 'git checkout ' + branch
     os.system(command)

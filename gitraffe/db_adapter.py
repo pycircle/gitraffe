@@ -34,3 +34,5 @@ def get_repository_by_name(name):
     repository = Repository(row[0], row[1], row[2])
     cur.close()
     return repository
+
+# TODO delete_repository!
