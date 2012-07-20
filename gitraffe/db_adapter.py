@@ -17,6 +17,15 @@ def init():
     query = 'CREATE TABLE IF NOT EXISTS ' + REPO + ' (' + REPO_ID + ' INTEGER PRIMARY KEY AUTOINCREMENT, ' + REPO_NAME + ' TEXT, ' + REPO_PATH + ' TEXT);'
     execute_query(query)
 
+def exists_repository(path):
+    cur = conn.cursor()
+    query = 'SELECT * FROM ' + REPO + ' WHERE ' + REPO_PATH + ' = ' + path + ';'
+    cur.execute(query)
+    if cur.rowcount > 0:
+        return True
+    else:
+        return False
+
 def add_repository(name, path):
     query = 'INSERT INTO ' + REPO + '(' + REPO_NAME + ', ' + REPO_PATH +') VALUES("' + name + '", "' + path + '");'
     execute_query(query)
@@ -31,15 +40,16 @@ def get_repositories():
     cur.close()
     return repositories
 
-def get_repository_by_name(name):
+# This function will be probably unnecessary
+def get_repository_by_path(path):
     cur = conn.cursor()
-    query = 'SELECT * FROM ' + REPO + ' WHERE ' + REPO_NAME + ' = "' + name + '";'
+    query = 'SELECT * FROM ' + REPO + ' WHERE ' + REPO_PATH + ' = "' + path + '";'
     cur.execute(query)
     row = cur.fetchone()
     repository = Repository(row[0], row[1], row[2])
     cur.close()
     return repository
 
-def delete_repository(name):
-    query = 'DELETE FROM ' + REPO + ' WHERE ' + REPO_NAME + ' = ' + name + ';'
+def delete_repository(path):
+    query = 'DELETE FROM ' + REPO + ' WHERE ' + REPO_PATH + ' = "' + path + '";'
     execute_query(query)

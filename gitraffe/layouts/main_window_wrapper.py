@@ -30,9 +30,7 @@ class MainWindowWrapper(QMainWindow):
     def list_all_repositories(self):
         repositories = db_adapter.get_repositories()
         for repository in repositories:
-            repo = QListWidgetItem(QIcon(os.path.dirname(main_window.__file__)+'/icons/Git-Icon-Black.png'), repository.name, self.ui.listWidget)
-            repo.setStatusTip(repository.path)
-            repo.setFlags(repo.flags() | Qt.ItemIsEditable)
+            self.add_to_list(repository.name, repository.path)
 
     def browse(self):
         directory = QFileDialog.getExistingDirectory(self, QDir.homePath(), QDir.homePath())
@@ -42,13 +40,17 @@ class MainWindowWrapper(QMainWindow):
                 directory = path[1]
                 name = QInputDialog().getText(self, 'Name', 'Put your repository name:', text=os.path.basename(directory))
                 if name[1]:
+                    self.add_to_database(name[0], directory)
                     self.add_to_list(name[0], directory)
             else: QMessageBox.critical(self, "Error", "That directory is not a git repository", QMessageBox.Ok)
 
-    def add_to_list(self, name, directory):
+    def add_to_database(self, name, directory):
         db_adapter.add_repository(name, directory)
+
+    def add_to_list(self, name, directory):
         repo = QListWidgetItem(QIcon(os.path.dirname(main_window.__file__)+'/icons/Git-Icon-Black.png'), name, self.ui.listWidget)
         repo.setStatusTip(directory)
+        repo.setData(Qt.UserRole, directory)
         repo.setFlags(repo.flags() | Qt.ItemIsEditable)
 
     def delete_listWidgetitem(self):
@@ -58,8 +60,8 @@ class MainWindowWrapper(QMainWindow):
                                            "Are you sure, that you want delete " + name,
                                            QMessageBox.Ok, QMessageBox.Cancel)
             if respond==QMessageBox.Ok:
+                db_adapter.delete_repository(self.ui.listWidget.currentItem().data(Qt.UserRole))
                 self.ui.listWidget.takeItem(self.ui.listWidget.currentRow())
-#                db_adapter.delete_repository(name)
 
     def graph(self):
         i = 0
@@ -74,9 +76,8 @@ class MainWindowWrapper(QMainWindow):
             i += 1
 
     def view_repository(self):
-        name = self.ui.listWidget.item(self.ui.listWidget.currentRow()).text()
-        repository = db_adapter.get_repository_by_name(name)
-        open_repository(repository.path)
+        path = self.ui.listWidget.currentItem().data(Qt.UserRole)
+        open_repository(path)
         self.graph()
 
     def clone_respoitory(self):
