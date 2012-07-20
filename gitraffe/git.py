@@ -14,10 +14,15 @@ def open_repository(path):
     os.chdir(path)
 
 def clone_repository(source, destination):
-    command = 'git clone ' + source + " " + destination
-    output = subprocess.getoutput(command)
-    if not output.endswith('done.'): return (False, output)
-    else: return (True, output)
+    args = ['git' ,'clone', source, destination]
+    child = subprocess.Popen(args, stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
+    child.wait()
+    if child.returncode!=0:
+        info = ""
+        for x in child.stdout.readlines():
+            info += x.decode("utf-8")
+        return (False, info)
+    else: return (True, "")
 
 def change_branch(branch):
     command = 'git checkout ' + branch

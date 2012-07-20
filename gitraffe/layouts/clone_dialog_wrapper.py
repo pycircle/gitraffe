@@ -1,6 +1,6 @@
 from PyQt4.QtGui import QDialog, QFileDialog, QMessageBox, QInputDialog
 from PyQt4.QtCore import QObject, SIGNAL, QDir
-from layouts.clone_dialog import Ui_Dialog
+from layouts.clone_dialog import Ui_Clone
 from git import check_repository, clone_repository
 import os
 
@@ -8,7 +8,7 @@ class CloneWindowWrapper(QDialog):
     def __init__(self, parent=None):
         QDialog.__init__(self)
         self.parent = parent
-        self.ui = Ui_Dialog()
+        self.ui = Ui_Clone()
         self.ui.setupUi(self)
         QObject.connect(self.ui.Clone_button, SIGNAL('clicked()'), self.clone)
         QObject.connect(self.ui.Source_push, SIGNAL('clicked()'), self.s_browse)

@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'clone_dialog.ui'
 #
-# Created: Thu Jul 19 15:54:09 2012
+# Created: Fri Jul 20 14:58:43 2012
 #      by: PyQt4 UI code generator 4.9.1
 #
 # WARNING! All changes made in this file will be lost!
@@ -14,13 +14,13 @@ try:
 except AttributeError:
     _fromUtf8 = lambda s: s
 
-class Ui_Dialog(object):
-    def setupUi(self, Dialog):
-        Dialog.setObjectName(_fromUtf8("Dialog"))
-        Dialog.resize(436, 183)
-        Dialog.setMinimumSize(QtCore.QSize(436, 183))
-        Dialog.setMaximumSize(QtCore.QSize(436, 183))
-        self.layoutWidget = QtGui.QWidget(Dialog)
+class Ui_Clone(object):
+    def setupUi(self, Clone):
+        Clone.setObjectName(_fromUtf8("Clone"))
+        Clone.resize(436, 183)
+        Clone.setMinimumSize(QtCore.QSize(436, 183))
+        Clone.setMaximumSize(QtCore.QSize(436, 183))
+        self.layoutWidget = QtGui.QWidget(Clone)
         self.layoutWidget.setGeometry(QtCore.QRect(10, 30, 411, 81))
         self.layoutWidget.setObjectName(_fromUtf8("layoutWidget"))
         self.verticalLayout_2 = QtGui.QVBoxLayout(self.layoutWidget)
@@ -50,7 +50,7 @@ class Ui_Dialog(object):
         self.Destination_pushButton.setObjectName(_fromUtf8("Destination_pushButton"))
         self.horizontalLayout_2.addWidget(self.Destination_pushButton)
         self.verticalLayout_2.addLayout(self.horizontalLayout_2)
-        self.layoutWidget1 = QtGui.QWidget(Dialog)
+        self.layoutWidget1 = QtGui.QWidget(Clone)
         self.layoutWidget1.setGeometry(QtCore.QRect(240, 140, 178, 29))
         self.layoutWidget1.setObjectName(_fromUtf8("layoutWidget1"))
         self.horizontalLayout_3 = QtGui.QHBoxLayout(self.layoutWidget1)
@@ -65,16 +65,16 @@ class Ui_Dialog(object):
         self.buttonBox.setObjectName(_fromUtf8("buttonBox"))
         self.horizontalLayout_3.addWidget(self.buttonBox)
 
-        self.retranslateUi(Dialog)
-        QtCore.QObject.connect(self.buttonBox, QtCore.SIGNAL(_fromUtf8("accepted()")), Dialog.accept)
-        QtCore.QObject.connect(self.buttonBox, QtCore.SIGNAL(_fromUtf8("rejected()")), Dialog.reject)
-        QtCore.QMetaObject.connectSlotsByName(Dialog)
+        self.retranslateUi(Clone)
+        QtCore.QObject.connect(self.buttonBox, QtCore.SIGNAL(_fromUtf8("accepted()")), Clone.accept)
+        QtCore.QObject.connect(self.buttonBox, QtCore.SIGNAL(_fromUtf8("rejected()")), Clone.reject)
+        QtCore.QMetaObject.connectSlotsByName(Clone)
 
-    def retranslateUi(self, Dialog):
-        Dialog.setWindowTitle(QtGui.QApplication.translate("Dialog", "Dialog", None, QtGui.QApplication.UnicodeUTF8))
-        self.label.setText(QtGui.QApplication.translate("Dialog", "Source:", None, QtGui.QApplication.UnicodeUTF8))
-        self.Source_push.setText(QtGui.QApplication.translate("Dialog", "Browse", None, QtGui.QApplication.UnicodeUTF8))
-        self.label_2.setText(QtGui.QApplication.translate("Dialog", "Destination:", None, QtGui.QApplication.UnicodeUTF8))
-        self.Destination_pushButton.setText(QtGui.QApplication.translate("Dialog", "Browse", None, QtGui.QApplication.UnicodeUTF8))
-        self.Clone_button.setText(QtGui.QApplication.translate("Dialog", "Clone", None, QtGui.QApplication.UnicodeUTF8))
+    def retranslateUi(self, Clone):
+        Clone.setWindowTitle(QtGui.QApplication.translate("Clone", "Clone...", None, QtGui.QApplication.UnicodeUTF8))
+        self.label.setText(QtGui.QApplication.translate("Clone", "Source:", None, QtGui.QApplication.UnicodeUTF8))
+        self.Source_push.setText(QtGui.QApplication.translate("Clone", "Browse", None, QtGui.QApplication.UnicodeUTF8))
+        self.label_2.setText(QtGui.QApplication.translate("Clone", "Destination:", None, QtGui.QApplication.UnicodeUTF8))
+        self.Destination_pushButton.setText(QtGui.QApplication.translate("Clone", "Browse", None, QtGui.QApplication.UnicodeUTF8))
+        self.Clone_button.setText(QtGui.QApplication.translate("Clone", "Clone", None, QtGui.QApplication.UnicodeUTF8))
 

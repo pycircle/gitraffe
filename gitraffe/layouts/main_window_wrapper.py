@@ -53,11 +53,13 @@ class MainWindowWrapper(QMainWindow):
 
     def delete_listWidgetitem(self):
         if self.ui.listWidget.count()!=0:
+            name = self.ui.listWidget.item(self.ui.listWidget.currentRow()).text()
             respond = QMessageBox.question(self, "Delete", 
-                                           "Are you sure, that you want delete " + self.ui.listWidget.item(self.ui.listWidget.currentRow()).text(),
+                                           "Are you sure, that you want delete " + name,
                                            QMessageBox.Ok, QMessageBox.Cancel)
             if respond==QMessageBox.Ok:
                 self.ui.listWidget.takeItem(self.ui.listWidget.currentRow())
+#                db_adapter.delete_repository(name)
 
     def graph(self):
         i = 0
@@ -75,7 +77,6 @@ class MainWindowWrapper(QMainWindow):
         name = self.ui.listWidget.item(self.ui.listWidget.currentRow()).text()
         repository = db_adapter.get_repository_by_name(name)
         open_repository(repository.path)
-#        print(get_graph())
         self.graph()
 
     def clone_respoitory(self):
