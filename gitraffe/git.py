@@ -93,3 +93,15 @@ def commit(message):
 def push(branch):
     command = 'git push ' + branch
     output = subprocess.getoutput(command)
+
+def get_modified(path):
+    os.chdir(path)
+    command = 'git status'
+    output = subprocess.getoutput(command)
+    lines = output.split('\n')
+    modified_files = []
+    for line in lines:
+        if 'modified:' in line:
+            words = line.split()
+            modified_files.append(words[words.index('modified:')+1])
+    return modified_files

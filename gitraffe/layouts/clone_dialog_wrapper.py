@@ -22,9 +22,9 @@ class CloneWindowWrapper(QDialog):
             name = QInputDialog().getText(self, 'Name', 'Put your repository name:', text=os.path.basename(destination))
             if name[1]:
                 self.parent.add_to_list(name[0], destination)
+            self.close()
         elif source == "" or destination == "":  QMessageBox.critical(self, "Error", "There must be destination and source!", QMessageBox.Ok)
         else: QMessageBox.critical(self, "Error", info[1], QMessageBox.Ok)
-        self.close()
 
     def s_browse(self):
         directory = QFileDialog.getExistingDirectory(self,QDir.homePath(), QDir.homePath())
