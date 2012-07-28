@@ -19,12 +19,9 @@ def init():
 
 def exists_repository(path):
     cur = conn.cursor()
-    query = 'SELECT * FROM ' + REPO + ' WHERE ' + REPO_PATH + ' = ' + path + ';'
+    query = 'SELECT * FROM ' + REPO + ' WHERE ' + REPO_PATH + ' = "' + path + '";'
     cur.execute(query)
-    if cur.rowcount > 0:
-        return True
-    else:
-        return False
+    return cur.fetchone() != None
 
 def add_repository(name, path):
     query = 'INSERT INTO ' + REPO + '(' + REPO_NAME + ', ' + REPO_PATH +') VALUES("' + name + '", "' + path + '");'

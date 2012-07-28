@@ -37,11 +37,14 @@ class MainWindowWrapper(QMainWindow):
         if directory!="":
             path = check_repository(directory)
             if path[0]:
-                directory = path[1]
-                name = QInputDialog().getText(self, 'Name', 'Put your repository name:', text=os.path.basename(directory))
-                if name[1]:
-                    self.add_to_database(name[0], directory)
-                    self.add_to_list(name[0], directory)
+                if not db_adapter.exists_repository(directory):
+                    directory = path[1]
+                    name = QInputDialog().getText(self, 'Name', 'Put your repository name:', text=os.path.basename(directory))
+                    if name[1]:
+                        self.add_to_database(name[0], directory)
+                        self.add_to_list(name[0], directory)
+                else:
+                    QMessageBox.critical(self, "Error", "This repository is already added", QMessageBox.Ok)
             else: QMessageBox.critical(self, "Error", "That directory is not a git repository", QMessageBox.Ok)
 
     def add_to_database(self, name, directory):
