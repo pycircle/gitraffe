@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'main_window.ui'
 #
-# Created: Wed Jul 18 14:36:30 2012
+# Created: Mon Jul 30 23:18:06 2012
 #      by: PyQt4 UI code generator 4.9.4
 #
 # WARNING! All changes made in this file will be lost!
@@ -34,6 +34,7 @@ class Ui_MainWindow(object):
         self.repositoryLayout = QtGui.QVBoxLayout()
         self.repositoryLayout.setObjectName(_fromUtf8("repositoryLayout"))
         self.repositoryTableWidget = QtGui.QTableWidget(self.centralwidget)
+        self.repositoryTableWidget.setSelectionBehavior(QtGui.QAbstractItemView.SelectRows)
         self.repositoryTableWidget.setObjectName(_fromUtf8("repositoryTableWidget"))
         self.repositoryTableWidget.setColumnCount(3)
         self.repositoryTableWidget.setRowCount(0)

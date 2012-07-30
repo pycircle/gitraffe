@@ -32,6 +32,9 @@
      <layout class="QVBoxLayout" name="repositoryLayout">
       <item>
        <widget class="QTableWidget" name="repositoryTableWidget">
+        <property name="selectionBehavior">
+         <enum>QAbstractItemView::SelectRows</enum>
+        </property>
         <column>
          <property name="text">
           <string/>
