@@ -1,4 +1,4 @@
-from PyQt4.QtGui import QMainWindow, QFileDialog, qApp, QListWidgetItem, QMessageBox, QInputDialog, QIcon, QTableWidgetItem
+from PyQt4.QtGui import QMainWindow, QFileDialog, qApp, QListWidgetItem, QMessageBox, QInputDialog, QIcon, QTableWidgetItem, QAbstractItemView
 from PyQt4.QtCore import QDir, QObject, SIGNAL, Qt
 from PyQt4 import QtGui
 from layouts.main_window import Ui_MainWindow
@@ -18,6 +18,9 @@ class MainWindowWrapper(QMainWindow):
         self.ui.listWidget.setMouseTracking(True)
         self.ui.listWidget.itemClicked.connect(self.view_repository)
         self.list_all_repositories()
+        #Repository Table
+        self.ui.repositoryTableWidget.setSelectionMode(QAbstractItemView.SingleSelection)
+        self.ui.repositoryTableWidget.verticalHeader().setVisible(False)
         # Menu/toolbar
         QObject.connect(self.ui.actionAdd_existing_repository, SIGNAL('triggered()'), self.browse)
         QObject.connect(self.ui.actionAdd_existing_repository_2, SIGNAL('triggered()'), self.browse)
