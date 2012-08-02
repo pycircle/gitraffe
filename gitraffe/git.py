@@ -1,6 +1,11 @@
 import os
 import subprocess
 
+def get_output_lines(command):
+    output = subprocess.getoutput(command)
+    lines = output.split('\n')
+    return lines
+
 def check_repository(path):
     os.chdir(path)
     output = subprocess.getoutput('git rev-parse --git-dir')
@@ -28,28 +33,6 @@ def change_branch(branch):
     command = 'git checkout ' + branch
     os.system(command)
 
-def parse_branch(line):
-    i = 0
-    for x in line:
-        if x != ' ' and x != '*':
-            return line[i:]
-        else:
-            i += 1
-
-def get_local_branches():
-    command = 'git branch'
-    output = subprocess.getoutput(command)
-    lines = output.split('\n')
-    branches = []
-    for line in lines:
-        branches.append(parse_branch(line))
-    return branches
-
-def get_branches():
-    branches = []
-    branches.append(get_local_branches())
-    return branches
-
 def parse_graph_line(line):
     tree = ''
     i = 0
@@ -67,8 +50,7 @@ def parse_graph_line(line):
 
 def get_graph():
     command = 'git log --graph --oneline'
-    output = subprocess.getoutput(command)
-    lines = output.split('\n')
+    lines = get_output_lines(command)
     commits = []
     for line in lines:
         commit = parse_graph_line(line)
@@ -97,11 +79,27 @@ def push(branch):
 def get_modified(path):
     os.chdir(path)
     command = 'git status'
-    output = subprocess.getoutput(command)
-    lines = output.split('\n')
+    lines = get_output_lines(command)
     modified_files = []
     for line in lines:
         if 'modified:' in line:
             words = line.split()
             modified_files.append(words[words.index('modified:')+1])
     return modified_files
+
+def get_local_branches():
+    command = 'git branch'
+    lines = get_output_lines(command)
+    branches = []
+    for line in lines:
+        branches.append(line[2:])
+    return branches
+
+def get_remote_branches():
+    command = 'git branch -r'
+    lines = get_output_lines(command)
+    branches = []
+    for line in lines:
+        branches.append(line[2:].split(' ')[0])
+    return branches
+    
