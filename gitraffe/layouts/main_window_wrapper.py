@@ -8,6 +8,7 @@ import os
 from layouts import main_window
 from layouts.clone_dialog_wrapper import CloneWindowWrapper
 from layouts.branches_dialog_wrapper import BranchesDialogWrapper
+from layouts.about_dialog_wrapper import AboutDialogWrapper
 
 class MainWindowWrapper(QMainWindow):
     def __init__(self, parent=None):
@@ -31,6 +32,7 @@ class MainWindowWrapper(QMainWindow):
         QObject.connect(self.ui.actionClone_repository_2, SIGNAL('triggered()'), self.clone_respoitory)
         QObject.connect(self.ui.actionClone_repository, SIGNAL('triggered()'), self.clone_respoitory)
         QObject.connect(self.ui.actionChange_branch, SIGNAL('triggered()'), self.change_branch_dialog)
+        QObject.connect(self.ui.actionAbout_Gitraffe, SIGNAL('triggered()'), self.about_dialog)
 
     def list_all_repositories(self):
         repositories = db_adapter.get_repositories()
@@ -88,10 +90,10 @@ class MainWindowWrapper(QMainWindow):
         self.graph()
 
     def view_repository(self):
-        self.ui.repositoryTableWidget.selectrow(1)
         path = self.ui.listWidget.currentItem().data(Qt.UserRole)
         open_repository(path)
         self.refresh_graph()
+        self.ui.repositoryTableWidget.selectRow(0)
 
     def clone_respoitory(self):
         cwd = CloneWindowWrapper(self)
@@ -138,3 +140,5 @@ class MainWindowWrapper(QMainWindow):
         QObject.connect(self.bdw, SIGNAL('accepted()'), self.change_branch)
         self.bdw.exec_()
 
+    def about_dialog(self):
+        AboutDialogWrapper(self).exec_()

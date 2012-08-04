@@ -1,5 +1,5 @@
-from PyQt4.QtGui import QDialog, QFileDialog, QMessageBox, QInputDialog, QListWidgetItem
-from PyQt4.QtCore import QObject, SIGNAL, QDir
+from PyQt4.QtGui import QDialog, QMessageBox, QInputDialog, QListWidgetItem
+from PyQt4.QtCore import QObject, SIGNAL
 from layouts.branches_dialog import Ui_BranchesDialog
 from git import get_local_branches, get_remote_branches, change_local_branch, change_remote_branch
 
