@@ -2,7 +2,7 @@ from PyQt4.QtGui import QMainWindow, QFileDialog, qApp, QListWidgetItem, QMessag
 from PyQt4.QtCore import QDir, QObject, SIGNAL, Qt
 from PyQt4 import QtGui
 from layouts.main_window import Ui_MainWindow
-from git import check_repository, open_repository, get_graph
+from git import check_repository, open_repository, get_graph, get_files
 import db_adapter
 import os
 from layouts import main_window
@@ -16,11 +16,12 @@ class MainWindowWrapper(QMainWindow):
         self.ui.setupUi(self)
         # Repository list
         self.ui.listWidget.setMouseTracking(True)
-        self.ui.listWidget.itemClicked.connect(self.view_repository)
+        self.ui.listWidget.itemSelectionChanged.connect(self.view_repository)
         self.list_all_repositories()
         #Repository Table
         self.ui.repositoryTableWidget.setSelectionMode(QAbstractItemView.SingleSelection)
         self.ui.repositoryTableWidget.verticalHeader().setVisible(False)
+        self.ui.repositoryTableWidget.itemSelectionChanged.connect(self.view_files)
         # Menu/toolbar
         QObject.connect(self.ui.actionAdd_existing_repository, SIGNAL('triggered()'), self.browse)
         QObject.connect(self.ui.actionAdd_existing_repository_2, SIGNAL('triggered()'), self.browse)
@@ -89,3 +90,13 @@ class MainWindowWrapper(QMainWindow):
     def clone_respoitory(self):
         cwd = CloneWindowWrapper(self)
         cwd.exec_()
+
+
+    def view_files(self):
+        self.ui.files_listWidget.clear()
+        commit = self.ui.repositoryTableWidget.item(self.ui.repositoryTableWidget.currentRow(), 1).text()
+        if commit != "":
+            files = get_files(commit)
+            for flag, file in files:
+               item = QListWidgetItem(flag+" "+file, self.ui.files_listWidget)
+

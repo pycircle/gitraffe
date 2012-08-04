@@ -77,7 +77,7 @@ def push(branch):
     output = subprocess.getoutput(command)
 
 def get_modified(path):
-    os.chdir(path)
+#    os.chdir(path)
     command = 'git status'
     lines = get_output_lines(command)
     modified_files = []
@@ -102,4 +102,11 @@ def get_remote_branches():
     for line in lines:
         branches.append(line[2:].split(' ')[0])
     return branches
-    
+
+def get_files(commit):
+    command = 'git diff --name-status ' +  commit
+    lines = get_output_lines(command)
+    files = []
+    for line in lines:
+        files.append(line.split())
+    return files
