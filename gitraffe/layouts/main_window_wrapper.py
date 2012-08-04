@@ -1,4 +1,4 @@
-from PyQt4.QtGui import QMainWindow, QFileDialog, qApp, QListWidgetItem, QMessageBox, QInputDialog, QIcon, QTableWidgetItem, QAbstractItemView
+from PyQt4.QtGui import QMainWindow, QFileDialog, qApp, QListWidgetItem, QMessageBox, QInputDialog, QIcon, QTableWidgetItem, QAbstractItemView, QItemSelectionModel
 from PyQt4.QtCore import QDir, QObject, SIGNAL, Qt
 from PyQt4 import QtGui
 from layouts.main_window import Ui_MainWindow
@@ -88,6 +88,7 @@ class MainWindowWrapper(QMainWindow):
         self.graph()
 
     def view_repository(self):
+        self.ui.repositoryTableWidget.selectrow(1)
         path = self.ui.listWidget.currentItem().data(Qt.UserRole)
         open_repository(path)
         self.refresh_graph()
@@ -101,8 +102,9 @@ class MainWindowWrapper(QMainWindow):
         commit = self.ui.repositoryTableWidget.item(self.ui.repositoryTableWidget.currentRow(), 1).text()
         if commit != "":
             files = get_files(commit)
-            for flag, file in files:
-                item = QListWidgetItem(flag+" "+file, self.ui.files_listWidget)
+            if files!=[[]]:
+                for flag, file in files:
+                    item = QListWidgetItem(flag+" "+file, self.ui.files_listWidget)
 
     def get_default_branch_name(self, name):
         name = name.split('/')
