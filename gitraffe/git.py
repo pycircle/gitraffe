@@ -88,11 +88,11 @@ def get_modified(path):
     return modified_files
 
 def get_files(commit):
-    command = 'git diff --name-status ' +  commit
+    command = 'git show --pretty="format:" --name-status ' +  commit
     lines = get_output_lines(command)
     files = []
-    for line in lines:
-        files.append(line.split())
+    for line in lines[1:]:
+        files.append(line.split('\t'))
     return files
 
 def get_local_branches():

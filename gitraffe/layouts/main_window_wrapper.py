@@ -90,6 +90,7 @@ class MainWindowWrapper(QMainWindow):
         self.graph()
 
     def view_repository(self):
+        self.ui.repositoryTableWidget.clear()
         path = self.ui.listWidget.currentItem().data(Qt.UserRole)
         open_repository(path)
         self.refresh_graph()
