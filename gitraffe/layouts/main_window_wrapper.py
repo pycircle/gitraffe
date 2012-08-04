@@ -102,7 +102,7 @@ class MainWindowWrapper(QMainWindow):
         if commit != "":
             files = get_files(commit)
             for flag, file in files:
-               item = QListWidgetItem(flag+" "+file, self.ui.files_listWidget)
+                item = QListWidgetItem(flag+" "+file, self.ui.files_listWidget)
 
     def get_default_branch_name(self, name):
         name = name.split('/')

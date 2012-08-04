@@ -87,6 +87,14 @@ def get_modified(path):
             modified_files.append(words[words.index('modified:')+1])
     return modified_files
 
+def get_files(commit):
+    command = 'git diff --name-status ' +  commit
+    lines = get_output_lines(command)
+    files = []
+    for line in lines:
+        files.append(line.split())
+    return files
+
 def get_local_branches():
     command = 'git branch'
     lines = get_output_lines(command)
@@ -102,14 +110,6 @@ def get_remote_branches():
     for line in lines:
         branches.append(line[2:].split(' ')[0])
     return branches
-
-def get_files(commit):
-    command = 'git diff --name-status ' +  commit
-    lines = get_output_lines(command)
-    files = []
-    for line in lines:
-        files.append(line.split())
-    return files
 
 def change_local_branch(branch):
     command = 'git checkout ' + branch
