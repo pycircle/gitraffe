@@ -2,12 +2,12 @@ from PyQt4.QtGui import QMainWindow, QFileDialog, qApp, QListWidgetItem, QMessag
 from PyQt4.QtCore import QDir, QObject, SIGNAL, Qt
 from PyQt4 import QtGui
 from layouts.main_window import Ui_MainWindow
-from git import check_repository, open_repository, get_graph
+from git import check_repository, open_repository, get_graph, change_local_branch, change_remote_branch
 import db_adapter
 import os
 from layouts import main_window
 from layouts.clone_dialog_wrapper import CloneWindowWrapper
-#from structures import Repository
+from layouts.branches_dialog_wrapper import BranchesDialogWrapper
 
 class MainWindowWrapper(QMainWindow):
     def __init__(self, parent=None):
@@ -29,6 +29,7 @@ class MainWindowWrapper(QMainWindow):
         QObject.connect(self.ui.actionClone_repository_3, SIGNAL('triggered()'), self.clone_respoitory)
         QObject.connect(self.ui.actionClone_repository_2, SIGNAL('triggered()'), self.clone_respoitory)
         QObject.connect(self.ui.actionClone_repository, SIGNAL('triggered()'), self.clone_respoitory)
+        QObject.connect(self.ui.actionChange_branch, SIGNAL('triggered()'), self.change_branch_dialog)
 
     def list_all_repositories(self):
         repositories = db_adapter.get_repositories()
@@ -81,11 +82,47 @@ class MainWindowWrapper(QMainWindow):
                 j += 1
             i += 1
 
+    def refresh_graph(self):
+        self.ui.repositoryTableWidget.clearContents()
+        self.graph()
+
     def view_repository(self):
         path = self.ui.listWidget.currentItem().data(Qt.UserRole)
         open_repository(path)
-        self.graph()
+        self.refresh_graph()
 
     def clone_respoitory(self):
         cwd = CloneWindowWrapper(self)
         cwd.exec_()
+
+    def get_default_branch_name(self, name):
+        name = name.split('/')
+        return name[1]
+
+    def change_lcl_branch(self):
+        item = self.bdw.ui.localBranchesListWidget.currentItem()
+        if item == None:
+            self.error()
+        else:
+            change_local_branch(item.text())
+
+    def change_rmt_branch(self):
+        item = self.bdw.ui.remoteBranchesListWidget.currentItem()
+        if item == None:
+            self.error()
+        else:
+            name = QInputDialog().getText(self, 'Name', 'Put your branch name:', text=self.get_default_branch_name(item.text()))
+            if name[1]:
+                change_remote_branch(item.text(), name[0])
+
+    def change_branch(self):
+        if self.bdw.ui.branchesTabWidget.currentIndex() == 0:
+            self.change_lcl_branch()
+        else:
+            self.change_rmt_branch()
+        self.refresh_graph()
+
+    def change_branch_dialog(self):
+        self.bdw = BranchesDialogWrapper(self)
+        QObject.connect(self.bdw, SIGNAL('accepted()'), self.change_branch)
+        self.bdw.exec_()

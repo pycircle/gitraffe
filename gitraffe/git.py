@@ -102,4 +102,11 @@ def get_remote_branches():
     for line in lines:
         branches.append(line[2:].split(' ')[0])
     return branches
+
+def change_local_branch(branch):
+    command = 'git checkout ' + branch
+    subprocess.getoutput(command)
     
+def change_remote_branch(branch, new_name):
+    command = 'git checkout -b ' + new_name + ' ' + branch
+    subprocess.getoutput(command)
