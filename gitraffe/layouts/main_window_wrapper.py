@@ -136,9 +136,12 @@ class MainWindowWrapper(QMainWindow):
         self.refresh_graph()
 
     def change_branch_dialog(self):
-        self.bdw = BranchesDialogWrapper(self)
-        QObject.connect(self.bdw, SIGNAL('accepted()'), self.change_branch)
-        self.bdw.exec_()
+        if self.ui.listWidget.currentItem().isSelected() == True:
+            self.bdw = BranchesDialogWrapper(self)
+            QObject.connect(self.bdw, SIGNAL('accepted()'), self.change_branch)
+            self.bdw.exec_()
+        else:
+            QMessageBox.critical(self, "Error", "You must choose repository before changing branch!", QMessageBox.Ok)
 
     def about_dialog(self):
         AboutDialogWrapper(self).exec_()
