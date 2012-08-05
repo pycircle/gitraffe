@@ -105,9 +105,8 @@ class MainWindowWrapper(QMainWindow):
         commit = self.ui.repositoryTableWidget.item(self.ui.repositoryTableWidget.currentRow(), 1).text()
         if commit != "":
             files = get_files(commit)
-            if files!=[[]]:
-                for flag, file in files:
-                    item = QListWidgetItem(flag+" "+file, self.ui.files_listWidget)
+            for flag, file in files:
+                item = QListWidgetItem(flag+" "+file, self.ui.files_listWidget)
 
     def get_default_branch_name(self, name):
         name = name.split('/')
