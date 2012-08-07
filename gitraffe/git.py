@@ -37,7 +37,7 @@ def parse_graph_line(line):
     tree = ''
     i = 0
     for x in line:
-        if x == '*' or x == '|' or x == '\\' or x == '/' or x == ' ':
+        if x == '*' or x == '|' or x == '\\' or x == '/' or x == '_' or x == ' ':
             tree += x
             i += 1
         else:
@@ -119,3 +119,6 @@ def change_remote_branch(branch, new_name):
     command = 'git checkout -b ' + new_name + ' ' + branch
     subprocess.getoutput(command)
 
+def delete_branch(branch):
+    command = 'git branch -d ' + branch
+    subprocess.getoutput(command)

@@ -74,9 +74,12 @@ class MainWindowWrapper(QMainWindow):
                 self.ui.listWidget.takeItem(self.ui.listWidget.currentRow())
 
     def graph(self):
-        i = 0
+        i = 1
         graph = get_graph()
-        self.ui.repositoryTableWidget.setRowCount(len(graph))
+        self.ui.repositoryTableWidget.setRowCount(len(graph)+1)
+        self.ui.repositoryTableWidget.setItem(0, 0, QTableWidgetItem(''))
+        self.ui.repositoryTableWidget.setItem(0, 1, QTableWidgetItem(''))
+        self.ui.repositoryTableWidget.setItem(0, 2, QTableWidgetItem('Current local changes'))
         for row in graph:
             j = 0
             for col in row:
@@ -90,7 +93,6 @@ class MainWindowWrapper(QMainWindow):
         self.graph()
 
     def view_repository(self):
-        self.ui.repositoryTableWidget.clear()
         path = self.ui.listWidget.currentItem().data(Qt.UserRole)
         open_repository(path)
         self.refresh_graph()
