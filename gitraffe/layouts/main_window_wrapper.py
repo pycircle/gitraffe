@@ -8,6 +8,7 @@ import os
 from layouts import main_window
 from layouts.clone_dialog_wrapper import CloneWindowWrapper
 from layouts.branches_dialog_wrapper import BranchesDialogWrapper
+from layouts.delete_branch_dialog_wrapper import DeleteBranchDialogWrapper
 from layouts.about_dialog_wrapper import AboutDialogWrapper
 
 class MainWindowWrapper(QMainWindow):
@@ -32,6 +33,7 @@ class MainWindowWrapper(QMainWindow):
         QObject.connect(self.ui.actionClone_repository_2, SIGNAL('triggered()'), self.clone_respoitory)
         QObject.connect(self.ui.actionClone_repository, SIGNAL('triggered()'), self.clone_respoitory)
         QObject.connect(self.ui.actionChange_branch, SIGNAL('triggered()'), self.change_branch_dialog)
+        QObject.connect(self.ui.actionDelete_branch, SIGNAL('triggered()'), self.delete_branch_dialog)
         QObject.connect(self.ui.actionAbout_Gitraffe, SIGNAL('triggered()'), self.about_dialog)
 
     def list_all_repositories(self):
@@ -78,7 +80,6 @@ class MainWindowWrapper(QMainWindow):
         graph = get_graph()
         self.ui.repositoryTableWidget.setRowCount(len(graph)+1)
         self.ui.repositoryTableWidget.setItem(0, 0, QTableWidgetItem(''))
-        #self.ui.repositoryTableWidget.setItem(0, 0, QTableWidgetItem(QImage()))
         self.ui.repositoryTableWidget.setItem(0, 1, QTableWidgetItem(''))
         self.ui.repositoryTableWidget.setItem(0, 2, QTableWidgetItem('Current local changes'))
         for row in graph:
@@ -145,6 +146,12 @@ class MainWindowWrapper(QMainWindow):
             self.bdw.exec_()
         else:
             QMessageBox.critical(self, "Error", "You must choose repository before changing branch!", QMessageBox.Ok)
+
+    def delete_branch_dialog(self):
+        if self.ui.listWidget.currentItem().isSelected() == True:
+            DeleteBranchDialogWrapper(self).exec_()
+        else:
+            QMessageBox.critical(self, "Error", "You must choose repository before deleting branch!", QMessageBox.Ok)
 
     def about_dialog(self):
         AboutDialogWrapper(self).exec_()

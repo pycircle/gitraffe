@@ -33,33 +33,6 @@ def change_branch(branch):
     command = 'git checkout ' + branch
     os.system(command)
 
-# DEPRECATED!!!
-'''def parse_graph_line(line):
-    tree = ''
-    i = 0
-    for x in line:
-        if x == '*' or x == '|' or x == '\\' or x == '/' or x == '_' or x == ' ':
-            tree += x
-            i += 1
-        else:
-            break
-    tree = tree[:-1]
-    line = line[i:]
-    commit = line.split(' ', 1)
-    commit.insert(0, tree)
-    if commit[1] != '':
-        commit.append(get_commit_author(commit[1]))
-    return commit
-
-def get_graph():
-    command = 'git log --graph --oneline'
-    lines = get_output_lines(command)
-    commits = []
-    for line in lines:
-        commit = parse_graph_line(line)
-        commits.append(commit)
-    return commits'''
-
 def get_commits():
     command = 'git log --pretty=format:"%h\n%s\n%an <%ae>\n%ad"'
     lines = get_output_lines(command)
@@ -81,16 +54,6 @@ def get_graph():
     commits = get_commits()
     graph = []
     i = 0
-    # debug
-    commitz = 0
-    for line in lines:
-        if '*' in line:
-            commitz += 1
-    print('gwiazdeczki:')
-    print(commitz)
-    print('commity:')
-    print(len(commits))
-    print(commits)
     for line in lines:
         if '*' in line:
             commits[i].insert(0, line)
@@ -153,6 +116,13 @@ def get_remote_branches():
     for line in lines:
         branches.append(line[2:].split(' ')[0])
     return branches
+
+def get_current_branch():
+    command = 'git branch'
+    lines = get_output_lines(command)
+    for line in lines:
+        if '*' in line:
+            return line[2:]
 
 def change_local_branch(branch):
     command = 'git checkout ' + branch
