@@ -33,7 +33,8 @@ def change_branch(branch):
     command = 'git checkout ' + branch
     os.system(command)
 
-def parse_graph_line(line):
+# DEPRECATED!!!
+'''def parse_graph_line(line):
     tree = ''
     i = 0
     for x in line:
@@ -46,6 +47,8 @@ def parse_graph_line(line):
     line = line[i:]
     commit = line.split(' ', 1)
     commit.insert(0, tree)
+    if commit[1] != '':
+        commit.append(get_commit_author(commit[1]))
     return commit
 
 def get_graph():
@@ -55,7 +58,47 @@ def get_graph():
     for line in lines:
         commit = parse_graph_line(line)
         commits.append(commit)
+    return commits'''
+
+def get_commits():
+    command = 'git log --pretty=format:"%h\n%s\n%an <%ae>\n%ad"'
+    lines = get_output_lines(command)
+    commits = []
+    i = 0
+    commit = []
+    for line in lines:
+        commit.append(line)
+        i += 1
+        if i == 4:
+            i = 0
+            commits.append(commit)
+            commit = []
     return commits
+
+def get_graph():
+    command = 'git log --graph --pretty=format:""'
+    lines = get_output_lines(command)
+    commits = get_commits()
+    graph = []
+    i = 0
+    # debug
+    commitz = 0
+    for line in lines:
+        if '*' in line:
+            commitz += 1
+    print('gwiazdeczki:')
+    print(commitz)
+    print('commity:')
+    print(len(commits))
+    print(commits)
+    for line in lines:
+        if '*' in line:
+            commits[i].insert(0, line)
+            graph.append(commits[i])
+            i += 1
+        else:
+            graph.append([line, '', '', '', ''])
+    return graph
 
 def diff(filename):
     command = 'git diff ' + filename

@@ -78,6 +78,7 @@ class MainWindowWrapper(QMainWindow):
         graph = get_graph()
         self.ui.repositoryTableWidget.setRowCount(len(graph)+1)
         self.ui.repositoryTableWidget.setItem(0, 0, QTableWidgetItem(''))
+        #self.ui.repositoryTableWidget.setItem(0, 0, QTableWidgetItem(QImage()))
         self.ui.repositoryTableWidget.setItem(0, 1, QTableWidgetItem(''))
         self.ui.repositoryTableWidget.setItem(0, 2, QTableWidgetItem('Current local changes'))
         for row in graph:
