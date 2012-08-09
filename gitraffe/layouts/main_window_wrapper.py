@@ -2,7 +2,7 @@ from PyQt4.QtGui import QMainWindow, QFileDialog, qApp, QListWidgetItem, QMessag
 from PyQt4.QtCore import QDir, QObject, SIGNAL, Qt
 from PyQt4 import QtGui
 from layouts.main_window import Ui_MainWindow
-from git import check_repository, open_repository, get_graph, get_files, change_local_branch, change_remote_branch
+from git import check_repository, open_repository, get_graph, get_files, change_local_branch, change_remote_branch, pull
 import db_adapter
 import os
 from layouts import main_window
@@ -35,6 +35,8 @@ class MainWindowWrapper(QMainWindow):
         QObject.connect(self.ui.actionChange_branch, SIGNAL('triggered()'), self.change_branch_dialog)
         QObject.connect(self.ui.actionDelete_branch, SIGNAL('triggered()'), self.delete_branch_dialog)
         QObject.connect(self.ui.actionAbout_Gitraffe, SIGNAL('triggered()'), self.about_dialog)
+        # Buttons
+        QObject.connect(self.ui.pullButton, SIGNAL('clicked()'), self.pull)
 
     def list_all_repositories(self):
         repositories = db_adapter.get_repositories()
@@ -155,3 +157,6 @@ class MainWindowWrapper(QMainWindow):
 
     def about_dialog(self):
         AboutDialogWrapper(self).exec_()
+
+    def pull(self):
+        QMessageBox.information(self, "Pull", pull(), QMessageBox.Ok)

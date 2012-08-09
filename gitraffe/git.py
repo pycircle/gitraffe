@@ -72,6 +72,7 @@ def diff(filename):
 def pull():
     command = 'git pull'
     output = subprocess.getoutput(command)
+    return output
 
 def commit(message):
     command = 'git commit -m "' + message + '"'
