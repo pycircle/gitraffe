@@ -160,3 +160,4 @@ class MainWindowWrapper(QMainWindow):
 
     def pull(self):
         QMessageBox.information(self, "Pull", pull(), QMessageBox.Ok)
+        self.refresh_graph()
