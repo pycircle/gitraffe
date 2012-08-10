@@ -10,6 +10,7 @@ from layouts.clone_dialog_wrapper import CloneWindowWrapper
 from layouts.branches_dialog_wrapper import BranchesDialogWrapper
 from layouts.delete_branch_dialog_wrapper import DeleteBranchDialogWrapper
 from layouts.about_dialog_wrapper import AboutDialogWrapper
+from layouts.settings_dialog_wrapper import SettingsDialogWrapper
 
 class MainWindowWrapper(QMainWindow):
     def __init__(self, parent=None):
@@ -27,11 +28,13 @@ class MainWindowWrapper(QMainWindow):
         # Menu/toolbar
         QObject.connect(self.ui.actionAdd_existing_repository, SIGNAL('triggered()'), self.browse)
         QObject.connect(self.ui.actionAdd_existing_repository_2, SIGNAL('triggered()'), self.browse)
+        QObject.connect(self.ui.actionSettings, SIGNAL('triggered()'), self.settings_dialog)
         QObject.connect(self.ui.actionExit, SIGNAL('triggered()'), qApp.exit)
         QObject.connect(self.ui.actionDelete_repository, SIGNAL('triggered()'), self.delete_listWidgetitem)
         QObject.connect(self.ui.actionClone_repository_3, SIGNAL('triggered()'), self.clone_respoitory)
         QObject.connect(self.ui.actionClone_repository_2, SIGNAL('triggered()'), self.clone_respoitory)
         QObject.connect(self.ui.actionClone_repository, SIGNAL('triggered()'), self.clone_respoitory)
+        QObject.connect(self.ui.actionPull, SIGNAL('triggered()'), self.pull)
         QObject.connect(self.ui.actionChange_branch, SIGNAL('triggered()'), self.change_branch_dialog)
         QObject.connect(self.ui.actionDelete_branch, SIGNAL('triggered()'), self.delete_branch_dialog)
         QObject.connect(self.ui.actionAbout_Gitraffe, SIGNAL('triggered()'), self.about_dialog)
@@ -161,3 +164,6 @@ class MainWindowWrapper(QMainWindow):
     def pull(self):
         QMessageBox.information(self, "Pull", pull(), QMessageBox.Ok)
         self.refresh_graph()
+
+    def settings_dialog(self):
+        SettingsDialogWrapper(self).exec_()

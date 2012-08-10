@@ -136,3 +136,15 @@ def change_remote_branch(branch, new_name):
 def delete_branch(branch):
     command = 'git branch -d ' + branch
     subprocess.getoutput(command)
+
+def get_settings():
+    command_username = 'git config --global user.name'
+    command_email = 'git config --global user.email'
+    settings = []
+    settings.append(subprocess.getoutput(command_username))
+    settings.append(subprocess.getoutput(command_email))
+    return settings
+
+def set_settings(username, email):
+    command = 'git config --global user.name "' + username + '" && git config --global user.email "' + email + '"'
+    subprocess.getoutput(command)
