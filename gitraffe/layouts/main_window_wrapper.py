@@ -2,7 +2,7 @@ from PyQt4.QtGui import QMainWindow, QFileDialog, qApp, QListWidgetItem, QMessag
 from PyQt4.QtCore import QDir, QObject, SIGNAL, Qt
 from PyQt4 import QtGui
 from layouts.main_window import Ui_MainWindow
-from git import check_repository, open_repository, get_graph, get_files, change_local_branch, change_remote_branch, pull
+from git import check_repository, open_repository, get_graph, get_files, change_local_branch, change_remote_branch, pull, get_local_chanegs
 import db_adapter
 import os
 from layouts import main_window
@@ -102,8 +102,8 @@ class MainWindowWrapper(QMainWindow):
     def view_repository(self):
         path = self.ui.listWidget.currentItem().data(Qt.UserRole)
         open_repository(path)
-        self.refresh_graph()
         self.ui.repositoryTableWidget.selectRow(0)
+        self.refresh_graph()
 
     def clone_respoitory(self):
         cwd = CloneWindowWrapper(self)
@@ -115,7 +115,12 @@ class MainWindowWrapper(QMainWindow):
         if commit != "":
             files = get_files(commit)
             for flag, file in files:
-                item = QListWidgetItem(flag+" "+file, self.ui.files_listWidget)
+                QListWidgetItem(flag+" "+file, self.ui.files_listWidget)
+        elif self.ui.repositoryTableWidget.item(self.ui.repositoryTableWidget.currentRow(), 2).text() == 'Current local changes':
+            files = get_local_chanegs()
+            for file in files:
+                QListWidgetItem(file, self.ui.files_listWidget)
+            
 
     def get_default_branch_name(self, name):
         name = name.split('/')

@@ -1,3 +1,5 @@
 eclipse.preferences.version=1
+encoding//layouts/branches_dialog.py=utf-8
 encoding//layouts/clone_dialog.py=utf-8
+encoding//layouts/delete_branch_dialog.py=utf-8
 encoding//layouts/main_window.py=utf-8

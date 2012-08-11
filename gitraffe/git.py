@@ -83,16 +83,14 @@ def push(branch):
     command = 'git push ' + branch
     output = subprocess.getoutput(command)
 
-def get_modified(path):
+def get_local_chanegs():
 #    os.chdir(path)
-    command = 'git status'
+    command = 'git status --short'
     lines = get_output_lines(command)
-    modified_files = []
+    changes = []
     for line in lines:
-        if 'modified:' in line:
-            words = line.split()
-            modified_files.append(words[words.index('modified:')+1])
-    return modified_files
+        changes.append(line)
+    return changes
 
 def get_files(commit):
     command = 'git show --pretty="format:" --name-status ' +  commit
