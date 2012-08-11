@@ -99,8 +99,8 @@ class MainWindowWrapper(QMainWindow):
     def view_repository(self):
         path = self.ui.listWidget.currentItem().data(Qt.UserRole)
         open_repository(path)
-        self.refresh_graph()
         self.ui.repositoryTableWidget.selectRow(0)
+        self.refresh_graph()
 
     def clone_respoitory(self):
         cwd = CloneWindowWrapper(self)
@@ -111,8 +111,9 @@ class MainWindowWrapper(QMainWindow):
         commit = self.ui.repositoryTableWidget.item(self.ui.repositoryTableWidget.currentRow(), 1).text()
         if commit != "":
             files = get_files(commit)
-            for flag, file in files:
-                item = QListWidgetItem(flag+" "+file, self.ui.files_listWidget)
+            if files!=[[]]:
+                for flag, file in files:
+                    item = QListWidgetItem(flag+" "+file, self.ui.files_listWidget)
 
     def get_default_branch_name(self, name):
         name = name.split('/')
