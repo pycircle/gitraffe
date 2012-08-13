@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'main_window.ui'
 #
-# Created: Tue Aug  7 22:48:48 2012
+# Created: Mon Aug 13 23:57:50 2012
 #      by: PyQt4 UI code generator 4.9.1
 #
 # WARNING! All changes made in this file will be lost!
@@ -80,14 +80,14 @@ class Ui_MainWindow(object):
         self.files_listWidget = QtGui.QListWidget(self.centralwidget)
         self.files_listWidget.setObjectName(_fromUtf8("files_listWidget"))
         self.changesetLayout.addWidget(self.files_listWidget)
-        self.diffTextEdit = QtGui.QTextEdit(self.centralwidget)
-        self.diffTextEdit.setObjectName(_fromUtf8("diffTextEdit"))
-        self.changesetLayout.addWidget(self.diffTextEdit)
+        self.diff_textBrowser = QtGui.QTextBrowser(self.centralwidget)
+        self.diff_textBrowser.setObjectName(_fromUtf8("diff_textBrowser"))
+        self.changesetLayout.addWidget(self.diff_textBrowser)
         self.repositoryLayout.addLayout(self.changesetLayout)
         self.horizontalLayout.addLayout(self.repositoryLayout)
         MainWindow.setCentralWidget(self.centralwidget)
         self.menubar = QtGui.QMenuBar(MainWindow)
-        self.menubar.setGeometry(QtCore.QRect(0, 0, 800, 22))
+        self.menubar.setGeometry(QtCore.QRect(0, 0, 800, 25))
         self.menubar.setObjectName(_fromUtf8("menubar"))
         self.menuFile = QtGui.QMenu(self.menubar)
         self.menuFile.setObjectName(_fromUtf8("menuFile"))
