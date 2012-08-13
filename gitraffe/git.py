@@ -155,7 +155,6 @@ def get_file_changes(flag, path ,commit, comparsion=None):
         out = ""
         for line in get_output_lines(command)[3:]:
             out+=line + "\n"
-        print(out)
         return out
     elif flag=='A': 
         command = 'git show ' + commit + ':' + path
