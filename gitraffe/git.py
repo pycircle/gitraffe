@@ -149,17 +149,29 @@ def set_settings(username, email):
     subprocess.getoutput(command)
 
 def get_file_changes(flag, path ,commit, comparsion=None):
-    if flag == 'M' or 'MM':
+    out = '<pre>'
+    if flag == 'M' or flag == 'MM':
         command = 'git diff '+ comparsion + ':' +path + ' '+ commit +':'+path
-        #--color
-        out = ""
         for line in get_output_lines(command)[4:]:
             if line[0]=='-':
                 line = '<font color="RED"> '+ line + '</font>'
             elif line[0]=='+':
                 line = '<font color="GREEN"> '+ line + '</font>'
-            out+=line + "<br>"
+            out += line + '\n'
+        out += '</pre>'
         return out
-    elif flag=='A': 
+    elif flag=='A':
         command = 'git show ' + commit + ':' + path
-        return subprocess.getoutput(command)
+        for line in get_output_lines(command):
+            line = '<font color="GREEN"> + ' + line + ' </font>'
+            out += line + '\n'
+        out += '</pre>'
+        return out
+    elif flag=='D':
+        command = 'git show ' + comparsion + ':' + path
+        for line in get_output_lines(command):
+            line = '<font color="RED"> - ' + line + ' </font>'
+            out += line + '\n'
+        out += '</pre>'
+        return out
+    
