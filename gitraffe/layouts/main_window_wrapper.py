@@ -1,5 +1,5 @@
-from PyQt4.QtGui import QMainWindow, QFileDialog, qApp, QListWidgetItem, QMessageBox, QInputDialog, QIcon, QTableWidgetItem, QAbstractItemView, QItemSelectionModel
-from PyQt4.QtCore import QDir, QObject, SIGNAL, Qt
+from PyQt4.QtGui import QMainWindow, QFileDialog, qApp, QListWidgetItem, QMessageBox, QInputDialog, QIcon, QTableWidgetItem, QAbstractItemView, QItemSelectionModel, QWidget, QImage, QPainter
+from PyQt4.QtCore import QDir, QObject, SIGNAL, Qt, QPoint
 from PyQt4 import QtGui
 from layouts.main_window import Ui_MainWindow
 from git import check_repository, open_repository, get_graph, get_files, change_local_branch, change_remote_branch, pull, get_local_chanegs
@@ -11,6 +11,7 @@ from layouts.branches_dialog_wrapper import BranchesDialogWrapper
 from layouts.delete_branch_dialog_wrapper import DeleteBranchDialogWrapper
 from layouts.about_dialog_wrapper import AboutDialogWrapper
 from layouts.settings_dialog_wrapper import SettingsDialogWrapper
+from layouts.graph_widget import GraphWidget
 
 class MainWindowWrapper(QMainWindow):
     def __init__(self, parent=None):
@@ -84,14 +85,17 @@ class MainWindowWrapper(QMainWindow):
         i = 1
         graph = get_graph()
         self.ui.repositoryTableWidget.setRowCount(len(graph)+1)
-        self.ui.repositoryTableWidget.setItem(0, 0, QTableWidgetItem(''))
         self.ui.repositoryTableWidget.setItem(0, 1, QTableWidgetItem(''))
         self.ui.repositoryTableWidget.setItem(0, 2, QTableWidgetItem('Current local changes'))
         for row in graph:
             j = 0
             for col in row:
-                item = QTableWidgetItem(col)
-                self.ui.repositoryTableWidget.setItem(i, j, item)
+                if j == 0:
+                    item = GraphWidget(col)
+                    self.ui.repositoryTableWidget.setCellWidget(i, j, item)
+                else:
+                    item = QTableWidgetItem(col)
+                    self.ui.repositoryTableWidget.setItem(i, j, item)
                 j += 1
             i += 1
 
