@@ -1,5 +1,6 @@
 import os
 import subprocess
+from symbol import comparison
 
 def get_output_lines(command):
     output = subprocess.getoutput(command)
@@ -146,3 +147,31 @@ def get_settings():
 def set_settings(username, email):
     command = 'git config --global user.name "' + username + '" && git config --global user.email "' + email + '"'
     subprocess.getoutput(command)
+
+def get_file_changes(flag, path ,commit, comparsion=None):
+    out = '<pre>'
+    if flag == 'M' or flag == 'MM':
+        command = 'git diff '+ comparsion + ':' +path + ' '+ commit +':'+path
+        for line in get_output_lines(command)[4:]:
+            if line[0]=='-':
+                line = '<font color="RED"> '+ line + '</font>'
+            elif line[0]=='+':
+                line = '<font color="GREEN"> '+ line + '</font>'
+            out += line + '\n'
+        out += '</pre>'
+        return out
+    elif flag=='A':
+        command = 'git show ' + commit + ':' + path
+        for line in get_output_lines(command):
+            line = '<font color="GREEN"> + ' + line + ' </font>'
+            out += line + '\n'
+        out += '</pre>'
+        return out
+    elif flag=='D':
+        command = 'git show ' + comparsion + ':' + path
+        for line in get_output_lines(command):
+            line = '<font color="RED"> - ' + line + ' </font>'
+            out += line + '\n'
+        out += '</pre>'
+        return out
+    

@@ -1,8 +1,8 @@
-from PyQt4.QtGui import QMainWindow, QFileDialog, qApp, QListWidgetItem, QMessageBox, QInputDialog, QIcon, QTableWidgetItem, QAbstractItemView, QItemSelectionModel, QWidget, QImage, QPainter
+from PyQt4.QtGui import QMainWindow, QFileDialog, qApp, QListWidgetItem, QMessageBox, QInputDialog, QIcon, QTableWidgetItem, QAbstractItemView, QWidget
 from PyQt4.QtCore import QDir, QObject, SIGNAL, Qt, QPoint
 from PyQt4 import QtGui
 from layouts.main_window import Ui_MainWindow
-from git import check_repository, open_repository, get_graph, get_files, change_local_branch, change_remote_branch, pull, get_local_chanegs
+from git import check_repository, open_repository, get_graph, get_files, change_local_branch, change_remote_branch, pull, get_local_chanegs, get_file_changes
 import db_adapter
 import os
 from layouts import main_window
@@ -26,6 +26,8 @@ class MainWindowWrapper(QMainWindow):
         self.ui.repositoryTableWidget.setSelectionMode(QAbstractItemView.SingleSelection)
         self.ui.repositoryTableWidget.verticalHeader().setVisible(False)
         self.ui.repositoryTableWidget.itemSelectionChanged.connect(self.view_files)
+        #Files List
+        self.ui.files_listWidget.itemSelectionChanged.connect(self.view_file_changes)
         # Menu/toolbar
         QObject.connect(self.ui.actionAdd_existing_repository, SIGNAL('triggered()'), self.browse)
         QObject.connect(self.ui.actionAdd_existing_repository_2, SIGNAL('triggered()'), self.browse)
@@ -124,6 +126,7 @@ class MainWindowWrapper(QMainWindow):
             files = get_local_chanegs()
             for file in files:
                 QListWidgetItem(file, self.ui.files_listWidget)
+        self.ui.files_listWidget.setCurrentRow(0)
             
 
     def get_default_branch_name(self, name):
@@ -179,3 +182,12 @@ class MainWindowWrapper(QMainWindow):
 
     def settings_dialog(self):
         SettingsDialogWrapper(self).exec_()
+    
+    def view_file_changes(self):
+        self.ui.diff_textBrowser.clear()
+        commit = self.ui.repositoryTableWidget.item(self.ui.repositoryTableWidget.currentRow(), 1).text()
+        comparsion = None
+        if self.ui.repositoryTableWidget.currentRow()+1 != self.ui.repositoryTableWidget.rowCount():
+            comparsion = self.ui.repositoryTableWidget.item(self.ui.repositoryTableWidget.currentRow()+1, 1).text()
+        flag, path = self.ui.files_listWidget.currentItem().text().split()
+        self.ui.diff_textBrowser.setText(get_file_changes(flag, path, commit, comparsion))
