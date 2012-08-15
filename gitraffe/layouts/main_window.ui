@@ -63,7 +63,7 @@
        </widget>
       </item>
       <item>
-       <layout class="QHBoxLayout" name="changesetLayout">
+       <layout class="QHBoxLayout" name="changesetLayout" stretch="0,2,4">
         <item>
          <layout class="QVBoxLayout" name="changesetButtonsLayout">
           <item>

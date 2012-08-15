@@ -148,11 +148,17 @@ def set_settings(username, email):
     command = 'git config --global user.name "' + username + '" && git config --global user.email "' + email + '"'
     subprocess.getoutput(command)
 
+def remove_html(line):
+    new = line.replace('<', '&lt;')
+    new = new.replace('>', '&gt;')
+    return new
+
 def get_file_changes(flag, path ,commit, comparsion=None):
     out = '<pre>'
     if flag == 'M' or flag == 'MM':
         command = 'git diff '+ comparsion + ':' +path + ' '+ commit +':'+path
         for line in get_output_lines(command)[4:]:
+            line = remove_html(line)
             if line[0]=='-':
                 line = '<font color="RED"> '+ line + '</font>'
             elif line[0]=='+':
@@ -163,6 +169,7 @@ def get_file_changes(flag, path ,commit, comparsion=None):
     elif flag=='A':
         command = 'git show ' + commit + ':' + path
         for line in get_output_lines(command):
+            line = remove_html(line)
             line = '<font color="GREEN"> + ' + line + ' </font>'
             out += line + '\n'
         out += '</pre>'
@@ -170,6 +177,7 @@ def get_file_changes(flag, path ,commit, comparsion=None):
     elif flag=='D':
         command = 'git show ' + comparsion + ':' + path
         for line in get_output_lines(command):
+            line = remove_html(line)
             line = '<font color="RED"> - ' + line + ' </font>'
             out += line + '\n'
         out += '</pre>'
