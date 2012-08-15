@@ -12,16 +12,22 @@ class GraphWidget(QWidget):
         painter = QPainter()
         painter.begin(self)
         i = 0
-        for char in self.commit:
-            if char == '*':
+        for j in range(len(self.commit)):
+            if self.commit[j] == '*':
                 painter.drawImage(QPoint(i,0), QImage(os.path.dirname(__file__)+'/icons/commit.png'))
-            elif char == '|':
+                i += 17.5
+            elif self.commit[j] == '|':
                 painter.drawImage(QPoint(i,0), QImage(os.path.dirname(__file__)+'/icons/line.png'))
-            elif char == '\\':
+                i += 17.5
+            elif self.commit[j] == '\\':
                 painter.drawImage(QPoint(i,0), QImage(os.path.dirname(__file__)+'/icons/left.png'))
-            elif char == '/':
+                i += 17.5
+            elif self.commit[j] == '/':
                 painter.drawImage(QPoint(i,0), QImage(os.path.dirname(__file__)+'/icons/right.png'))
-            elif char == '_':
+                i += 17.5
+            elif self.commit[j] == '_':
                 painter.drawImage(QPoint(i,0), QImage(os.path.dirname(__file__)+'/icons/line-flipped.png'))
-            i += 30
+                i += 17.5
+            elif self.commit[j] == ' ':
+                i += 17.5
         painter.end()

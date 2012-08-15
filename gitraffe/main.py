@@ -1,10 +1,17 @@
-#!/usr/bin/env python3
+#!/usr/bin/env python3.2
 
 import sys
-from layouts.main_window_wrapper import MainWindowWrapper, QtGui
-import db_adapter
+import os
+
+config_dir = '~/.gitraffe'
 
 if __name__ == '__main__':
+    if not os.path.exists(os.path.expanduser(config_dir)):
+        os.mkdir(os.path.expanduser(config_dir))
+
+    from layouts.main_window_wrapper import MainWindowWrapper, QtGui
+    import db_adapter
+
     db_adapter.init()
 
     app = QtGui.QApplication(sys.argv)

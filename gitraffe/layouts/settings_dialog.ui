@@ -13,38 +13,66 @@
   <property name="windowTitle">
    <string>Settings</string>
   </property>
-  <layout class="QVBoxLayout" name="verticalLayout_2">
+  <layout class="QVBoxLayout" name="verticalLayout">
    <item>
-    <layout class="QVBoxLayout" name="settingsLayout">
-     <item>
-      <layout class="QHBoxLayout" name="usernameLayout">
+    <widget class="QTabWidget" name="tabWidget">
+     <property name="currentIndex">
+      <number>0</number>
+     </property>
+     <widget class="QWidget" name="userdataTab">
+      <attribute name="title">
+       <string>User data</string>
+      </attribute>
+      <layout class="QVBoxLayout" name="verticalLayout_2">
        <item>
-        <widget class="QLabel" name="usernameLabel">
-         <property name="text">
-          <string>Username:</string>
+        <layout class="QVBoxLayout" name="settingsLayout">
+         <item>
+          <layout class="QHBoxLayout" name="usernameLayout">
+           <item>
+            <widget class="QLabel" name="usernameLabel">
+             <property name="text">
+              <string>Username:</string>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <widget class="QLineEdit" name="usernameEdit"/>
+           </item>
+          </layout>
+         </item>
+         <item>
+          <layout class="QHBoxLayout" name="emailLayout">
+           <item>
+            <widget class="QLabel" name="emailLabel">
+             <property name="text">
+              <string>Email:</string>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <widget class="QLineEdit" name="emailEdit"/>
+           </item>
+          </layout>
+         </item>
+        </layout>
+       </item>
+      </layout>
+     </widget>
+     <widget class="QWidget" name="sshTab">
+      <attribute name="title">
+       <string>SSH key</string>
+      </attribute>
+      <layout class="QVBoxLayout" name="verticalLayout_3">
+       <item>
+        <widget class="QTextEdit" name="sshTextEdit">
+         <property name="readOnly">
+          <bool>true</bool>
          </property>
         </widget>
        </item>
-       <item>
-        <widget class="QLineEdit" name="usernameEdit"/>
-       </item>
       </layout>
-     </item>
-     <item>
-      <layout class="QHBoxLayout" name="emailLayout">
-       <item>
-        <widget class="QLabel" name="emailLabel">
-         <property name="text">
-          <string>Email:</string>
-         </property>
-        </widget>
-       </item>
-       <item>
-        <widget class="QLineEdit" name="emailEdit"/>
-       </item>
-      </layout>
-     </item>
-    </layout>
+     </widget>
+    </widget>
    </item>
    <item>
     <widget class="QDialogButtonBox" name="buttonBox">
