@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'main_window.ui'
 #
-# Created: Mon Aug 13 23:57:50 2012
+# Created: Wed Aug 15 13:55:53 2012
 #      by: PyQt4 UI code generator 4.9.1
 #
 # WARNING! All changes made in this file will be lost!
@@ -83,6 +83,8 @@ class Ui_MainWindow(object):
         self.diff_textBrowser = QtGui.QTextBrowser(self.centralwidget)
         self.diff_textBrowser.setObjectName(_fromUtf8("diff_textBrowser"))
         self.changesetLayout.addWidget(self.diff_textBrowser)
+        self.changesetLayout.setStretch(1, 2)
+        self.changesetLayout.setStretch(2, 4)
         self.repositoryLayout.addLayout(self.changesetLayout)
         self.horizontalLayout.addLayout(self.repositoryLayout)
         MainWindow.setCentralWidget(self.centralwidget)
