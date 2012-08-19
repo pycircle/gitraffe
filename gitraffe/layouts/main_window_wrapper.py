@@ -84,22 +84,21 @@ class MainWindowWrapper(QMainWindow):
                 self.ui.listWidget.takeItem(self.ui.listWidget.currentRow())
 
     def graph(self):
-        i = 1
         graph = get_graph()
         self.ui.repositoryTableWidget.setRowCount(len(graph)+1)
         self.ui.repositoryTableWidget.setItem(0, 1, QTableWidgetItem(''))
         self.ui.repositoryTableWidget.setItem(0, 2, QTableWidgetItem('Current local changes'))
-        for row in graph:
-            j = 0
-            for col in row:
-                if j == 0:
-                    item = GraphWidget(col)
-                    self.ui.repositoryTableWidget.setCellWidget(i, j, item)
-                else:
-                    item = QTableWidgetItem(col)
-                    self.ui.repositoryTableWidget.setItem(i, j, item)
-                j += 1
-            i += 1
+        for i in range(len(graph)-1):
+            item = GraphWidget(graph[i][0], graph[i+1][0])
+            self.ui.repositoryTableWidget.setCellWidget(i+1, 0, item)
+            for j in range(1, len(graph[i])):
+                item = QTableWidgetItem(graph[i][j])
+                self.ui.repositoryTableWidget.setItem(i+1, j, item)
+        item = GraphWidget(graph[-1][0])
+        self.ui.repositoryTableWidget.setCellWidget(len(graph), 0, item)
+        for j in range(1, len(graph[-1])):
+            item = QTableWidgetItem(graph[-1][j])
+            self.ui.repositoryTableWidget.setItem(len(graph), j, item)
 
     def refresh_graph(self):
         self.ui.repositoryTableWidget.clearContents()

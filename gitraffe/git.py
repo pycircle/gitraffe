@@ -35,13 +35,19 @@ def change_branch(branch):
     os.system(command)
 
 def get_commits():
-    command = 'git log --pretty=format:"%h\n%s\n%an <%ae>\n%ad"'
+    command = 'git log --graph --pretty=format:"%h\n%s\n%an <%ae>\n%ad"'
     lines = get_output_lines(command)
     commits = []
     i = 0
     commit = []
     for line in lines:
-        commit.append(line)
+        j = 0
+        for char in line:
+            if char == '*' or char == '|' or char == '\\' or char == '/' or char == '_' or char == ' ':
+                j += 1
+            else:
+                break
+        commit.append(line[j:])
         i += 1
         if i == 4:
             i = 0

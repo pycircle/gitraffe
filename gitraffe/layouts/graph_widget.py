@@ -3,9 +3,12 @@ from PyQt4.QtCore import QPoint
 import os
 
 class GraphWidget(QWidget):
-    def __init__(self, commit=''):
+    def __init__(self, commit='', next_commit=None):
         super().__init__()
         self.commit = commit
+        self.size = 13
+        #self.size = 15
+        self.next_commit = next_commit
 
     def paintEvent(self, e):
         super().paintEvent(e)
@@ -15,19 +18,22 @@ class GraphWidget(QWidget):
         for j in range(len(self.commit)):
             if self.commit[j] == '*':
                 painter.drawImage(QPoint(i,0), QImage(os.path.dirname(__file__)+'/icons/commit.png'))
-                i += 17.5
+                i += self.size
             elif self.commit[j] == '|':
                 painter.drawImage(QPoint(i,0), QImage(os.path.dirname(__file__)+'/icons/line.png'))
-                i += 17.5
+                i += self.size
             elif self.commit[j] == '\\':
-                painter.drawImage(QPoint(i,0), QImage(os.path.dirname(__file__)+'/icons/left.png'))
-                i += 17.5
+                if self.next_commit != None and len(self.next_commit) > j and self.next_commit[j+1] == '\\':
+                    painter.drawImage(QPoint(i,0), QImage(os.path.dirname(__file__)+'/icons/left-half.png'))
+                else:
+                    painter.drawImage(QPoint(i,0), QImage(os.path.dirname(__file__)+'/icons/left.png'))
+                i += self.size
             elif self.commit[j] == '/':
                 painter.drawImage(QPoint(i,0), QImage(os.path.dirname(__file__)+'/icons/right.png'))
-                i += 17.5
+                i += self.size
             elif self.commit[j] == '_':
                 painter.drawImage(QPoint(i,0), QImage(os.path.dirname(__file__)+'/icons/line-flipped.png'))
-                i += 17.5
+                i += self.size
             elif self.commit[j] == ' ':
-                i += 17.5
+                i += self.size
         painter.end()
