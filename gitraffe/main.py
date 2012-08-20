@@ -9,7 +9,7 @@ if __name__ == '__main__':
     if not os.path.exists(os.path.expanduser(config_dir)):
         os.mkdir(os.path.expanduser(config_dir))
 
-    from layouts.main_window_wrapper import MainWindowWrapper, QtGui
+    from wrappers.main_window_wrapper import MainWindowWrapper, QtGui
     import db_adapter
 
     db_adapter.init()
