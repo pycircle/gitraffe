@@ -2,7 +2,7 @@ from PyQt4.QtGui import QMainWindow, QFileDialog, qApp, QListWidgetItem, QMessag
 from PyQt4.QtCore import QDir, QObject, SIGNAL, Qt, QPoint
 from PyQt4 import QtGui
 from layouts.main_window import Ui_MainWindow
-from git import check_repository, open_repository, get_graph, get_files, change_local_branch, change_remote_branch, pull, get_local_chanegs, get_file_changes
+from git import check_repository, open_repository, get_graph, get_files, change_local_branch, change_remote_branch, pull, commit, get_local_chanegs, get_file_changes
 import db_adapter
 import os
 from layouts import main_window
@@ -43,6 +43,7 @@ class MainWindowWrapper(QMainWindow):
         QObject.connect(self.ui.actionAbout_Gitraffe, SIGNAL('triggered()'), self.about_dialog)
         # Buttons
         QObject.connect(self.ui.pullButton, SIGNAL('clicked()'), self.pull)
+        QObject.connect(self.ui.commitButton, SIGNAL('clicked()'), self.commit)
 
     def list_all_repositories(self):
         repositories = db_adapter.get_repositories()
@@ -178,6 +179,14 @@ class MainWindowWrapper(QMainWindow):
             self.refresh_graph()
         else:
             QMessageBox.critical(self, "Error", "You must choose repository before pulling!", QMessageBox.Ok)
+
+    def commit(self):
+        if self.ui.listWidget.currentItem().isSelected() == True:
+            message = QInputDialog().getText(self, 'Commit', 'Put your commit message:')
+            if message[0] != '':
+                QMessageBox.information(self, "Commit", commit(message[0]), QMessageBox.Ok)
+        else:
+            QMessageBox.critical(self, "Error", "You must choose repository before commiting!", QMessageBox.Ok)
 
     def settings_dialog(self):
         SettingsDialogWrapper(self).exec_()
