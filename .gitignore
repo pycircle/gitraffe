@@ -2,4 +2,4 @@
 *.db
 gitraffe/database.db
 gitraffe/layouts/__pycache__/
-
+gitraffe/wrappers/__pycache__/
