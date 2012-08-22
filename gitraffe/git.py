@@ -75,7 +75,7 @@ def diff(filename):
     output = subprocess.getoutput(command)
     return output
 
-# TODO -> HERE WE HAVE TO HANDLE MERGES
+# TODO -> HERE WE HAVE TO HANDLE PASS REQUESTS
 def pull():
     command = 'git pull'
     output = subprocess.getoutput(command)
@@ -84,11 +84,13 @@ def pull():
 def commit(message):
     command = 'git commit -m "' + message + '"'
     output = subprocess.getoutput(command)
+    return output
 
-# TODO -> HERE WE HAVE TO HANDLE MERGES
-def push(branch):
-    command = 'git push ' + branch
+# TODO -> HERE WE HAVE TO HANDLE PASS REQUESTS
+def push():
+    command = 'git push'
     output = subprocess.getoutput(command)
+    return output
 
 def get_local_chanegs():
 #    os.chdir(path)

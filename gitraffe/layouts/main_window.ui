@@ -125,6 +125,10 @@
             <property name="text">
              <string>Stash</string>
             </property>
+            <property name="icon">
+             <iconset>
+              <normaloff>icons/stash.png</normaloff>icons/stash.png</iconset>
+            </property>
            </widget>
           </item>
           <item>
@@ -242,6 +246,10 @@
    </property>
   </action>
   <action name="actionRefresh">
+   <property name="icon">
+    <iconset>
+     <normaloff>icons/refresh.png</normaloff>icons/refresh.png</iconset>
+   </property>
    <property name="text">
     <string>Refresh</string>
    </property>
@@ -308,6 +316,10 @@
    </property>
   </action>
   <action name="actionAdd_existing_repository">
+   <property name="icon">
+    <iconset>
+     <normaloff>icons/stage.png</normaloff>icons/stage.png</iconset>
+   </property>
    <property name="text">
     <string>Add existing repository...</string>
    </property>
@@ -336,16 +348,28 @@
    </property>
   </action>
   <action name="actionAdd_existing_repository_2">
+   <property name="icon">
+    <iconset>
+     <normaloff>icons/stage.png</normaloff>icons/stage.png</iconset>
+   </property>
    <property name="text">
     <string>Add existing repository</string>
    </property>
   </action>
   <action name="actionStash">
+   <property name="icon">
+    <iconset>
+     <normaloff>icons/stash.png</normaloff>icons/stash.png</iconset>
+   </property>
    <property name="text">
     <string>Stash</string>
    </property>
   </action>
   <action name="actionDelete_repository">
+   <property name="icon">
+    <iconset>
+     <normaloff>icons/unstage.png</normaloff>icons/unstage.png</iconset>
+   </property>
    <property name="text">
     <string>Delete repository</string>
    </property>

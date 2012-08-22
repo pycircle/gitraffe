@@ -2,7 +2,7 @@ from PyQt4.QtGui import QMainWindow, QFileDialog, qApp, QListWidgetItem, QMessag
 from PyQt4.QtCore import QDir, QObject, SIGNAL, Qt, QPoint
 from PyQt4 import QtGui
 from layouts.main_window import Ui_MainWindow
-from git import check_repository, open_repository, get_graph, get_files, change_local_branch, change_remote_branch, pull, commit, get_local_chanegs, get_file_changes
+from git import check_repository, open_repository, get_graph, get_files, change_local_branch, change_remote_branch, pull, commit, push, get_local_chanegs, get_file_changes, get_current_branch
 import db_adapter
 import os
 from layouts import main_window
@@ -12,6 +12,7 @@ from wrappers.delete_branch_dialog_wrapper import DeleteBranchDialogWrapper
 from wrappers.about_dialog_wrapper import AboutDialogWrapper
 from wrappers.settings_dialog_wrapper import SettingsDialogWrapper
 from layouts.graph_widget import GraphWidget
+from layouts.defined_graph_widget import DefinedGraphWidget
 
 class MainWindowWrapper(QMainWindow):
     def __init__(self, parent=None):
@@ -38,12 +39,15 @@ class MainWindowWrapper(QMainWindow):
         QObject.connect(self.ui.actionClone_repository_2, SIGNAL('triggered()'), self.clone_respoitory)
         QObject.connect(self.ui.actionClone_repository, SIGNAL('triggered()'), self.clone_respoitory)
         QObject.connect(self.ui.actionPull, SIGNAL('triggered()'), self.pull)
+        QObject.connect(self.ui.actionCommit, SIGNAL('triggered()'), self.commit)
+        QObject.connect(self.ui.actionPush, SIGNAL('triggered()'), self.push)
         QObject.connect(self.ui.actionChange_branch, SIGNAL('triggered()'), self.change_branch_dialog)
         QObject.connect(self.ui.actionDelete_branch, SIGNAL('triggered()'), self.delete_branch_dialog)
         QObject.connect(self.ui.actionAbout_Gitraffe, SIGNAL('triggered()'), self.about_dialog)
         # Buttons
         QObject.connect(self.ui.pullButton, SIGNAL('clicked()'), self.pull)
         QObject.connect(self.ui.commitButton, SIGNAL('clicked()'), self.commit)
+        QObject.connect(self.ui.pushButton, SIGNAL('clicked()'), self.push)
 
     def list_all_repositories(self):
         repositories = db_adapter.get_repositories()
@@ -87,19 +91,25 @@ class MainWindowWrapper(QMainWindow):
     def graph(self):
         graph = get_graph()
         self.ui.repositoryTableWidget.setRowCount(len(graph)+1)
-        self.ui.repositoryTableWidget.setItem(0, 1, QTableWidgetItem(''))
+        item = DefinedGraphWidget('current.png')
+        self.ui.repositoryTableWidget.setCellWidget(0, 0, item)
         self.ui.repositoryTableWidget.setItem(0, 2, QTableWidgetItem('Current local changes'))
-        for i in range(len(graph)-1):
+        item = DefinedGraphWidget('commit-first.png')
+        self.ui.repositoryTableWidget.setCellWidget(1, 0, item)
+        for i in range(1, len(graph[0])):
+            item = QTableWidgetItem(graph[0][i])
+            self.ui.repositoryTableWidget.setItem(1, i, item)
+        for i in range(1, len(graph)-1):
             item = GraphWidget(graph[i][0], graph[i+1][0])
             self.ui.repositoryTableWidget.setCellWidget(i+1, 0, item)
             for j in range(1, len(graph[i])):
                 item = QTableWidgetItem(graph[i][j])
                 self.ui.repositoryTableWidget.setItem(i+1, j, item)
-        item = GraphWidget(graph[-1][0])
+        item = DefinedGraphWidget('commit-last.png')
         self.ui.repositoryTableWidget.setCellWidget(len(graph), 0, item)
-        for j in range(1, len(graph[-1])):
-            item = QTableWidgetItem(graph[-1][j])
-            self.ui.repositoryTableWidget.setItem(len(graph), j, item)
+        for i in range(1, len(graph[-1])):
+            item = QTableWidgetItem(graph[-1][i])
+            self.ui.repositoryTableWidget.setItem(len(graph), i, item)
 
     def refresh_graph(self):
         self.ui.repositoryTableWidget.clearContents()
@@ -185,6 +195,12 @@ class MainWindowWrapper(QMainWindow):
             message = QInputDialog().getText(self, 'Commit', 'Put your commit message:')
             if message[0] != '':
                 QMessageBox.information(self, "Commit", commit(message[0]), QMessageBox.Ok)
+        else:
+            QMessageBox.critical(self, "Error", "You must choose repository before commiting!", QMessageBox.Ok)
+
+    def push(self):
+        if self.ui.listWidget.currentItem().isSelected() == True:
+            QMessageBox.information(self, "Push", push(), QMessageBox.Ok)
         else:
             QMessageBox.critical(self, "Error", "You must choose repository before commiting!", QMessageBox.Ok)
 
