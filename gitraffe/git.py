@@ -190,8 +190,3 @@ def get_file_changes(flag, path ,commit, comparsion=None):
             out += line + '\n'
         out += '</pre>'
         return out
-    
-def get_ssh_key():
-    command = 'cat ~/.ssh/id_rsa.pub'
-    output = subprocess.getoutput(command)
-    return output
