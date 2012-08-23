@@ -2,8 +2,8 @@
 
 # Form implementation generated from reading ui file 'settings_dialog.ui'
 #
-# Created: Wed Aug 15 11:13:52 2012
-#      by: PyQt4 UI code generator 4.9.1
+# Created: Wed Aug 22 23:45:37 2012
+#      by: PyQt4 UI code generator 4.9.4
 #
 # WARNING! All changes made in this file will be lost!
 
@@ -17,7 +17,7 @@ except AttributeError:
 class Ui_SettingsDialog(object):
     def setupUi(self, SettingsDialog):
         SettingsDialog.setObjectName(_fromUtf8("SettingsDialog"))
-        SettingsDialog.resize(400, 200)
+        SettingsDialog.resize(400, 300)
         self.verticalLayout = QtGui.QVBoxLayout(SettingsDialog)
         self.verticalLayout.setObjectName(_fromUtf8("verticalLayout"))
         self.tabWidget = QtGui.QTabWidget(SettingsDialog)
@@ -56,6 +56,9 @@ class Ui_SettingsDialog(object):
         self.sshTextEdit.setReadOnly(True)
         self.sshTextEdit.setObjectName(_fromUtf8("sshTextEdit"))
         self.verticalLayout_3.addWidget(self.sshTextEdit)
+        self.generateButton = QtGui.QPushButton(self.sshTab)
+        self.generateButton.setObjectName(_fromUtf8("generateButton"))
+        self.verticalLayout_3.addWidget(self.generateButton)
         self.tabWidget.addTab(self.sshTab, _fromUtf8(""))
         self.verticalLayout.addWidget(self.tabWidget)
         self.buttonBox = QtGui.QDialogButtonBox(SettingsDialog)
@@ -75,5 +78,6 @@ class Ui_SettingsDialog(object):
         self.usernameLabel.setText(QtGui.QApplication.translate("SettingsDialog", "Username:", None, QtGui.QApplication.UnicodeUTF8))
         self.emailLabel.setText(QtGui.QApplication.translate("SettingsDialog", "Email:", None, QtGui.QApplication.UnicodeUTF8))
         self.tabWidget.setTabText(self.tabWidget.indexOf(self.userdataTab), QtGui.QApplication.translate("SettingsDialog", "User data", None, QtGui.QApplication.UnicodeUTF8))
+        self.generateButton.setText(QtGui.QApplication.translate("SettingsDialog", "Generate new key", None, QtGui.QApplication.UnicodeUTF8))
         self.tabWidget.setTabText(self.tabWidget.indexOf(self.sshTab), QtGui.QApplication.translate("SettingsDialog", "SSH key", None, QtGui.QApplication.UnicodeUTF8))
 

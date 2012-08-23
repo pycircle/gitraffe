@@ -99,9 +99,12 @@ class MainWindowWrapper(QMainWindow):
         for i in range(1, len(graph[0])):
             item = QTableWidgetItem(graph[0][i])
             self.ui.repositoryTableWidget.setItem(1, i, item)
+        max_size = 30
         for i in range(1, len(graph)-1):
             item = GraphWidget(graph[i][0], graph[i+1][0])
             self.ui.repositoryTableWidget.setCellWidget(i+1, 0, item)
+            if item.size > max_size:
+                max_size = item.size
             for j in range(1, len(graph[i])):
                 item = QTableWidgetItem(graph[i][j])
                 self.ui.repositoryTableWidget.setItem(i+1, j, item)
@@ -110,6 +113,7 @@ class MainWindowWrapper(QMainWindow):
         for i in range(1, len(graph[-1])):
             item = QTableWidgetItem(graph[-1][i])
             self.ui.repositoryTableWidget.setItem(len(graph), i, item)
+        self.ui.repositoryTableWidget.horizontalHeader().resizeSection(0, max_size)
 
     def refresh_graph(self):
         self.ui.repositoryTableWidget.clearContents()
