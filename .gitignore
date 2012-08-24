@@ -3,3 +3,6 @@
 gitraffe/database.db
 gitraffe/layouts/__pycache__/
 gitraffe/wrappers/__pycache__/
+.DS_Store
+gitraffe/.DS_Store
+gitraffe/layouts/.DS_Store

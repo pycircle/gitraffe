@@ -39,14 +39,12 @@ class MainWindowWrapper(QMainWindow):
         QObject.connect(self.ui.actionClone_repository_2, SIGNAL('triggered()'), self.clone_respoitory)
         QObject.connect(self.ui.actionClone_repository, SIGNAL('triggered()'), self.clone_respoitory)
         QObject.connect(self.ui.actionPull, SIGNAL('triggered()'), self.pull)
-        QObject.connect(self.ui.actionCommit, SIGNAL('triggered()'), self.commit)
         QObject.connect(self.ui.actionPush, SIGNAL('triggered()'), self.push)
         QObject.connect(self.ui.actionChange_branch, SIGNAL('triggered()'), self.change_branch_dialog)
         QObject.connect(self.ui.actionDelete_branch, SIGNAL('triggered()'), self.delete_branch_dialog)
         QObject.connect(self.ui.actionAbout_Gitraffe, SIGNAL('triggered()'), self.about_dialog)
         # Buttons
         QObject.connect(self.ui.pullButton, SIGNAL('clicked()'), self.pull)
-        QObject.connect(self.ui.commitButton, SIGNAL('clicked()'), self.commit)
         QObject.connect(self.ui.pushButton, SIGNAL('clicked()'), self.push)
 
     def list_all_repositories(self):
@@ -193,14 +191,6 @@ class MainWindowWrapper(QMainWindow):
             self.refresh_graph()
         else:
             QMessageBox.critical(self, "Error", "You must choose repository before pulling!", QMessageBox.Ok)
-
-    def commit(self):
-        if self.ui.listWidget.currentItem().isSelected() == True:
-            message = QInputDialog().getText(self, 'Commit', 'Put your commit message:')
-            if message[0] != '':
-                QMessageBox.information(self, "Commit", commit(message[0]), QMessageBox.Ok)
-        else:
-            QMessageBox.critical(self, "Error", "You must choose repository before commiting!", QMessageBox.Ok)
 
     def push(self):
         if self.ui.listWidget.currentItem().isSelected() == True:
