@@ -11,8 +11,10 @@ if __name__ == '__main__':
 
     from wrappers.main_window_wrapper import MainWindowWrapper, QtGui
     import db_adapter
+    from log import clear_log
 
     db_adapter.init()
+    clear_log()
 
     app = QtGui.QApplication(sys.argv)
     main_window = MainWindowWrapper()
