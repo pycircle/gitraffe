@@ -13,9 +13,12 @@ class SettingsDialogWrapper(QDialog):
         settings = get_settings()
         self.ui.usernameEdit.setText(settings[0])
         self.ui.emailEdit.setText(settings[1])
-        self.ui.sshTextEdit.setText(get_ssh_key())
+        self.ssh_key()
         QObject.connect(self, SIGNAL('accepted()'), self.update_settings)
         QObject.connect(self.ui.generateButton, SIGNAL('clicked()'), self.generate)
+
+    def ssh_key(self):
+        self.ui.sshTextEdit.setText(get_ssh_key())
 
     def update_settings(self):
         set_settings(self.ui.usernameEdit.text(), self.ui.emailEdit.text())
@@ -24,3 +27,5 @@ class SettingsDialogWrapper(QDialog):
         email = QInputDialog().getText(self, 'Email', 'Input your email:')
         if email[1]:
             QMessageBox.information(self, "Generate new key", generate_new_ssh_key(email[0]), QMessageBox.Ok)
+            self.ssh_key()
+            
