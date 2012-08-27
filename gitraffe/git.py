@@ -207,7 +207,7 @@ def get_file_changes(flag, path ,commit, comparsion=None):
     elif flag=='D':
         command = 'git show ' + comparsion + ':' + path
         output = get_output_lines(command)
-        save_log(command. output[0])
+        save_log(command, output[0])
         for line in output[1]:
             line = remove_html(line)
             line = '<font color="RED"> - ' + line + ' </font>'
