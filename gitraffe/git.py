@@ -59,6 +59,7 @@ def get_commits():
             commit = []
     return commits
 
+# DEPRECATED!!!
 def get_graph():
     command = 'git log --graph --pretty=format:""'
     output = get_output_lines(command)
@@ -75,6 +76,33 @@ def get_graph():
         else:
             graph.append([line, '', '', '', ''])
     return graph
+
+'''def get_graph():
+    command = 'git log --graph --pretty=format:""'
+    output = get_output_lines(command)
+    save_log(command, output[0])
+    graph = output[1]
+    j = 0
+    for i in range(len(graph)):
+        if not '*' in graph[i-j]:
+            del graph[i-j]
+            j += 1
+        while graph[i-j][-1] == ' ':
+            graph[i-j] = graph[i-j][:-1]
+    for i in range(1, len(graph)-1):
+        if len(graph[i]) < len(graph[i+1]):
+            graph[i] = graph[i].replace(' ', '-')
+            graph[i] += '-\\'
+        if len(graph[i]) < len(graph[i-1]):
+            if graph[i-1][-1] != '/' or len(graph[i-1]) > len(graph[i])+2:
+                graph[i] = graph[i].replace(' ', '-')
+                graph[i] += '-/'
+    commits = get_commits()
+    graph_with_data = []
+    for i in range(len(graph)):
+        commits[i].insert(0, graph[i])
+        graph_with_data.append(commits[i])
+    return graph_with_data'''
 
 def diff(filename):
     command = 'git diff ' + filename

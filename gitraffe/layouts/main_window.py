@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'main_window.ui'
 #
-# Created: Mon Aug 20 20:49:35 2012
+# Created: Mon Aug 27 09:41:06 2012
 #      by: PyQt4 UI code generator 4.9.1
 #
 # WARNING! All changes made in this file will be lost!
@@ -56,12 +56,14 @@ class Ui_MainWindow(object):
         self.changesetButtonsLayout = QtGui.QVBoxLayout()
         self.changesetButtonsLayout.setObjectName(_fromUtf8("changesetButtonsLayout"))
         self.stageButton = QtGui.QPushButton(self.centralwidget)
+        self.stageButton.setEnabled(False)
         icon = QtGui.QIcon()
         icon.addPixmap(QtGui.QPixmap(_fromUtf8(os.path.dirname(__file__)+"/icons/stage.png")), QtGui.QIcon.Normal, QtGui.QIcon.Off)
         self.stageButton.setIcon(icon)
         self.stageButton.setObjectName(_fromUtf8("stageButton"))
         self.changesetButtonsLayout.addWidget(self.stageButton)
         self.unstageButton = QtGui.QPushButton(self.centralwidget)
+        self.unstageButton.setEnabled(False)
         icon1 = QtGui.QIcon()
         icon1.addPixmap(QtGui.QPixmap(_fromUtf8(os.path.dirname(__file__)+"/icons/unstage.png")), QtGui.QIcon.Normal, QtGui.QIcon.Off)
         self.unstageButton.setIcon(icon1)

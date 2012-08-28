@@ -71,6 +71,9 @@
          <layout class="QVBoxLayout" name="changesetButtonsLayout">
           <item>
            <widget class="QPushButton" name="stageButton">
+            <property name="enabled">
+             <bool>false</bool>
+            </property>
             <property name="text">
              <string>Stage</string>
             </property>
@@ -82,6 +85,9 @@
           </item>
           <item>
            <widget class="QPushButton" name="unstageButton">
+            <property name="enabled">
+             <bool>false</bool>
+            </property>
             <property name="text">
              <string>Unstage</string>
             </property>
