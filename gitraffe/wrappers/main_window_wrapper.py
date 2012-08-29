@@ -11,7 +11,7 @@ from wrappers.branches_dialog_wrapper import BranchesDialogWrapper
 from wrappers.delete_branch_dialog_wrapper import DeleteBranchDialogWrapper
 from wrappers.about_dialog_wrapper import AboutDialogWrapper
 from wrappers.settings_dialog_wrapper import SettingsDialogWrapper
-from layouts.graph_widget import GraphWidget
+from layouts.graph_widget import GraphWidget, FirstGraphWidget, LastGraphWidget
 from layouts.defined_graph_widget import DefinedGraphWidget
 
 class MainWindowWrapper(QMainWindow):
@@ -92,21 +92,21 @@ class MainWindowWrapper(QMainWindow):
         item = DefinedGraphWidget('current.png')
         self.ui.repositoryTableWidget.setCellWidget(0, 0, item)
         self.ui.repositoryTableWidget.setItem(0, 2, QTableWidgetItem('Current local changes'))
-        item = DefinedGraphWidget('commit-first.png')
+        item = FirstGraphWidget(graph[0][0])
         self.ui.repositoryTableWidget.setCellWidget(1, 0, item)
         for i in range(1, len(graph[0])):
             item = QTableWidgetItem(graph[0][i])
             self.ui.repositoryTableWidget.setItem(1, i, item)
         max_size = 30
         for i in range(1, len(graph)-1):
-            item = GraphWidget(graph[i][0], graph[i+1][0])
+            item = GraphWidget(graph[i][0])
             self.ui.repositoryTableWidget.setCellWidget(i+1, 0, item)
             if item.size > max_size:
                 max_size = item.size
             for j in range(1, len(graph[i])):
                 item = QTableWidgetItem(graph[i][j])
                 self.ui.repositoryTableWidget.setItem(i+1, j, item)
-        item = DefinedGraphWidget('commit-last.png')
+        item = LastGraphWidget(graph[-1][0])
         self.ui.repositoryTableWidget.setCellWidget(len(graph), 0, item)
         for i in range(1, len(graph[-1])):
             item = QTableWidgetItem(graph[-1][i])

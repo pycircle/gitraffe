@@ -60,7 +60,7 @@ def get_commits():
     return commits
 
 # DEPRECATED!!!
-def get_graph():
+'''def get_graph():
     command = 'git log --graph --pretty=format:""'
     output = get_output_lines(command)
     save_log(command, output[0])
@@ -75,9 +75,9 @@ def get_graph():
             i += 1
         else:
             graph.append([line, '', '', '', ''])
-    return graph
+    return graph'''
 
-'''def get_graph():
+def get_graph():
     command = 'git log --graph --pretty=format:""'
     output = get_output_lines(command)
     save_log(command, output[0])
@@ -89,20 +89,53 @@ def get_graph():
             j += 1
         while graph[i-j][-1] == ' ':
             graph[i-j] = graph[i-j][:-1]
+    if len(graph[0]) < len(graph[1]):
+        k = 0
+        while graph[0][k] != '*':
+            k += 1
+        k += 1
+        while k < len(graph[0]):
+            if graph[0][k] == ' ':
+                graph_lst = list(graph[0])
+                graph_lst[0] = '-'
+                graph[0] = ''.join(graph_lst)
+            k +=1
+        graph[0] += '-\\'
     for i in range(1, len(graph)-1):
         if len(graph[i]) < len(graph[i+1]):
-            graph[i] = graph[i].replace(' ', '-')
+            k = 0
+            while graph[i][k] != '*':
+                k += 1
+            k += 1
+            while k < len(graph[i]):
+                if graph[i][k] == ' ':
+                    graph_lst = list(graph[i])
+                    graph_lst[k] = '-'
+                    graph[i] = ''.join(graph_lst)
+                k +=1
             graph[i] += '-\\'
         if len(graph[i]) < len(graph[i-1]):
             if graph[i-1][-1] != '/' or len(graph[i-1]) > len(graph[i])+2:
-                graph[i] = graph[i].replace(' ', '-')
+                k = 0
+                while graph[i][k] != '*':
+                    k += 1
+                k += 1
+                while k < len(graph[i]):
+                    if graph[i][k] == ' ':
+                        graph_lst = list(graph[i])
+                        graph_lst[k] = '-'
+                        graph[i] = ''.join(graph_lst)
+                    k += 1
                 graph[i] += '-/'
+    # debug
+    for line in graph:
+        print(line)
     commits = get_commits()
     graph_with_data = []
     for i in range(len(graph)):
         commits[i].insert(0, graph[i])
         graph_with_data.append(commits[i])
-    return graph_with_data'''
+    return graph_with_data
 
 def diff(filename):
     command = 'git diff ' + filename
