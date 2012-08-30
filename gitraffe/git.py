@@ -1,17 +1,17 @@
-import os
-import subprocess
+from os import chdir, system
+from subprocess import getoutput, Popen
 from symbol import comparison
 from log import save_log
 
 def get_output_lines(command):
-    output = subprocess.getoutput(command)
+    output = getoutput(command)
     lines = output.split('\n')
     return [output, lines]
 
 def check_repository(path):
-    os.chdir(path)
+    chdir(path)
     command = 'git rev-parse --git-dir'
-    output = subprocess.getoutput(command)
+    output = getoutput(command)
     save_log(command, output)
     if output == '.git':
         return (True, path)
@@ -20,11 +20,11 @@ def check_repository(path):
     else: return (False, '')
 
 def open_repository(path):
-    os.chdir(path)
+    chdir(path)
 
 def clone_repository(source, destination):
     args = ['git' ,'clone', source, destination]
-    child = subprocess.Popen(args, stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
+    child = Popen(args, stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
     child.wait()
     if child.returncode!=0:
         info = ""
@@ -77,6 +77,18 @@ def get_commits():
             graph.append([line, '', '', '', ''])
     return graph'''
 
+def graph_convert_spaces(line):
+    i = 0
+    while line[i] != '*':
+        i += 1
+    i += 1
+    line_lst = list(line)
+    while i < len(line_lst):
+        if line_lst[i] == ' ':
+            line_lst[i] = '-'
+        i +=1
+    return ''.join(line_lst)
+
 def get_graph():
     command = 'git log --graph --pretty=format:""'
     output = get_output_lines(command)
@@ -90,46 +102,22 @@ def get_graph():
         while graph[i-j][-1] == ' ':
             graph[i-j] = graph[i-j][:-1]
     if len(graph[0]) < len(graph[1]):
-        k = 0
-        while graph[0][k] != '*':
-            k += 1
-        k += 1
-        while k < len(graph[0]):
-            if graph[0][k] == ' ':
-                graph_lst = list(graph[0])
-                graph_lst[0] = '-'
-                graph[0] = ''.join(graph_lst)
-            k +=1
+        graph[0] = graph_convert_spaces(graph[0])
         graph[0] += '-\\'
     for i in range(1, len(graph)-1):
-        if len(graph[i]) < len(graph[i+1]):
-            k = 0
-            while graph[i][k] != '*':
-                k += 1
-            k += 1
-            while k < len(graph[i]):
-                if graph[i][k] == ' ':
-                    graph_lst = list(graph[i])
-                    graph_lst[k] = '-'
-                    graph[i] = ''.join(graph_lst)
-                k +=1
+        if len(graph[i]) < len(graph[i+1]) and len(graph[i+1]) == len(graph[i-1]) and (graph[i+1][-1] == '|' or graph[i+1][-1] == '*') and (graph[i-1][-1] == '|' or graph[i-1][-1] == '*'):
+            graph[i] = graph_convert_spaces(graph[i])
+            graph[i] += '_D'
+        elif len(graph[i]) < len(graph[i+1]):
+            graph[i] = graph_convert_spaces(graph[i])
             graph[i] += '-\\'
-        if len(graph[i]) < len(graph[i-1]):
+        elif len(graph[i]) < len(graph[i-1]):
             if graph[i-1][-1] != '/' or len(graph[i-1]) > len(graph[i])+2:
-                k = 0
-                while graph[i][k] != '*':
-                    k += 1
-                k += 1
-                while k < len(graph[i]):
-                    if graph[i][k] == ' ':
-                        graph_lst = list(graph[i])
-                        graph_lst[k] = '-'
-                        graph[i] = ''.join(graph_lst)
-                    k += 1
+                graph[i] = graph_convert_spaces(graph[i])
                 graph[i] += '-/'
     # debug
-    for line in graph:
-        print(line)
+    for i in range(len(graph)):
+        print(graph[i])
     commits = get_commits()
     graph_with_data = []
     for i in range(len(graph)):
@@ -139,27 +127,27 @@ def get_graph():
 
 def diff(filename):
     command = 'git diff ' + filename
-    output = subprocess.getoutput(command)
+    output = getoutput(command)
     save_log(command, output)
     return output
 
 # TODO -> HERE WE HAVE TO HANDLE PASS REQUESTS
 def pull():
     command = 'git pull'
-    output = subprocess.getoutput(command)
+    output = getoutput(command)
     save_log(command, output)
     return output
 
 def commit(message):
     command = 'git commit -m "' + message + '"'
-    output = subprocess.getoutput(command)
+    output = getoutput(command)
     save_log(command, output)
     return output
 
 # TODO -> HERE WE HAVE TO HANDLE PASS REQUESTS
 def push():
     command = 'git push'
-    output = subprocess.getoutput(command)
+    output = getoutput(command)
     save_log(command, output)
     return output
 
@@ -210,22 +198,22 @@ def get_current_branch():
 
 def change_local_branch(branch):
     command = 'git checkout ' + branch
-    save_log(command, subprocess.getoutput(command))
+    save_log(command, getoutput(command))
     
 def change_remote_branch(branch, new_name):
     command = 'git checkout -b ' + new_name + ' ' + branch
-    save_log(command, subprocess.getoutput(command))
+    save_log(command, getoutput(command))
 
 def delete_branch(branch):
     command = 'git branch -d ' + branch
-    save_log(subprocess.getoutput(command))
+    save_log(getoutput(command))
 
 def get_settings():
     command_username = 'git config --global user.name'
     command_email = 'git config --global user.email'
     settings = []
-    output_username = subprocess.getoutput(command_username)
-    output_email = subprocess.getoutput(command_email)
+    output_username = getoutput(command_username)
+    output_email = getoutput(command_email)
     save_log(command_username, output_username)
     save_log(command_email, output_email)
     settings.append(output_username)
@@ -233,7 +221,7 @@ def get_settings():
     return settings
 
 def set_settings(username, email):
-    os.system('git config --global user.name "' + username + '" && git config --global user.email "' + email + '"')
+    system('git config --global user.name "' + username + '" && git config --global user.email "' + email + '"')
 
 def remove_html(line):
     new = line.replace('<', '&lt;')

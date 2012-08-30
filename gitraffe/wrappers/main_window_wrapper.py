@@ -4,7 +4,7 @@ from PyQt4 import QtGui
 from layouts.main_window import Ui_MainWindow
 from git import check_repository, open_repository, get_graph, get_files, change_local_branch, change_remote_branch, pull, commit, push, get_local_chanegs, get_file_changes, get_current_branch
 import db_adapter
-import os
+from os.path import dirname
 from layouts import main_window
 from wrappers.clone_dialog_wrapper import CloneWindowWrapper
 from wrappers.branches_dialog_wrapper import BranchesDialogWrapper
@@ -71,7 +71,7 @@ class MainWindowWrapper(QMainWindow):
         db_adapter.add_repository(name, directory)
 
     def add_to_list(self, name, directory):
-        repo = QListWidgetItem(QIcon(os.path.dirname(main_window.__file__)+'/icons/Git-Icon-Black.png'), name, self.ui.listWidget)
+        repo = QListWidgetItem(QIcon(dirname(main_window.__file__)+'/icons/Git-Icon-Black.png'), name, self.ui.listWidget)
         repo.setStatusTip(directory)
         repo.setData(Qt.UserRole, directory)
         repo.setFlags(repo.flags() | Qt.ItemIsEditable)

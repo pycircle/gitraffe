@@ -8,7 +8,7 @@
 # WARNING! All changes made in this file will be lost!
 
 from PyQt4 import QtCore, QtGui
-import os
+from os.path import dirname
 
 try:
     _fromUtf8 = QtCore.QString.fromUtf8
@@ -31,7 +31,7 @@ class Ui_AboutDialog(object):
         self.label_3.setSizePolicy(sizePolicy)
         self.label_3.setMaximumSize(QtCore.QSize(167, 200))
         self.label_3.setText(_fromUtf8(""))
-        self.label_3.setPixmap(QtGui.QPixmap(_fromUtf8(os.path.dirname(__file__)+"/icons/about_logo.png")))
+        self.label_3.setPixmap(QtGui.QPixmap(_fromUtf8(dirname(__file__)+"/icons/about_logo.png")))
         self.label_3.setScaledContents(True)
         self.label_3.setObjectName(_fromUtf8("label_3"))
         self.horizontalLayout.addWidget(self.label_3)

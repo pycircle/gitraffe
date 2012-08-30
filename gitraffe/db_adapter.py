@@ -1,8 +1,8 @@
-import sqlite3
+from sqlite3 import connect
 from structures import Repository
-import os
+from os.path import expanduser
 
-conn = sqlite3.connect(os.path.expanduser('~/.gitraffe/database.db'))
+conn = connect(expanduser('~/.gitraffe/database.db'))
 
 REPO = 'repositories'
 REPO_ID = 'id'

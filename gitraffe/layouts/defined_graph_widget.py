@@ -1,6 +1,6 @@
 from PyQt4.QtGui import QWidget, QPainter, QImage
 from PyQt4.QtCore import QPoint
-import os
+from os.path import dirname
 
 class DefinedGraphWidget(QWidget):
     def __init__(self, image):
@@ -11,5 +11,5 @@ class DefinedGraphWidget(QWidget):
         super().paintEvent(e)
         painter = QPainter()
         painter.begin(self)
-        painter.drawImage(QPoint(0,0), QImage(os.path.dirname(__file__)+'/icons/'+self.image))
+        painter.drawImage(QPoint(0,0), QImage(dirname(__file__)+'/icons/'+self.image))
         painter.end()

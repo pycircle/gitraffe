@@ -1,6 +1,6 @@
 from PyQt4.QtGui import QWidget, QPainter, QImage
 from PyQt4.QtCore import QPoint
-import os
+from os.path import dirname
 
 class GraphWidget(QWidget):
     def __init__(self, commit):
@@ -10,7 +10,7 @@ class GraphWidget(QWidget):
         self.size = 15*len(self.commit)
 
     def commit_image(self):
-        return QImage(os.path.dirname(__file__)+'/icons/commit.png')
+        return QImage(dirname(__file__)+'/icons/commit.png')
 
     def paintEvent(self, e):
         super().paintEvent(e)
@@ -21,13 +21,17 @@ class GraphWidget(QWidget):
             if self.commit[j] == '*':
                 painter.drawImage(QPoint(i,0), self.commit_image())
             elif self.commit[j] == '|':
-                painter.drawImage(QPoint(i,0), QImage(os.path.dirname(__file__)+'/icons/line.png'))
+                painter.drawImage(QPoint(i,0), QImage(dirname(__file__)+'/icons/line.png'))
             elif self.commit[j] == '-':
-                painter.drawImage(QPoint(i,0), QImage(os.path.dirname(__file__)+'/icons/line-flipped-new.png'))
+                painter.drawImage(QPoint(i,0), QImage(dirname(__file__)+'/icons/line-flipped-new.png'))
+            elif self.commit[j] == '_':
+                painter.drawImage(QPoint(i,0), QImage(dirname(__file__)+'/icons/line-flipped-half.png'))
             elif self.commit[j] == '\\':
-                painter.drawImage(QPoint(i,0), QImage(os.path.dirname(__file__)+'/icons/left-new.png'))
+                painter.drawImage(QPoint(i,0), QImage(dirname(__file__)+'/icons/left-new.png'))
             elif self.commit[j] == '/':
-                painter.drawImage(QPoint(i,0), QImage(os.path.dirname(__file__)+'/icons/right-new.png'))
+                painter.drawImage(QPoint(i,0), QImage(dirname(__file__)+'/icons/right-new.png'))
+            elif self.commit[j] == 'D':
+                painter.drawImage(QPoint(i,0), QImage(dirname(__file__)+'/icons/left-right.png'))
             i += self.char_size
         painter.end()
 
@@ -36,11 +40,11 @@ class FirstGraphWidget(GraphWidget):
         super().__init__(commit)
 
     def commit_image(self):
-        return QImage(os.path.dirname(__file__)+'/icons/commit-first.png')
+        return QImage(dirname(__file__)+'/icons/commit-first.png')
 
 class LastGraphWidget(GraphWidget):
     def __init__(self, commit):
         super().__init__(commit)
 
     def commit_image(self):
-        return QImage(os.path.dirname(__file__)+'/icons/commit-last.png')
+        return QImage(dirname(__file__)+'/icons/commit-last.png')
