@@ -1,10 +1,10 @@
 from PyQt4.QtGui import QMainWindow, QFileDialog, qApp, QListWidgetItem, QMessageBox, QInputDialog, QIcon, QTableWidgetItem, QAbstractItemView, QWidget
-from PyQt4.QtCore import QDir, QObject, SIGNAL, Qt, QPoint
+from PyQt4.QtCore import QDir, QObject, SIGNAL, Qt
 from PyQt4 import QtGui
 from layouts.main_window import Ui_MainWindow
 from git import check_repository, open_repository, get_graph, get_files, change_local_branch, change_remote_branch, pull, commit, push, get_local_chanegs, get_file_changes, get_current_branch
 import db_adapter
-from os.path import dirname
+from os.path import dirname, basename
 from layouts import main_window
 from wrappers.clone_dialog_wrapper import CloneWindowWrapper
 from wrappers.branches_dialog_wrapper import BranchesDialogWrapper
@@ -59,7 +59,7 @@ class MainWindowWrapper(QMainWindow):
             if path[0]:
                 if not db_adapter.exists_repository(directory):
                     directory = path[1]
-                    name = QInputDialog().getText(self, 'Name', 'Put your repository name:', text=os.path.basename(directory))
+                    name = QInputDialog().getText(self, 'Name', 'Put your repository name:', text=basename(directory))
                     if name[1]:
                         self.add_to_database(name[0], directory)
                         self.add_to_list(name[0], directory)
@@ -128,10 +128,10 @@ class MainWindowWrapper(QMainWindow):
         cwd.exec_()
 
     def view_files(self):
-        self.ui.files_listWidget.clear()
-        commit = self.ui.repositoryTableWidget.item(self.ui.repositoryTableWidget.currentRow(), 1).text()
-        if commit != "":
-            files = get_files(commit)
+        self.ui.files_listWidget.clear() #makes view_file_changes
+        commit = self.ui.repositoryTableWidget.item(self.ui.repositoryTableWidget.currentRow(), 1)
+        if commit != None:
+            files = get_files(commit.text())
             for flag, file in files:
                 QListWidgetItem(flag+" "+file, self.ui.files_listWidget)
         elif self.ui.repositoryTableWidget.item(self.ui.repositoryTableWidget.currentRow(), 2).text() == 'Current local changes':
@@ -139,7 +139,7 @@ class MainWindowWrapper(QMainWindow):
             for file in files:
                 QListWidgetItem(file, self.ui.files_listWidget)
         self.ui.files_listWidget.setCurrentRow(0)
-            
+        
 
     def get_default_branch_name(self, name):
         name = name.split('/')

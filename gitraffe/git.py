@@ -1,5 +1,5 @@
 from os import chdir, system
-from subprocess import getoutput, Popen
+from subprocess import getoutput, Popen, PIPE, STDOUT
 from symbol import comparison
 from log import save_log
 
@@ -24,7 +24,7 @@ def open_repository(path):
 
 def clone_repository(source, destination):
     args = ['git' ,'clone', source, destination]
-    child = Popen(args, stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
+    child = Popen(args, stdout=PIPE, stderr=STDOUT)
     child.wait()
     if child.returncode!=0:
         info = ""
@@ -35,7 +35,7 @@ def clone_repository(source, destination):
 
 def change_branch(branch):
     command = 'git checkout ' + branch
-    save_log(command, subprocess.getoutput(command))
+    save_log(command, getoutput(command))
 
 def get_commits():
     command = 'git log --graph --pretty=format:"%h\n%s\n%an <%ae>\n%ad"'
@@ -229,37 +229,40 @@ def remove_html(line):
     return new
 
 def get_file_changes(flag, path ,commit, comparsion=None):
-    out = '<pre>'
-    if flag == 'M' or flag == 'MM':
-        command = 'git diff '+ comparsion + ':' +path + ' '+ commit +':'+path
-        output = get_output_lines(command)
-        save_log(command, output[0])
-        for line in output[1][4:]:
-            line = remove_html(line)
-            if line[0]=='-':
-                line = '<font color="RED"> '+ line + '</font>'
-            elif line[0]=='+':
-                line = '<font color="GREEN"> '+ line + '</font>'
-            out += line + '\n'
-        out += '</pre>'
-        return out
-    elif flag=='A':
-        command = 'git show ' + commit + ':' + path
-        output = get_output_lines(command)
-        save_log(command, output[0])
-        for line in output[1]:
-            line = remove_html(line)
-            line = '<font color="GREEN"> + ' + line + ' </font>'
-            out += line + '\n'
-        out += '</pre>'
-        return out
-    elif flag=='D':
-        command = 'git show ' + comparsion + ':' + path
-        output = get_output_lines(command)
-        save_log(command, output[0])
-        for line in output[1]:
-            line = remove_html(line)
-            line = '<font color="RED"> - ' + line + ' </font>'
-            out += line + '\n'
-        out += '</pre>'
-        return out
+    try:
+        out = '<pre>'
+        if flag == 'M' or flag == 'MM':
+            command = 'git diff '+ comparsion + ':' +path + ' '+ commit +':'+path
+            output = get_output_lines(command)
+            save_log(command, output[0])
+            for line in output[1][4:]:
+                line = remove_html(line)
+                if line[0]=='-':
+                    line = '<font color="RED"> '+ line + '</font>'
+                elif line[0]=='+':
+                    line = '<font color="GREEN"> '+ line + '</font>'
+                out += line + '\n'
+            out += '</pre>'
+            return out
+        elif flag=='A':
+            command = 'git show ' + commit + ':' + path
+            output = get_output_lines(command)
+            save_log(command, output[0])
+            for line in output[1]:
+                line = remove_html(line)
+                line = '<font color="GREEN"> + ' + line + ' </font>'
+                out += line + '\n'
+            out += '</pre>'
+            return out
+        elif flag=='D':
+            command = 'git show ' + comparsion + ':' + path
+            output = get_output_lines(command)
+            save_log(command, output[0])
+            for line in output[1]:
+                line = remove_html(line)
+                line = '<font color="RED"> - ' + line + ' </font>'
+                out += line + '\n'
+            out += '</pre>'
+            return out
+    except UnicodeDecodeError:
+        return "Cannot decode this file"
