@@ -92,14 +92,14 @@ class MainWindowWrapper(QMainWindow):
         item = DefinedGraphWidget('current.png')
         self.ui.repositoryTableWidget.setCellWidget(0, 0, item)
         self.ui.repositoryTableWidget.setItem(0, 2, QTableWidgetItem('Current local changes'))
-        item = FirstGraphWidget(graph[0][0])
+        item = FirstGraphWidget(graph[0][0], graph[1][0])
         self.ui.repositoryTableWidget.setCellWidget(1, 0, item)
         for i in range(1, len(graph[0])):
             item = QTableWidgetItem(graph[0][i])
             self.ui.repositoryTableWidget.setItem(1, i, item)
         max_size = 30
         for i in range(1, len(graph)-1):
-            item = GraphWidget(graph[i][0])
+            item = GraphWidget(graph[i][0], graph[i+1][0])
             self.ui.repositoryTableWidget.setCellWidget(i+1, 0, item)
             if item.size > max_size:
                 max_size = item.size
