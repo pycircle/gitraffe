@@ -2,12 +2,15 @@
 <ui version="4.0">
  <class>MainWindow</class>
  <widget class="QMainWindow" name="MainWindow">
+  <property name="windowModality">
+   <enum>Qt::NonModal</enum>
+  </property>
   <property name="geometry">
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>800</width>
-    <height>525</height>
+    <width>857</width>
+    <height>591</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -29,7 +32,7 @@
      </widget>
     </item>
     <item>
-     <layout class="QVBoxLayout" name="repositoryLayout">
+     <layout class="QVBoxLayout" name="repositoryLayout" stretch="8,7">
       <item>
        <widget class="QTableWidget" name="repositoryTableWidget">
         <property name="editTriggers">
@@ -66,97 +69,265 @@
        </widget>
       </item>
       <item>
-       <layout class="QHBoxLayout" name="changesetLayout" stretch="0,2,4">
-        <item>
-         <layout class="QVBoxLayout" name="changesetButtonsLayout">
+       <widget class="QStackedWidget" name="bottomwidgets">
+        <property name="currentIndex">
+         <number>0</number>
+        </property>
+        <widget class="QWidget" name="Page1">
+         <layout class="QHBoxLayout" name="changesetLayout" stretch="0">
           <item>
-           <widget class="QPushButton" name="stageButton">
-            <property name="enabled">
-             <bool>false</bool>
+           <layout class="QHBoxLayout" name="horizontalLayout_4" stretch="0,2,3">
+            <property name="leftMargin">
+             <number>0</number>
             </property>
-            <property name="text">
-             <string>Stage</string>
-            </property>
-            <property name="icon">
-             <iconset>
-              <normaloff>icons/stage.png</normaloff>icons/stage.png</iconset>
-            </property>
-           </widget>
-          </item>
-          <item>
-           <widget class="QPushButton" name="unstageButton">
-            <property name="enabled">
-             <bool>false</bool>
-            </property>
-            <property name="text">
-             <string>Unstage</string>
-            </property>
-            <property name="icon">
-             <iconset>
-              <normaloff>icons/unstage.png</normaloff>icons/unstage.png</iconset>
-            </property>
-           </widget>
-          </item>
-          <item>
-           <widget class="Line" name="separator">
-            <property name="orientation">
-             <enum>Qt::Horizontal</enum>
-            </property>
-           </widget>
-          </item>
-          <item>
-           <widget class="QPushButton" name="pullButton">
-            <property name="text">
-             <string>Pull</string>
-            </property>
-            <property name="icon">
-             <iconset>
-              <normaloff>icons/pull.png</normaloff>icons/pull.png</iconset>
-            </property>
-           </widget>
-          </item>
-          <item>
-           <widget class="QPushButton" name="commitButton">
-            <property name="text">
-             <string> Commit</string>
-            </property>
-            <property name="icon">
-             <iconset>
-              <normaloff>icons/commit_icon.png</normaloff>icons/commit_icon.png</iconset>
-            </property>
-           </widget>
-          </item>
-          <item>
-           <widget class="QPushButton" name="stashButton">
-            <property name="text">
-             <string>Stash</string>
-            </property>
-            <property name="icon">
-             <iconset>
-              <normaloff>icons/stash.png</normaloff>icons/stash.png</iconset>
-            </property>
-           </widget>
-          </item>
-          <item>
-           <widget class="QPushButton" name="pushButton">
-            <property name="text">
-             <string>Push</string>
-            </property>
-            <property name="icon">
-             <iconset>
-              <normaloff>icons/push.png</normaloff>icons/push.png</iconset>
-            </property>
-           </widget>
+            <item>
+             <layout class="QVBoxLayout" name="changesetButtonsLayout">
+              <item>
+               <widget class="QPushButton" name="stageButton">
+                <property name="enabled">
+                 <bool>false</bool>
+                </property>
+                <property name="text">
+                 <string>Stage</string>
+                </property>
+                <property name="icon">
+                 <iconset>
+                  <normaloff>icons/stage.png</normaloff>icons/stage.png</iconset>
+                </property>
+               </widget>
+              </item>
+              <item>
+               <widget class="QPushButton" name="unstageButton">
+                <property name="enabled">
+                 <bool>false</bool>
+                </property>
+                <property name="text">
+                 <string>Unstage</string>
+                </property>
+                <property name="icon">
+                 <iconset>
+                  <normaloff>icons/unstage.png</normaloff>icons/unstage.png</iconset>
+                </property>
+               </widget>
+              </item>
+              <item>
+               <widget class="Line" name="separator">
+                <property name="orientation">
+                 <enum>Qt::Horizontal</enum>
+                </property>
+               </widget>
+              </item>
+              <item>
+               <widget class="QPushButton" name="pullButton">
+                <property name="text">
+                 <string>Pull</string>
+                </property>
+                <property name="icon">
+                 <iconset>
+                  <normaloff>icons/pull.png</normaloff>icons/pull.png</iconset>
+                </property>
+               </widget>
+              </item>
+              <item>
+               <widget class="QPushButton" name="commitButton">
+                <property name="enabled">
+                 <bool>false</bool>
+                </property>
+                <property name="text">
+                 <string> Commit</string>
+                </property>
+                <property name="icon">
+                 <iconset>
+                  <normaloff>icons/commit_icon.png</normaloff>icons/commit_icon.png</iconset>
+                </property>
+               </widget>
+              </item>
+              <item>
+               <widget class="QPushButton" name="stashButton">
+                <property name="text">
+                 <string>Stash</string>
+                </property>
+                <property name="icon">
+                 <iconset>
+                  <normaloff>icons/stash.png</normaloff>icons/stash.png</iconset>
+                </property>
+               </widget>
+              </item>
+              <item>
+               <widget class="QPushButton" name="pushButton">
+                <property name="enabled">
+                 <bool>false</bool>
+                </property>
+                <property name="text">
+                 <string>Push</string>
+                </property>
+                <property name="icon">
+                 <iconset>
+                  <normaloff>icons/push.png</normaloff>icons/push.png</iconset>
+                </property>
+               </widget>
+              </item>
+             </layout>
+            </item>
+            <item>
+             <widget class="QListWidget" name="files_listWidget"/>
+            </item>
+            <item>
+             <widget class="QTextBrowser" name="diff_textBrowser"/>
+            </item>
+           </layout>
           </item>
          </layout>
-        </item>
-        <item>
-         <widget class="QListWidget" name="files_listWidget"/>
-        </item>
-        <item>
-         <widget class="QTextBrowser" name="diff_textBrowser"/>
-        </item>
-       </layout>
+        </widget>
+        <widget class="QWidget" name="Page2">
+         <property name="enabled">
+          <bool>true</bool>
+         </property>
+         <layout class="QHBoxLayout" name="horizontalLayout_3">
+          <item>
+           <layout class="QHBoxLayout" name="horizontalLayout_2" stretch="0,3,3">
+            <property name="sizeConstraint">
+             <enum>QLayout::SetFixedSize</enum>
+            </property>
+            <item>
+             <layout class="QVBoxLayout" name="changesetButtonsLayout_2">
+              <item>
+               <widget class="QPushButton" name="stageButton_2">
+                <property name="enabled">
+                 <bool>true</bool>
+                </property>
+                <property name="text">
+                 <string>Stage</string>
+                </property>
+                <property name="icon">
+                 <iconset>
+                  <normaloff>icons/stage.png</normaloff>icons/stage.png</iconset>
+                </property>
+               </widget>
+              </item>
+              <item>
+               <widget class="QPushButton" name="unstageButton_2">
+                <property name="enabled">
+                 <bool>true</bool>
+                </property>
+                <property name="text">
+                 <string>Unstage</string>
+                </property>
+                <property name="icon">
+                 <iconset>
+                  <normaloff>icons/unstage.png</normaloff>icons/unstage.png</iconset>
+                </property>
+               </widget>
+              </item>
+              <item>
+               <widget class="Line" name="separator_2">
+                <property name="orientation">
+                 <enum>Qt::Horizontal</enum>
+                </property>
+               </widget>
+              </item>
+              <item>
+               <widget class="QPushButton" name="pullButton_2">
+                <property name="text">
+                 <string>Pull</string>
+                </property>
+                <property name="icon">
+                 <iconset>
+                  <normaloff>icons/pull.png</normaloff>icons/pull.png</iconset>
+                </property>
+               </widget>
+              </item>
+              <item>
+               <widget class="QPushButton" name="commitButton_2">
+                <property name="enabled">
+                 <bool>true</bool>
+                </property>
+                <property name="text">
+                 <string> Commit</string>
+                </property>
+                <property name="icon">
+                 <iconset>
+                  <normaloff>icons/commit_icon.png</normaloff>icons/commit_icon.png</iconset>
+                </property>
+               </widget>
+              </item>
+              <item>
+               <widget class="QPushButton" name="stashButton_2">
+                <property name="text">
+                 <string>Stash</string>
+                </property>
+                <property name="icon">
+                 <iconset>
+                  <normaloff>icons/stash.png</normaloff>icons/stash.png</iconset>
+                </property>
+               </widget>
+              </item>
+              <item>
+               <widget class="QPushButton" name="pushButton_2">
+                <property name="enabled">
+                 <bool>true</bool>
+                </property>
+                <property name="text">
+                 <string>Push</string>
+                </property>
+                <property name="icon">
+                 <iconset>
+                  <normaloff>icons/push.png</normaloff>icons/push.png</iconset>
+                </property>
+               </widget>
+              </item>
+             </layout>
+            </item>
+            <item>
+             <layout class="QVBoxLayout" name="verticalLayout_2">
+              <item>
+               <widget class="QLabel" name="label">
+                <property name="text">
+                 <string>Unstaged:</string>
+                </property>
+               </widget>
+              </item>
+              <item>
+               <widget class="QListWidget" name="Unstaged_listwidget"/>
+              </item>
+             </layout>
+            </item>
+            <item>
+             <layout class="QVBoxLayout" name="verticalLayout_3" stretch="0,0,0,5">
+              <item>
+               <widget class="QLabel" name="label_3">
+                <property name="text">
+                 <string>Commit message:</string>
+                </property>
+               </widget>
+              </item>
+              <item>
+               <widget class="QTextEdit" name="Commit_textEdit">
+                <property name="sizePolicy">
+                 <sizepolicy hsizetype="Expanding" vsizetype="Maximum">
+                  <horstretch>0</horstretch>
+                  <verstretch>2</verstretch>
+                 </sizepolicy>
+                </property>
+               </widget>
+              </item>
+              <item>
+               <widget class="QLabel" name="label_2">
+                <property name="text">
+                 <string>Staged:</string>
+                </property>
+               </widget>
+              </item>
+              <item>
+               <widget class="QListWidget" name="Staged_listWidget"/>
+              </item>
+             </layout>
+            </item>
+           </layout>
+          </item>
+         </layout>
+        </widget>
+       </widget>
       </item>
      </layout>
     </item>
@@ -167,8 +338,8 @@
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>800</width>
-     <height>22</height>
+     <width>857</width>
+     <height>25</height>
     </rect>
    </property>
    <widget class="QMenu" name="menuFile">

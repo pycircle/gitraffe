@@ -226,7 +226,7 @@ def pull():
     return output
 
 def commit(message):
-    command = 'git commit -m "' + message + '"'
+    command = 'git commit -m "%s"' % message
     output = getoutput(command)
     save_log(command, output)
     return output
@@ -238,15 +238,24 @@ def push():
     save_log(command, output)
     return output
 
-def get_local_chanegs():
+def get_splited(output):
+    files = []
+    for line in output[1]:
+        files.append(line.split())
+    return files
+
+def get_unstaged_files():
 #    os.chdir(path)
-    command = 'git status --short'
+    command = 'git diff --name-status'
     output = get_output_lines(command)
     save_log(command, output[0])
-    changes = []
-    for line in output[1]:
-        changes.append(line)
-    return changes
+    return get_splited(output)
+
+def get_staged_files():
+    command = 'git diff --name-status --cached'
+    output = get_output_lines(command)
+    save_log(command, output[0])
+    return get_splited(output)
 
 def get_files(commit):
     command = 'git show --pretty="format:" --name-status ' +  commit
@@ -353,3 +362,16 @@ def get_file_changes(flag, path ,commit, comparsion=None):
             return out
     except UnicodeDecodeError:
         return "Cannot decode this file"
+    
+def to_string(files, command):
+    strfiles = " ".join(files)
+    command += strfiles
+    output = get_output_lines(command)
+    save_log(command, output[0])
+
+def git_add(files):
+    to_string(files, 'git add ')
+    
+def git_check_out(files):
+    to_string(files, 'git checkout ')
+    

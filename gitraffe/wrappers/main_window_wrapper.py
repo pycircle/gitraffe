@@ -1,8 +1,8 @@
-from PyQt4.QtGui import QMainWindow, QFileDialog, qApp, QListWidgetItem, QMessageBox, QInputDialog, QIcon, QTableWidgetItem, QAbstractItemView, QWidget
+from PyQt4.QtGui import QMainWindow, QFileDialog, qApp, QListWidgetItem, QMessageBox, QInputDialog, QIcon ,QTableWidgetItem, QAbstractItemView, QWidget
 from PyQt4.QtCore import QDir, QObject, SIGNAL, Qt
 from PyQt4 import QtGui
 from layouts.main_window import Ui_MainWindow
-from git import check_repository, open_repository, get_graph, get_files, change_local_branch, change_remote_branch, pull, commit, push, get_local_chanegs, get_file_changes, get_current_branch
+from git import check_repository, open_repository, get_graph, get_files, git_add, git_check_out ,change_local_branch, change_remote_branch, pull, commit, push, get_file_changes, get_current_branch, get_unstaged_files , get_staged_files
 import db_adapter
 from os.path import dirname, basename
 from layouts import main_window
@@ -26,9 +26,12 @@ class MainWindowWrapper(QMainWindow):
         #Repository Table
         self.ui.repositoryTableWidget.setSelectionMode(QAbstractItemView.SingleSelection)
         self.ui.repositoryTableWidget.verticalHeader().setVisible(False)
-        self.ui.repositoryTableWidget.itemSelectionChanged.connect(self.view_files)
+        self.ui.repositoryTableWidget.itemSelectionChanged.connect(self.check_table_line)
         #Files List
         self.ui.files_listWidget.itemSelectionChanged.connect(self.view_file_changes)
+        #Un/staged_listWidget
+        self.ui.Staged_listWidget.setSelectionMode(QAbstractItemView.MultiSelection)
+        self.ui.Unstaged_listwidget.setSelectionMode(QAbstractItemView.MultiSelection)
         # Menu/toolbar
         QObject.connect(self.ui.actionAdd_existing_repository, SIGNAL('triggered()'), self.browse)
         QObject.connect(self.ui.actionAdd_existing_repository_2, SIGNAL('triggered()'), self.browse)
@@ -45,7 +48,11 @@ class MainWindowWrapper(QMainWindow):
         QObject.connect(self.ui.actionAbout_Gitraffe, SIGNAL('triggered()'), self.about_dialog)
         # Buttons
         QObject.connect(self.ui.pullButton, SIGNAL('clicked()'), self.pull)
+        QObject.connect(self.ui.pullButton_2, SIGNAL('clicked()'), self.pull)
         QObject.connect(self.ui.pushButton, SIGNAL('clicked()'), self.push)
+        QObject.connect(self.ui.stageButton_2, SIGNAL('clicked()'), self.stage_files)
+        QObject.connect(self.ui.unstageButton_2, SIGNAL('clicked()'), self.unstage_files)
+        QObject.connect(self.ui.commitButton_2, SIGNAL('clicked()'), self.commit_files)
 
     def list_all_repositories(self):
         repositories = db_adapter.get_repositories()
@@ -127,17 +134,31 @@ class MainWindowWrapper(QMainWindow):
         cwd = CloneWindowWrapper(self)
         cwd.exec_()
 
+    def check_table_line(self):
+        if self.ui.repositoryTableWidget.currentRow() == 0:
+            self.view_current_changes()
+        else:
+            self.view_files()
+
+    def view_current_changes(self):
+        self.ui.bottomwidgets.setCurrentIndex(1)
+        self.ui.Unstaged_listwidget.clear()
+        self.ui.Staged_listWidget.clear()
+        for file in get_unstaged_files():
+            if len(file)!=0:
+                QListWidgetItem(' '.join(file), self.ui.Unstaged_listwidget)
+        for file in get_staged_files():
+            if len(file)!=0:
+                QListWidgetItem(' '.join(file), self.ui.Staged_listWidget)
+
     def view_files(self):
+        self.ui.bottomwidgets.setCurrentIndex(0)
         self.ui.files_listWidget.clear() #makes view_file_changes
         commit = self.ui.repositoryTableWidget.item(self.ui.repositoryTableWidget.currentRow(), 1)
         if commit != None:
             files = get_files(commit.text())
             for flag, file in files:
                 QListWidgetItem(flag+" "+file, self.ui.files_listWidget)
-        elif self.ui.repositoryTableWidget.item(self.ui.repositoryTableWidget.currentRow(), 2).text() == 'Current local changes':
-            files = get_local_chanegs()
-            for file in files:
-                QListWidgetItem(file, self.ui.files_listWidget)
         self.ui.files_listWidget.setCurrentRow(0)
         
 
@@ -209,3 +230,26 @@ class MainWindowWrapper(QMainWindow):
             comparsion = self.ui.repositoryTableWidget.item(self.ui.repositoryTableWidget.currentRow()+1, 1).text()
         flag, path = self.ui.files_listWidget.currentItem().text().split()
         self.ui.diff_textBrowser.setText(get_file_changes(flag, path, commit, comparsion))
+
+    def move_files(fwidget, twidget):
+        selected = []
+        for item in fwidget.selectedItems():
+            selected.append(item.text().split()[1])
+            QListWidgetItem(item.text(), twidget)
+            fwidget.takeItem(fwidget.row(item))
+        return selected
+    
+    def stage_files(self):
+        git_add(MainWindowWrapper.move_files(self.ui.Unstaged_listwidget, self.ui.Staged_listWidget))
+        
+    
+    def unstage_files(self):
+        git_check_out(MainWindowWrapper.move_files(self.ui.Staged_listWidget, self.ui.Unstaged_listwidget))
+    
+    def commit_files(self):
+        message = self.ui.Commit_textEdit.toPlainText()
+        if message == "": 
+            QMessageBox.critical(self, "Error", "You must write some commit message!", QMessageBox.Ok)
+        else : 
+            QMessageBox.information(self, "Commit", commit(message), QMessageBox.Ok)
+            self.ui.Commit_textEdit.clear()
