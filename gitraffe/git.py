@@ -38,7 +38,7 @@ def change_branch(branch):
     save_log(command, getoutput(command))
 
 def get_commits():
-    command = 'git log --graph --pretty=format:"%h\n%s\n%an <%ae>\n%ad"'
+    command = 'git log --graph --pretty=format:"%h\n%s\n%an\n%ad"'
     output = get_output_lines(command)
     save_log(command, output[0])
     commits = []
@@ -59,158 +59,26 @@ def get_commits():
             commit = []
     return commits
 
-# DEPRECATED!!! BUT WE HAVE TO USE IT :(
 def get_graph():
     command = 'git log --graph --pretty=format:""'
     output = get_output_lines(command)
     save_log(command, output[0])
-    commits = get_commits()
+    graph_output = output[1]
     graph = []
     graph_log = ''
     i = 0
-    for line in output[1]:
-        if '*' in line:
-            commits[i].insert(0, line)
-            graph.append(commits[i])
-            i += 1
-        else:
-            graph.append([line, '', '', '', ''])
-    return graph
-
-def graph_convert_spaces(line):
-    i = 0
-    while line[i] != '*':
-        i += 1
-    i += 1
-    line_lst = list(line)
-    while i < len(line_lst):
-        if line_lst[i] == ' ':
-            line_lst[i] = '-'
-        i +=1
-    return ''.join(line_lst)
-
-# THIS TRY FAILS, UNFORTUNATELLY, BUT MAY BE USEFUL
-'''def get_graph():
-    command = 'git log --graph --pretty=format:""'
-    output = get_output_lines(command)
-    save_log(command, output[0])
-    graph = output[1]
-    # debug
-    print('>>RAW>>')
-    for line in graph:
-        print(line)
-    j = 0
-    for i in range(len(graph)):
-        if not '*' in graph[i-j]:
-            del graph[i-j]
-            j += 1
-        while graph[i-j][-1] == ' ':
-            graph[i-j] = graph[i-j][:-1]
-    if len(graph[0]) < len(graph[1]):
-        graph[0] = graph_convert_spaces(graph[0])
-        graph[0] += '-\\'
-    for i in range(1, len(graph)-1):
-        if len(graph[i]) < len(graph[i+1]) and len(graph[i+1]) == len(graph[i-1]) and (graph[i+1][-1] == '|' or graph[i+1][-1] == '*') and (graph[i-1][-1] == '|' or graph[i-1][-1] == '*'):
-            graph[i] = graph_convert_spaces(graph[i])
-            graph[i] += '_D'
-        elif len(graph[i]) < len(graph[i+1]):
-            graph[i] = graph_convert_spaces(graph[i])
-            graph[i] += '-\\'
-        elif len(graph[i]) < len(graph[i-1]):
-            if graph[i-1][-1] != '/' or len(graph[i-1]) > len(graph[i])+2:
-                graph[i] = graph_convert_spaces(graph[i])
-                graph[i] += '-/'
-    # debug
-    print('>>MODIFIED>>')
-    for i in range(len(graph)):
-        print(graph[i])
-    commits = get_commits()
-    graph_with_data = []
-    for i in range(len(graph)):
-        commits[i].insert(0, graph[i])
-        graph_with_data.append(commits[i])
-    return graph_with_data'''
-
-# ANOTHER TRY
-'''def get_graph():
-    command = 'git log --graph --pretty=format:""'
-    output = get_output_lines(command)
-    save_log(command, output[0])
-    graph = output[1]
-    # debug
-    print('>>RAW>>')
-    i = 0
-    for line in graph:
-        if '*' in line:
-            print(str(i) + ' ' + line)
-            i += 1
-        else:
+    graph_commit = []
+    graph_commit.append(graph_output[0])
+    for i in range(1, len(graph_output)):
+        if '*' in graph_output[i]:
+            graph.append(graph_commit)
+            graph_commit = []
+        graph_commit.append(graph_output[i])
+    graph.append(graph_commit)
+    for commit in graph:
+        for line in commit:
             print(line)
-    for i in range(len(graph)):
-        while graph[i][-1] == ' ':
-            graph[i] = graph[i][:-1]
-    # FIRST ROW
-    next_line = graph[1]
-    if not '*' in next_line:
-        line_lst = list(graph[0])
-        for j in range(1, len(next_line)):
-            if next_line[j] == '\\':
-                print('JAK TAM POLSKIE KUHWY?')
-                if len(line_lst) == j and line_lst[-1] == '\\':
-                    line_lst[-1] = '-'
-                if j >= len(line_lst):
-                    line_lst.append('-')
-                    line_lst.append('\\')
-                else:
-                    line_lst[j-2] = '-'
-                    line_lst[j-1] = '\\'
-        graph[0] = ''.join(line_lst)
-    # MIDDLE ROWS
-    for i in range(1, len(graph)-1):
-        previous_line = graph[i-1]
-        next_line = graph[i+1]
-        if not '*' in previous_line:
-            line_lst = list(graph[i])
-            for j in reversed(range(1, len(previous_line))):
-                if previous_line[j] == '/':
-                    if len(line_lst) == j and line_lst[-1] == '\\':
-                        line_lst[-1] = '-'
-                    if j >= len(line_lst):
-                        line_lst.append('-')
-                        line_lst.append('\\')
-                    else:
-                        line_lst[j-2] = '-'
-                        line_lst[j-1] = '\\'
-            graph[i] = ''.join(line_lst)
-        if not '*' in next_line:
-            line_lst = list(graph[i])
-            for j in range(1, len(next_line)):
-                if next_line[j] == '\\':
-                    if len(line_lst) == j and line_lst[-1] == '\\':
-                        line_lst[-1] = '-'
-                    if j >= len(line_lst):
-                        line_lst.append('-')
-                        line_lst.append('\\')
-                    else:
-                        line_lst[j-2] = '-'
-                        line_lst[j-1] = '\\'
-            graph[i] = ''.join(line_lst)
-    # LAST ROW TODO
-    j = 0
-    for i in range(len(graph)):
-        if not '*' in graph[i-j]:
-            del graph[i-j]
-            j += 1
-    # debug
-    print('>>MODIFIED>>')
-    for i in range(len(graph)):
-        print(str(i) + ' ' + graph[i])
-    commits = get_commits()
-    graph_with_data = []
-    for i in range(len(graph)):
-        commits[i].insert(0, graph[i])
-        graph_with_data.append(commits[i])
-    return graph_with_data'''
+    return graph
 
 def diff(filename):
     command = 'git diff ' + filename
