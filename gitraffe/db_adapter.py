@@ -16,22 +16,22 @@ def execute_query(query):
     cur.close()
 
 def init():
-    query = 'CREATE TABLE IF NOT EXISTS ' + REPO + ' (' + REPO_ID + ' INTEGER PRIMARY KEY AUTOINCREMENT, ' + REPO_NAME + ' TEXT, ' + REPO_PATH + ' TEXT);'
+    query = 'CREATE TABLE IF NOT EXISTS %s (%s INTEGER PRIMARY KEY AUTOINCREMENT, %s TEXT, %s TEXT);' % (REPO, REPO_ID, REPO_NAME, REPO_PATH)
     execute_query(query)
 
 def exists_repository(path):
     cur = conn.cursor()
-    query = 'SELECT * FROM ' + REPO + ' WHERE ' + REPO_PATH + ' = "' + path + '";'
+    query = 'SELECT * FROM %s WHERE %s = "%s";' % (REPO, REPO_PATH, path)
     cur.execute(query)
     return cur.fetchone() != None
 
 def add_repository(name, path):
-    query = 'INSERT INTO ' + REPO + '(' + REPO_NAME + ', ' + REPO_PATH +') VALUES("' + name + '", "' + path + '");'
+    query = 'INSERT INTO %s(%s, %s) VALUES("%s", "%s");' % (REPO, REPO_NAME, REPO_PATH, name, path)
     execute_query(query)
 
 def get_repositories():
     cur = conn.cursor()
-    query = 'SELECT * FROM ' + REPO +';'
+    query = 'SELECT * FROM %s;' % (REPO)
     cur.execute(query)
     repositories = []
     for row in cur:
@@ -42,7 +42,7 @@ def get_repositories():
 # This function will be probably unnecessary
 def get_repository_by_path(path):
     cur = conn.cursor()
-    query = 'SELECT * FROM ' + REPO + ' WHERE ' + REPO_PATH + ' = "' + path + '";'
+    query = 'SELECT * FROM %s WHERE %s = "%s";' % (REPO, REPO_PATH, path)
     cur.execute(query)
     row = cur.fetchone()
     repository = Repository(row[0], row[1], row[2])
@@ -50,5 +50,5 @@ def get_repository_by_path(path):
     return repository
 
 def delete_repository(path):
-    query = 'DELETE FROM ' + REPO + ' WHERE ' + REPO_PATH + ' = "' + path + '";'
+    query = 'DELETE FROM %s WHERE %s = "%s";' % (REPO, REPO_PATH, path)
     execute_query(query)

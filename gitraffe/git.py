@@ -165,7 +165,7 @@ def change_local_branch(branch):
     save_log(command, getoutput(command))
     
 def change_remote_branch(branch, new_name):
-    command = 'git checkout -b ' + new_name + ' ' + branch
+    command = 'git checkout -b %s %s' % (new_name, branch)
     save_log(command, getoutput(command))
 
 def delete_branch(branch):
@@ -185,7 +185,7 @@ def get_settings():
     return settings
 
 def set_settings(username, email):
-    system('git config --global user.name "' + username + '" && git config --global user.email "' + email + '"')
+    system('git config --global user.name "%s" && git config --global user.email "%s"' % (username, email))
 
 def remove_html(line):
     new = line.replace('<', '&lt;')
@@ -196,35 +196,35 @@ def get_file_changes(flag, path ,commit, comparsion=None):
     try:
         out = '<pre>'
         if flag == 'M' or flag == 'MM':
-            command = 'git diff '+ comparsion + ':' +path + ' '+ commit +':'+path
+            command = 'git diff %s:%s %s:%s' % (comparsion, path, commit, path)
             output = get_output_lines(command)
             save_log(command, output[0])
             for line in output[1][4:]:
                 line = remove_html(line)
                 if line[0]=='-':
-                    line = '<font color="RED"> '+ line + '</font>'
+                    line = '<font color="RED"> %s</font>' % (line)
                 elif line[0]=='+':
-                    line = '<font color="GREEN"> '+ line + '</font>'
+                    line = '<font color="GREEN"> %s</font>' % (line)
                 out += line + '\n'
             out += '</pre>'
             return out
         elif flag=='A':
-            command = 'git show ' + commit + ':' + path
+            command = 'git show %s:%s' % (commit, path)
             output = get_output_lines(command)
             save_log(command, output[0])
             for line in output[1]:
                 line = remove_html(line)
-                line = '<font color="GREEN"> + ' + line + ' </font>'
+                line = '<font color="GREEN"> + %s </font>' % (line)
                 out += line + '\n'
             out += '</pre>'
             return out
         elif flag=='D':
-            command = 'git show ' + comparsion + ':' + path
+            command = 'git show %s:%s' % (comparison, path)
             output = get_output_lines(command)
             save_log(command, output[0])
             for line in output[1]:
                 line = remove_html(line)
-                line = '<font color="RED"> - ' + line + ' </font>'
+                line = '<font color="RED"> - %s </font>' % (line)
                 out += line + '\n'
             out += '</pre>'
             return out
