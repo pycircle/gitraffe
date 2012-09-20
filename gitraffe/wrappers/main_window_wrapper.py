@@ -107,7 +107,7 @@ class MainWindowWrapper(QMainWindow):
             self.ui.repositoryTableWidget.setItem(1, i+1, item)
         max_size = 30
         for i in range(1, len(graph)-1):
-            item = GraphWidget(graph[i])
+            item = GraphWidget(graph[i], None, graph[i-1])
             self.ui.repositoryTableWidget.setCellWidget(i+1, 0, item)
             if item.size > max_size:
                 max_size = item.size

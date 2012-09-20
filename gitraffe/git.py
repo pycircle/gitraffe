@@ -219,7 +219,7 @@ def get_file_changes(flag, path ,commit, comparsion=None):
             out += '</pre>'
             return out
         elif flag=='D':
-            command = 'git show %s:%s' % (comparison, path)
+            command = 'git show %s:%s' % (comparsion, path)
             output = get_output_lines(command)
             save_log(command, output[0])
             for line in output[1]:
