@@ -100,30 +100,32 @@ class MainWindowWrapper(QMainWindow):
     def graph(self):
         graph = get_graph()
         commits = get_commits()
-        self.ui.repositoryTableWidget.setRowCount(len(graph)+1)
+        self.ui.repositoryTableWidget.setRowCount(len(commits)+1)
         item = DefinedGraphWidget('current.png')
         self.ui.repositoryTableWidget.setCellWidget(0, 0, item)
         self.ui.repositoryTableWidget.setItem(0, 2, QTableWidgetItem('Current local changes'))
-        item = FirstGraphWidget(graph[0])
-        self.ui.repositoryTableWidget.setCellWidget(1, 0, item)
-        for i in range(len(commits[0])):
-            item = QTableWidgetItem(commits[0][i])
-            self.ui.repositoryTableWidget.setItem(1, i+1, item)
-        max_size = 30
-        for i in range(1, len(graph)-1):
-            item = GraphWidget(graph[i], None, graph[i-1])
-            self.ui.repositoryTableWidget.setCellWidget(i+1, 0, item)
-            if item.size > max_size:
-                max_size = item.size
-            for j in range(len(commits[i])):
-                item = QTableWidgetItem(commits[i][j])
-                self.ui.repositoryTableWidget.setItem(i+1, j+1, item)
-        item = LastGraphWidget(graph[-1])
-        self.ui.repositoryTableWidget.setCellWidget(len(graph), 0, item)
-        for i in range(len(commits[-1])):
-            item = QTableWidgetItem(commits[-1][i])
-            self.ui.repositoryTableWidget.setItem(len(graph), i+1, item)
-        self.ui.repositoryTableWidget.horizontalHeader().resizeSection(0, max_size)
+        print(len(commits))
+        if len(commits) > 0:
+            item = FirstGraphWidget(graph[0])
+            self.ui.repositoryTableWidget.setCellWidget(1, 0, item)
+            for i in range(len(commits[0])):
+                item = QTableWidgetItem(commits[0][i])
+                self.ui.repositoryTableWidget.setItem(1, i+1, item)
+            max_size = 30
+            for i in range(1, len(graph)-1):
+                item = GraphWidget(graph[i], None, graph[i-1])
+                self.ui.repositoryTableWidget.setCellWidget(i+1, 0, item)
+                if item.size > max_size:
+                    max_size = item.size
+                for j in range(len(commits[i])):
+                    item = QTableWidgetItem(commits[i][j])
+                    self.ui.repositoryTableWidget.setItem(i+1, j+1, item)
+            item = LastGraphWidget(graph[-1])
+            self.ui.repositoryTableWidget.setCellWidget(len(graph), 0, item)
+            for i in range(len(commits[-1])):
+                item = QTableWidgetItem(commits[-1][i])
+                self.ui.repositoryTableWidget.setItem(len(graph), i+1, item)
+            self.ui.repositoryTableWidget.horizontalHeader().resizeSection(0, max_size)
 
     def refresh_graph(self):
         self.ui.repositoryTableWidget.clearContents()

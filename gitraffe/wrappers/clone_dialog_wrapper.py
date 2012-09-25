@@ -2,6 +2,7 @@ from PyQt4.QtGui import QDialog, QFileDialog, QMessageBox, QInputDialog
 from PyQt4.QtCore import QObject, SIGNAL, QDir
 from layouts.clone_dialog import Ui_Clone
 from git import check_repository, clone_repository
+from os.path import basename
 
 class CloneWindowWrapper(QDialog):
     def __init__(self, parent=None):
@@ -18,8 +19,9 @@ class CloneWindowWrapper(QDialog):
         destination = self.ui.Destination_lineEdit.text()
         info = clone_repository(source, destination)
         if info[0]:
-            name = QInputDialog().getText(self, 'Name', 'Put your repository name:', text=os.path.basename(destination))
+            name = QInputDialog().getText(self, 'Name', 'Put your repository name:', text=basename(destination))
             if name[1]:
+                self.parent.add_to_database(name[0], destination)
                 self.parent.add_to_list(name[0], destination)
             self.close()
         elif source == "" or destination == "":  QMessageBox.critical(self, "Error", "There must be destination and source!", QMessageBox.Ok)
