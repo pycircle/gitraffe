@@ -271,4 +271,4 @@ class MainWindowWrapper(QMainWindow):
         print(self.ui.repositoryTableWidget.item(self.ui.repositoryTableWidget.currentRow(), 1).text())
         self.cpdw = CherryPickDialogWrapper(self.ui.repositoryTableWidget.item(self.ui.repositoryTableWidget.currentRow(), 1).text(), self)
         self.cpdw.exec_()
-        QObject.connect(self.cpdw, SIGNAL('accepted()'), self.change_branch)
+        QObject.connect(self.cpdw, SIGNAL('accepted()'), self.refresh_graph)
