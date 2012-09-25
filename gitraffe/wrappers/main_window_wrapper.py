@@ -1,5 +1,5 @@
-from PyQt4.QtGui import QMainWindow, QFileDialog, qApp, QListWidgetItem, QMessageBox, QInputDialog, QIcon ,QTableWidgetItem, QAbstractItemView, QWidget
-from PyQt4.QtCore import QDir, QObject, SIGNAL, Qt
+from PyQt4.QtGui import QMainWindow, QFileDialog, qApp, QListWidgetItem, QMessageBox, QInputDialog, QIcon ,QTableWidgetItem, QAbstractItemView, QWidget, QMenu, QAction
+from PyQt4.QtCore import QDir, QObject, SIGNAL, Qt, QPoint
 from PyQt4 import QtGui
 from layouts.main_window import Ui_MainWindow
 from git import check_repository, open_repository, get_commits, get_graph, get_files, git_add, git_check_out ,change_local_branch, change_remote_branch, pull, commit, push, get_file_changes, get_current_branch, get_unstaged_files , get_staged_files
@@ -11,6 +11,7 @@ from wrappers.branches_dialog_wrapper import BranchesDialogWrapper
 from wrappers.delete_branch_dialog_wrapper import DeleteBranchDialogWrapper
 from wrappers.about_dialog_wrapper import AboutDialogWrapper
 from wrappers.settings_dialog_wrapper import SettingsDialogWrapper
+from wrappers.cherry_pick_dialog_wrapper import CherryPickDialogWrapper
 from layouts.graph_widget import GraphWidget, FirstGraphWidget, LastGraphWidget
 from layouts.defined_graph_widget import DefinedGraphWidget
 
@@ -53,6 +54,9 @@ class MainWindowWrapper(QMainWindow):
         QObject.connect(self.ui.stageButton_2, SIGNAL('clicked()'), self.stage_files)
         QObject.connect(self.ui.unstageButton_2, SIGNAL('clicked()'), self.unstage_files)
         QObject.connect(self.ui.commitButton_2, SIGNAL('clicked()'), self.commit_files)
+        # Widgets
+        self.ui.repositoryTableWidget.setContextMenuPolicy(Qt.CustomContextMenu)
+        self.ui.repositoryTableWidget.customContextMenuRequested.connect(self.cherry_pick_menu)
 
     def list_all_repositories(self):
         repositories = db_adapter.get_repositories()
@@ -242,8 +246,7 @@ class MainWindowWrapper(QMainWindow):
     
     def stage_files(self):
         git_add(MainWindowWrapper.move_files(self.ui.Unstaged_listwidget, self.ui.Staged_listWidget))
-        
-    
+     
     def unstage_files(self):
         git_check_out(MainWindowWrapper.move_files(self.ui.Staged_listWidget, self.ui.Unstaged_listwidget))
     
@@ -254,3 +257,18 @@ class MainWindowWrapper(QMainWindow):
         else : 
             QMessageBox.information(self, "Commit", commit(message), QMessageBox.Ok)
             self.ui.Commit_textEdit.clear()
+
+    def cherry_pick_menu(self, position):
+        if self.ui.repositoryTableWidget.currentRow() > 0:
+            print(self.ui.repositoryTableWidget.currentRow())
+            menu = QMenu()
+            cherry_pick_action = menu.addAction('Cherry pick') 
+            QObject.connect(cherry_pick_action, SIGNAL('triggered()'), self.cherry_pick)
+            #menu.addAction(cherry_pick_action)
+            menu.exec_(self.ui.repositoryTableWidget.mapToGlobal(position))
+
+    def cherry_pick(self):
+        print(self.ui.repositoryTableWidget.item(self.ui.repositoryTableWidget.currentRow(), 1).text())
+        self.cpdw = CherryPickDialogWrapper(self.ui.repositoryTableWidget.item(self.ui.repositoryTableWidget.currentRow(), 1).text(), self)
+        self.cpdw.exec_()
+        QObject.connect(self.cpdw, SIGNAL('accepted()'), self.change_branch)

@@ -112,6 +112,13 @@ def get_splited(output):
         files.append(line.split())
     return files
 
+def cherry_pick(branch, commit):
+    change_branch(branch)
+    command = 'git cherry-pick ' + commit
+    output = getoutput(command)
+    save_log(command, output)
+    return output
+
 def get_unstaged_files():
 #    os.chdir(path)
     command = 'git diff --name-status'
