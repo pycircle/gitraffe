@@ -121,8 +121,17 @@ def cherry_pick(branch, commit):
 
 def get_unstaged_files():
 #    os.chdir(path)
-    command = 'git diff --name-status'
+    #command = 'git diff --name-status'
+    command = 'git status -s'
     output = get_output_lines(command)
+    files = output[1]
+    print(files)
+    print(len(files))
+    j = 0
+    for i in range(len(files)):
+        if files[i-j][0] != ' ' and files[i-j][0] != '?':
+            del files[i-j]
+            j += 1
     save_log(command, output[0])
     return get_splited(output)
 
@@ -241,12 +250,27 @@ def get_file_changes(flag, path ,commit, comparsion=None):
 def to_string(files, command):
     strfiles = " ".join(files)
     command += strfiles
-    output = get_output_lines(command)
-    save_log(command, output[0])
+    output = getoutput(command)
+    save_log(command, output)
 
-def git_add(files):
-    to_string(files, 'git add ')
-    
+def git_add(file):
+    #to_string(files, 'git add ')
+    command = 'git add ' + file
+    output = getoutput(command)
+    save_log(command, output)
+
+def git_rm(files):
+    #to_string(files, 'git rm ')
+    command = 'git rm ' + file
+    output = getoutput(command)
+    save_log(command, output)
+
+def git_reset_head(files):
+    to_string(files, 'git reset HEAD ')
+
+def git_rm_cached(files):
+    to_string(files, 'git rm --cached ')
+
 def git_check_out(files):
     to_string(files, 'git checkout ')
     
