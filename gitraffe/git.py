@@ -271,6 +271,13 @@ def git_reset_head(files):
 def git_rm_cached(files):
     to_string(files, 'git rm --cached ')
 
-def git_check_out(files):
-    to_string(files, 'git checkout ')
-    
+def git_check_out(file):
+    #to_string(files, 'git checkout ')
+    command = 'git checkout -- ' + file
+    output = getoutput(command)
+    save_log(command, output)
+
+def clean(file):
+    command = 'git clean -f ' + file
+    output = getoutput(command)
+    save_log(command, output)

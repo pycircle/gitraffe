@@ -71,7 +71,7 @@
       <item>
        <widget class="QStackedWidget" name="bottomwidgets">
         <property name="currentIndex">
-         <number>0</number>
+         <number>1</number>
         </property>
         <widget class="QWidget" name="Page1">
          <layout class="QHBoxLayout" name="changesetLayout" stretch="0">
@@ -107,6 +107,16 @@
                 <property name="icon">
                  <iconset>
                   <normaloff>icons/unstage.png</normaloff>icons/unstage.png</iconset>
+                </property>
+               </widget>
+              </item>
+              <item>
+               <widget class="QPushButton" name="discardButton">
+                <property name="enabled">
+                 <bool>false</bool>
+                </property>
+                <property name="text">
+                 <string>Discard</string>
                 </property>
                </widget>
               </item>
@@ -216,6 +226,13 @@
                 <property name="icon">
                  <iconset>
                   <normaloff>icons/unstage.png</normaloff>icons/unstage.png</iconset>
+                </property>
+               </widget>
+              </item>
+              <item>
+               <widget class="QPushButton" name="discardButton_2">
+                <property name="text">
+                 <string>Discard</string>
                 </property>
                </widget>
               </item>
@@ -339,7 +356,7 @@
      <x>0</x>
      <y>0</y>
      <width>857</width>
-     <height>25</height>
+     <height>22</height>
     </rect>
    </property>
    <widget class="QMenu" name="menuFile">
@@ -370,8 +387,7 @@
     <addaction name="separator"/>
     <addaction name="actionChange_branch"/>
     <addaction name="actionDelete_branch"/>
-    <addaction name="separator"/>
-    <addaction name="actionCherry_pick"/>
+    <addaction name="actionCreate_branch"/>
    </widget>
    <widget class="QMenu" name="menuHelp">
     <property name="title">
@@ -554,6 +570,11 @@
   <action name="actionDelete_branch">
    <property name="text">
     <string>Delete branch</string>
+   </property>
+  </action>
+  <action name="actionCreate_branch">
+   <property name="text">
+    <string>Create branch</string>
    </property>
   </action>
  </widget>

@@ -1,16 +1,20 @@
 # -*- coding: utf-8 -*-
+
 # Form implementation generated from reading ui file 'main_window.ui'
 #
-# Created: Tue Sep 11 21:50:55 2012
+# Created: Thu Sep 27 22:11:52 2012
 #      by: PyQt4 UI code generator 4.9.1
 #
 # WARNING! All changes made in this file will be lost!
+
 from PyQt4 import QtCore, QtGui
 from os.path import dirname
+
 try:
     _fromUtf8 = QtCore.QString.fromUtf8
 except AttributeError:
     _fromUtf8 = lambda s: s
+
 class Ui_MainWindow(object):
     def setupUi(self, MainWindow):
         MainWindow.setObjectName(_fromUtf8("MainWindow"))
@@ -73,6 +77,10 @@ class Ui_MainWindow(object):
         self.unstageButton.setIcon(icon1)
         self.unstageButton.setObjectName(_fromUtf8("unstageButton"))
         self.changesetButtonsLayout.addWidget(self.unstageButton)
+        self.discardButton = QtGui.QPushButton(self.Page1)
+        self.discardButton.setEnabled(False)
+        self.discardButton.setObjectName(_fromUtf8("discardButton"))
+        self.changesetButtonsLayout.addWidget(self.discardButton)
         self.separator = QtGui.QFrame(self.Page1)
         self.separator.setFrameShape(QtGui.QFrame.HLine)
         self.separator.setFrameShadow(QtGui.QFrame.Sunken)
@@ -135,6 +143,9 @@ class Ui_MainWindow(object):
         self.unstageButton_2.setIcon(icon1)
         self.unstageButton_2.setObjectName(_fromUtf8("unstageButton_2"))
         self.changesetButtonsLayout_2.addWidget(self.unstageButton_2)
+        self.discardButton_2 = QtGui.QPushButton(self.Page2)
+        self.discardButton_2.setObjectName(_fromUtf8("discardButton_2"))
+        self.changesetButtonsLayout_2.addWidget(self.discardButton_2)
         self.separator_2 = QtGui.QFrame(self.Page2)
         self.separator_2.setFrameShape(QtGui.QFrame.HLine)
         self.separator_2.setFrameShadow(QtGui.QFrame.Sunken)
@@ -199,7 +210,7 @@ class Ui_MainWindow(object):
         self.horizontalLayout.addLayout(self.repositoryLayout)
         MainWindow.setCentralWidget(self.centralwidget)
         self.menubar = QtGui.QMenuBar(MainWindow)
-        self.menubar.setGeometry(QtCore.QRect(0, 0, 857, 25))
+        self.menubar.setGeometry(QtCore.QRect(0, 0, 857, 22))
         self.menubar.setObjectName(_fromUtf8("menubar"))
         self.menuFile = QtGui.QMenu(self.menubar)
         self.menuFile.setObjectName(_fromUtf8("menuFile"))
@@ -276,6 +287,8 @@ class Ui_MainWindow(object):
         self.actionDelete_repository.setObjectName(_fromUtf8("actionDelete_repository"))
         self.actionDelete_branch = QtGui.QAction(MainWindow)
         self.actionDelete_branch.setObjectName(_fromUtf8("actionDelete_branch"))
+        self.actionCreate_branch = QtGui.QAction(MainWindow)
+        self.actionCreate_branch.setObjectName(_fromUtf8("actionCreate_branch"))
         self.menuFile.addAction(self.actionClone_repository_2)
         self.menuFile.addAction(self.actionAdd_existing_repository)
         self.menuFile.addSeparator()
@@ -290,8 +303,7 @@ class Ui_MainWindow(object):
         self.menuRepository.addSeparator()
         self.menuRepository.addAction(self.actionChange_branch)
         self.menuRepository.addAction(self.actionDelete_branch)
-        self.menuRepository.addSeparator()
-        self.menuRepository.addAction(self.actionCherry_pick)
+        self.menuRepository.addAction(self.actionCreate_branch)
         self.menuHelp.addAction(self.actionAbout_Gitraffe)
         self.menubar.addAction(self.menuFile.menuAction())
         self.menubar.addAction(self.menuView.menuAction())
@@ -300,9 +312,11 @@ class Ui_MainWindow(object):
         self.toolBar.addAction(self.actionClone_repository_3)
         self.toolBar.addAction(self.actionAdd_existing_repository_2)
         self.toolBar.addAction(self.actionDelete_repository)
+
         self.retranslateUi(MainWindow)
-        self.bottomwidgets.setCurrentIndex(0)
+        self.bottomwidgets.setCurrentIndex(1)
         QtCore.QMetaObject.connectSlotsByName(MainWindow)
+
     def retranslateUi(self, MainWindow):
         MainWindow.setWindowTitle(QtGui.QApplication.translate("MainWindow", "Gitraffe", None, QtGui.QApplication.UnicodeUTF8))
         item = self.repositoryTableWidget.horizontalHeaderItem(1)
@@ -315,12 +329,14 @@ class Ui_MainWindow(object):
         item.setText(QtGui.QApplication.translate("MainWindow", "Date", None, QtGui.QApplication.UnicodeUTF8))
         self.stageButton.setText(QtGui.QApplication.translate("MainWindow", "Stage", None, QtGui.QApplication.UnicodeUTF8))
         self.unstageButton.setText(QtGui.QApplication.translate("MainWindow", "Unstage", None, QtGui.QApplication.UnicodeUTF8))
+        self.discardButton.setText(QtGui.QApplication.translate("MainWindow", "Discard", None, QtGui.QApplication.UnicodeUTF8))
         self.pullButton.setText(QtGui.QApplication.translate("MainWindow", "Pull", None, QtGui.QApplication.UnicodeUTF8))
         self.commitButton.setText(QtGui.QApplication.translate("MainWindow", " Commit", None, QtGui.QApplication.UnicodeUTF8))
         self.stashButton.setText(QtGui.QApplication.translate("MainWindow", "Stash", None, QtGui.QApplication.UnicodeUTF8))
         self.pushButton.setText(QtGui.QApplication.translate("MainWindow", "Push", None, QtGui.QApplication.UnicodeUTF8))
         self.stageButton_2.setText(QtGui.QApplication.translate("MainWindow", "Stage", None, QtGui.QApplication.UnicodeUTF8))
         self.unstageButton_2.setText(QtGui.QApplication.translate("MainWindow", "Unstage", None, QtGui.QApplication.UnicodeUTF8))
+        self.discardButton_2.setText(QtGui.QApplication.translate("MainWindow", "Discard", None, QtGui.QApplication.UnicodeUTF8))
         self.pullButton_2.setText(QtGui.QApplication.translate("MainWindow", "Pull", None, QtGui.QApplication.UnicodeUTF8))
         self.commitButton_2.setText(QtGui.QApplication.translate("MainWindow", " Commit", None, QtGui.QApplication.UnicodeUTF8))
         self.stashButton_2.setText(QtGui.QApplication.translate("MainWindow", "Stash", None, QtGui.QApplication.UnicodeUTF8))
@@ -354,3 +370,5 @@ class Ui_MainWindow(object):
         self.actionStash.setText(QtGui.QApplication.translate("MainWindow", "Stash", None, QtGui.QApplication.UnicodeUTF8))
         self.actionDelete_repository.setText(QtGui.QApplication.translate("MainWindow", "Delete repository", None, QtGui.QApplication.UnicodeUTF8))
         self.actionDelete_branch.setText(QtGui.QApplication.translate("MainWindow", "Delete branch", None, QtGui.QApplication.UnicodeUTF8))
+        self.actionCreate_branch.setText(QtGui.QApplication.translate("MainWindow", "Create branch", None, QtGui.QApplication.UnicodeUTF8))
+

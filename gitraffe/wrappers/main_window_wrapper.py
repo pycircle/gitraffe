@@ -2,7 +2,7 @@ from PyQt4.QtGui import QMainWindow, QFileDialog, qApp, QListWidgetItem, QMessag
 from PyQt4.QtCore import QDir, QObject, SIGNAL, Qt, QPoint
 from PyQt4 import QtGui
 from layouts.main_window import Ui_MainWindow
-from git import check_repository, open_repository, get_commits, get_graph, get_files, git_add, git_rm, git_reset_head, git_rm_cached, git_check_out, change_local_branch, change_remote_branch, pull, commit, push, get_file_changes, get_current_branch, get_unstaged_files , get_staged_files
+from git import check_repository, open_repository, get_commits, get_graph, get_files, git_add, git_rm, git_reset_head, git_rm_cached, git_check_out, clean, change_local_branch, change_remote_branch, pull, commit, push, get_file_changes, get_current_branch, get_unstaged_files , get_staged_files
 import db_adapter
 from os.path import dirname, basename
 from layouts import main_window
@@ -53,6 +53,7 @@ class MainWindowWrapper(QMainWindow):
         QObject.connect(self.ui.pushButton, SIGNAL('clicked()'), self.push)
         QObject.connect(self.ui.stageButton_2, SIGNAL('clicked()'), self.stage_files)
         QObject.connect(self.ui.unstageButton_2, SIGNAL('clicked()'), self.unstage_files)
+        QObject.connect(self.ui.discardButton_2, SIGNAL('clicked()'), self.discard_files)
         QObject.connect(self.ui.commitButton_2, SIGNAL('clicked()'), self.commit_files)
         # Widgets
         self.ui.repositoryTableWidget.setContextMenuPolicy(Qt.CustomContextMenu)
@@ -266,6 +267,17 @@ class MainWindowWrapper(QMainWindow):
         else:
             git_rm_cached(selected)
         self.view_current_changes()
+
+    def discard_files(self):
+        reply = QMessageBox.question(self, 'Discard', 'Do you want to discard changes?', QMessageBox.Yes, QMessageBox.No)
+        if reply == QMessageBox.Yes:
+            for item in self.ui.Unstaged_listwidget.selectedItems():
+                splited_item = item.text().split()
+                if splited_item[0] == '??':
+                    clean(splited_item[1])
+                else:
+                    git_check_out(splited_item[1])
+            self.view_current_changes()
 
     def commit_files(self):
         message = self.ui.Commit_textEdit.toPlainText()
