@@ -7,7 +7,7 @@ def get_ssh_key():
         command = 'cat ~/.ssh/id_rsa.pub'
         output = getoutput(command)
         return output
-    return 'You don\'t have SSH key. Click \"Generate new key\"!' 
+    return 'You don\'t have SSH key. Click \"Generate new key\"!'
 
 # TODO -> HERE WE MUST HANDLE PASS REQUEST
 def generate_new_ssh_key(email):

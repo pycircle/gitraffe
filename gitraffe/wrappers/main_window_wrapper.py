@@ -1,4 +1,4 @@
-from PyQt4.QtGui import QMainWindow, QFileDialog, qApp, QListWidgetItem, QMessageBox, QInputDialog, QIcon ,QTableWidgetItem, QAbstractItemView, QWidget
+from PyQt4.QtGui import QMainWindow, QFileDialog, qApp, QListWidgetItem, QMessageBox, QInputDialog, QIcon, QTableWidgetItem, QAbstractItemView, QWidget
 from PyQt4.QtCore import QDir, QObject, SIGNAL, Qt
 from PyQt4 import QtGui
 from layouts.main_window import Ui_MainWindow
@@ -49,7 +49,7 @@ class MainWindowWrapper(QMainWindow):
         # Buttons
         QObject.connect(self.ui.pullButton, SIGNAL('clicked()'), self.pull)
         QObject.connect(self.ui.pullButton_2, SIGNAL('clicked()'), self.pull)
-        QObject.connect(self.ui.pushButton, SIGNAL('clicked()'), self.push)
+        QObject.connect(self.ui.pushButton_2, SIGNAL('clicked()'), self.push)
         QObject.connect(self.ui.stageButton_2, SIGNAL('clicked()'), self.stage_files)
         QObject.connect(self.ui.unstageButton_2, SIGNAL('clicked()'), self.unstage_files)
         QObject.connect(self.ui.commitButton_2, SIGNAL('clicked()'), self.commit_files)
@@ -86,7 +86,7 @@ class MainWindowWrapper(QMainWindow):
     def delete_listWidgetitem(self):
         if self.ui.listWidget.count()!=0:
             name = self.ui.listWidget.item(self.ui.listWidget.currentRow()).text()
-            respond = QMessageBox.question(self, "Delete", 
+            respond = QMessageBox.question(self, "Delete",
                                            "Are you sure, that you want delete " + name,
                                            QMessageBox.Ok, QMessageBox.Cancel)
             if respond==QMessageBox.Ok:
@@ -161,7 +161,7 @@ class MainWindowWrapper(QMainWindow):
             for flag, file in files:
                 QListWidgetItem(flag+" "+file, self.ui.files_listWidget)
         self.ui.files_listWidget.setCurrentRow(0)
-        
+
 
     def get_default_branch_name(self, name):
         name = name.split('/')
@@ -216,13 +216,14 @@ class MainWindowWrapper(QMainWindow):
 
     def push(self):
         if self.ui.listWidget.currentItem().isSelected() == True:
-            QMessageBox.information(self, "Push", push(), QMessageBox.Ok)
+            QMessageBox.information(self, "Push", push(self), QMessageBox.Ok)
+            self.view_repository()
         else:
             QMessageBox.critical(self, "Error", "You must choose repository before commiting!", QMessageBox.Ok)
 
     def settings_dialog(self):
         SettingsDialogWrapper(self).exec_()
-    
+
     def view_file_changes(self):
         self.ui.diff_textBrowser.clear()
         commit = self.ui.repositoryTableWidget.item(self.ui.repositoryTableWidget.currentRow(), 1).text()
@@ -239,18 +240,18 @@ class MainWindowWrapper(QMainWindow):
             QListWidgetItem(item.text(), twidget)
             fwidget.takeItem(fwidget.row(item))
         return selected
-    
+
     def stage_files(self):
         git_add(MainWindowWrapper.move_files(self.ui.Unstaged_listwidget, self.ui.Staged_listWidget))
-        
-    
+
+
     def unstage_files(self):
         git_check_out(MainWindowWrapper.move_files(self.ui.Staged_listWidget, self.ui.Unstaged_listwidget))
-    
+
     def commit_files(self):
         message = self.ui.Commit_textEdit.toPlainText()
-        if message == "": 
+        if message == "":
             QMessageBox.critical(self, "Error", "You must write some commit message!", QMessageBox.Ok)
-        else : 
+        else:
             QMessageBox.information(self, "Commit", commit(message), QMessageBox.Ok)
             self.ui.Commit_textEdit.clear()

@@ -2,6 +2,10 @@ from os import chdir, system
 from subprocess import getoutput, Popen, PIPE, STDOUT
 from symbol import comparison
 from log import save_log
+import sys
+from threading import Thread
+from queue import Queue, Empty
+
 
 def get_output_lines(command):
     output = getoutput(command)
@@ -100,11 +104,34 @@ def commit(message):
     return output
 
 # TODO -> HERE WE HAVE TO HANDLE PASS REQUESTS
-def push():
-    command = 'git push'
+def push(window):
+    from wrappers.authorization_wrapper import AuthorizationWrapper
+    command = "git config --get remote.origin.url"
     output = getoutput(command)
     save_log(command, output)
-    return output
+    url = ""
+    if '@' in output:
+        dialog = AuthorizationWrapper(window)
+        dialog.Username_lineEdit.setText("Not needed")
+        dialog.Username_lineEdit.setReadOnly(True)
+        dialog.exec_()
+        splited = output.split('@')
+        url = "%s:%s@%s" % (splited[0], dialog.password, splited[1])
+    else:
+        splited = output.split('//')
+        dialog = AuthorizationWrapper(window)
+        dialog.exec_()
+        url = "%s//%s:%s@%s" % (splited[0], dialog.username, dialog.password, splited[1])
+    args = ['git', 'push', url]
+    child = Popen(args, stdout=PIPE, stderr=STDOUT)
+    child.wait()
+    info = ""
+    for x in child.stdout.readlines()[1:]:
+        info += x.decode("utf-8")
+    if info == "":
+        info = "Everything up-to-date"
+    save_log(" ".join(args[:-1]), info)
+    return info
 
 def get_splited(output):
     files = []
@@ -114,7 +141,7 @@ def get_splited(output):
 
 def get_unstaged_files():
 #    os.chdir(path)
-    command = 'git diff --name-status'
+    command = 'git status -s'
     output = get_output_lines(command)
     save_log(command, output[0])
     return get_splited(output)
@@ -163,7 +190,7 @@ def get_current_branch():
 def change_local_branch(branch):
     command = 'git checkout ' + branch
     save_log(command, getoutput(command))
-    
+
 def change_remote_branch(branch, new_name):
     command = 'git checkout -b ' + new_name + ' ' + branch
     save_log(command, getoutput(command))
@@ -230,7 +257,7 @@ def get_file_changes(flag, path ,commit, comparsion=None):
             return out
     except UnicodeDecodeError:
         return "Cannot decode this file"
-    
+
 def to_string(files, command):
     strfiles = " ".join(files)
     command += strfiles
@@ -239,7 +266,7 @@ def to_string(files, command):
 
 def git_add(files):
     to_string(files, 'git add ')
-    
+
 def git_check_out(files):
     to_string(files, 'git checkout ')
-    
+
