@@ -146,7 +146,6 @@ def cherry_pick(branch, commit):
     return output
 
 def get_unstaged_files():
-#    os.chdir(path)
     command = 'git status -s'
     output = get_output_lines(command)
     files = output[1]
@@ -211,7 +210,11 @@ def change_remote_branch(branch, new_name):
 
 def delete_branch(branch):
     command = 'git branch -d ' + branch
-    save_log(getoutput(command))
+    save_log(command, getoutput(command))
+
+def create_branch(branch):
+    command = 'git checkout -b %s && git push origin %s' % (branch, branch)
+    save_log(command, getoutput(command))
 
 def get_settings():
     command_username = 'git config --global user.name'

@@ -2,7 +2,7 @@ from PyQt4.QtGui import QMainWindow, QFileDialog, qApp, QListWidgetItem, QMessag
 from PyQt4.QtCore import QDir, QObject, SIGNAL, Qt, QPoint
 from PyQt4 import QtGui
 from layouts.main_window import Ui_MainWindow
-from git import check_repository, open_repository, get_commits, get_graph, get_files, git_add, git_rm, git_reset_head, git_rm_cached, git_check_out, clean, change_local_branch, change_remote_branch, pull, commit, push, get_file_changes, get_current_branch, get_unstaged_files , get_staged_files
+from git import check_repository, open_repository, get_commits, get_graph, get_files, git_add, git_rm, git_reset_head, git_rm_cached, git_check_out, clean, change_local_branch, change_remote_branch, create_branch, pull, commit, push, get_file_changes, get_current_branch, get_unstaged_files, get_staged_files
 import db_adapter
 from os.path import dirname, basename
 from layouts import main_window
@@ -46,6 +46,7 @@ class MainWindowWrapper(QMainWindow):
         QObject.connect(self.ui.actionPush, SIGNAL('triggered()'), self.push)
         QObject.connect(self.ui.actionChange_branch, SIGNAL('triggered()'), self.change_branch_dialog)
         QObject.connect(self.ui.actionDelete_branch, SIGNAL('triggered()'), self.delete_branch_dialog)
+        QObject.connect(self.ui.actionCreate_branch, SIGNAL('triggered()'), self.create_branch)
         QObject.connect(self.ui.actionAbout_Gitraffe, SIGNAL('triggered()'), self.about_dialog)
         # Buttons
         QObject.connect(self.ui.pullButton, SIGNAL('clicked()'), self.pull)
@@ -210,6 +211,14 @@ class MainWindowWrapper(QMainWindow):
             DeleteBranchDialogWrapper(self).exec_()
         else:
             QMessageBox.critical(self, "Error", "You must choose repository before deleting branch!", QMessageBox.Ok)
+
+    def create_branch(self):
+        if self.ui.listWidget.currentItem().isSelected() == True:
+            name = QInputDialog.getText(self, 'Name', 'Put your new branch name:')
+            if name[1]:
+                create_branch(name[0])
+        else:
+            QMessageBox.critical(self, "Error", "You must choose repository before creating branch!", QMessageBox.Ok)
 
     def about_dialog(self):
         AboutDialogWrapper(self).exec_()
