@@ -103,7 +103,6 @@ def commit(message):
     save_log(command, output)
     return output
 
-# TODO -> HERE WE HAVE TO HANDLE PASS REQUESTS
 def push(window):
     from wrappers.authorization_wrapper import AuthorizationWrapper
     command = "git config --get remote.origin.url"
@@ -139,10 +138,25 @@ def get_splited(output):
         files.append(line.split())
     return files
 
+def cherry_pick(branch, commit):
+    change_branch(branch)
+    command = 'git cherry-pick ' + commit
+    output = getoutput(command)
+    save_log(command, output)
+    return output
+
 def get_unstaged_files():
 #    os.chdir(path)
     command = 'git status -s'
     output = get_output_lines(command)
+    files = output[1]
+    print(files)
+    print(len(files))
+    j = 0
+    for i in range(len(files)):
+        if files[i-j][0] != ' ' and files[i-j][0] != '?':
+            del files[i-j]
+            j += 1
     save_log(command, output[0])
     return get_splited(output)
 
@@ -192,7 +206,7 @@ def change_local_branch(branch):
     save_log(command, getoutput(command))
 
 def change_remote_branch(branch, new_name):
-    command = 'git checkout -b ' + new_name + ' ' + branch
+    command = 'git checkout -b %s %s' % (new_name, branch)
     save_log(command, getoutput(command))
 
 def delete_branch(branch):
@@ -212,7 +226,7 @@ def get_settings():
     return settings
 
 def set_settings(username, email):
-    system('git config --global user.name "' + username + '" && git config --global user.email "' + email + '"')
+    system('git config --global user.name "%s" && git config --global user.email "%s"' % (username, email))
 
 def remove_html(line):
     new = line.replace('<', '&lt;')
@@ -223,35 +237,35 @@ def get_file_changes(flag, path ,commit, comparsion=None):
     try:
         out = '<pre>'
         if flag == 'M' or flag == 'MM':
-            command = 'git diff '+ comparsion + ':' +path + ' '+ commit +':'+path
+            command = 'git diff %s:%s %s:%s' % (comparsion, path, commit, path)
             output = get_output_lines(command)
             save_log(command, output[0])
             for line in output[1][4:]:
                 line = remove_html(line)
                 if line[0]=='-':
-                    line = '<font color="RED"> '+ line + '</font>'
+                    line = '<font color="RED"> %s</font>' % (line)
                 elif line[0]=='+':
-                    line = '<font color="GREEN"> '+ line + '</font>'
+                    line = '<font color="GREEN"> %s</font>' % (line)
                 out += line + '\n'
             out += '</pre>'
             return out
         elif flag=='A':
-            command = 'git show ' + commit + ':' + path
+            command = 'git show %s:%s' % (commit, path)
             output = get_output_lines(command)
             save_log(command, output[0])
             for line in output[1]:
                 line = remove_html(line)
-                line = '<font color="GREEN"> + ' + line + ' </font>'
+                line = '<font color="GREEN"> + %s </font>' % (line)
                 out += line + '\n'
             out += '</pre>'
             return out
         elif flag=='D':
-            command = 'git show ' + comparsion + ':' + path
+            command = 'git show %s:%s' % (comparsion, path)
             output = get_output_lines(command)
             save_log(command, output[0])
             for line in output[1]:
                 line = remove_html(line)
-                line = '<font color="RED"> - ' + line + ' </font>'
+                line = '<font color="RED"> - %s </font>' % (line)
                 out += line + '\n'
             out += '</pre>'
             return out
@@ -261,12 +275,34 @@ def get_file_changes(flag, path ,commit, comparsion=None):
 def to_string(files, command):
     strfiles = " ".join(files)
     command += strfiles
-    output = get_output_lines(command)
-    save_log(command, output[0])
+    output = getoutput(command)
+    save_log(command, output)
 
-def git_add(files):
-    to_string(files, 'git add ')
+def git_add(file):
+    #to_string(files, 'git add ')
+    command = 'git add ' + file
+    output = getoutput(command)
+    save_log(command, output)
 
-def git_check_out(files):
-    to_string(files, 'git checkout ')
+def git_rm(files):
+    #to_string(files, 'git rm ')
+    command = 'git rm ' + file
+    output = getoutput(command)
+    save_log(command, output)
 
+def git_reset_head(files):
+    to_string(files, 'git reset HEAD ')
+
+def git_rm_cached(files):
+    to_string(files, 'git rm --cached ')
+
+def git_check_out(file):
+    #to_string(files, 'git checkout ')
+    command = 'git checkout -- ' + file
+    output = getoutput(command)
+    save_log(command, output)
+
+def clean(file):
+    command = 'git clean -f ' + file
+    output = getoutput(command)
+    save_log(command, output)

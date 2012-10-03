@@ -1,8 +1,8 @@
-from PyQt4.QtGui import QMainWindow, QFileDialog, qApp, QListWidgetItem, QMessageBox, QInputDialog, QIcon, QTableWidgetItem, QAbstractItemView, QWidget
-from PyQt4.QtCore import QDir, QObject, SIGNAL, Qt
+from PyQt4.QtGui import QMainWindow, QFileDialog, qApp, QListWidgetItem, QMessageBox, QInputDialog, QIcon ,QTableWidgetItem, QAbstractItemView, QWidget, QMenu, QAction
+from PyQt4.QtCore import QDir, QObject, SIGNAL, Qt, QPoint
 from PyQt4 import QtGui
 from layouts.main_window import Ui_MainWindow
-from git import check_repository, open_repository, get_commits, get_graph, get_files, git_add, git_check_out ,change_local_branch, change_remote_branch, pull, commit, push, get_file_changes, get_current_branch, get_unstaged_files , get_staged_files
+from git import check_repository, open_repository, get_commits, get_graph, get_files, git_add, git_rm, git_reset_head, git_rm_cached, git_check_out, clean, change_local_branch, change_remote_branch, pull, commit, push, get_file_changes, get_current_branch, get_unstaged_files , get_staged_files
 import db_adapter
 from os.path import dirname, basename
 from layouts import main_window
@@ -11,6 +11,7 @@ from wrappers.branches_dialog_wrapper import BranchesDialogWrapper
 from wrappers.delete_branch_dialog_wrapper import DeleteBranchDialogWrapper
 from wrappers.about_dialog_wrapper import AboutDialogWrapper
 from wrappers.settings_dialog_wrapper import SettingsDialogWrapper
+from wrappers.cherry_pick_dialog_wrapper import CherryPickDialogWrapper
 from layouts.graph_widget import GraphWidget, FirstGraphWidget, LastGraphWidget
 from layouts.defined_graph_widget import DefinedGraphWidget
 
@@ -52,7 +53,11 @@ class MainWindowWrapper(QMainWindow):
         QObject.connect(self.ui.pushButton_2, SIGNAL('clicked()'), self.push)
         QObject.connect(self.ui.stageButton_2, SIGNAL('clicked()'), self.stage_files)
         QObject.connect(self.ui.unstageButton_2, SIGNAL('clicked()'), self.unstage_files)
+        QObject.connect(self.ui.discardButton_2, SIGNAL('clicked()'), self.discard_files)
         QObject.connect(self.ui.commitButton_2, SIGNAL('clicked()'), self.commit_files)
+        # Widgets
+        self.ui.repositoryTableWidget.setContextMenuPolicy(Qt.CustomContextMenu)
+        self.ui.repositoryTableWidget.customContextMenuRequested.connect(self.cherry_pick_menu)
 
     def list_all_repositories(self):
         repositories = db_adapter.get_repositories()
@@ -96,30 +101,32 @@ class MainWindowWrapper(QMainWindow):
     def graph(self):
         graph = get_graph()
         commits = get_commits()
-        self.ui.repositoryTableWidget.setRowCount(len(graph)+1)
+        self.ui.repositoryTableWidget.setRowCount(len(commits)+1)
         item = DefinedGraphWidget('current.png')
         self.ui.repositoryTableWidget.setCellWidget(0, 0, item)
         self.ui.repositoryTableWidget.setItem(0, 2, QTableWidgetItem('Current local changes'))
-        item = FirstGraphWidget(graph[0])
-        self.ui.repositoryTableWidget.setCellWidget(1, 0, item)
-        for i in range(len(commits[0])):
-            item = QTableWidgetItem(commits[0][i])
-            self.ui.repositoryTableWidget.setItem(1, i+1, item)
-        max_size = 30
-        for i in range(1, len(graph)-1):
-            item = GraphWidget(graph[i])
-            self.ui.repositoryTableWidget.setCellWidget(i+1, 0, item)
-            if item.size > max_size:
-                max_size = item.size
-            for j in range(len(commits[i])):
-                item = QTableWidgetItem(commits[i][j])
-                self.ui.repositoryTableWidget.setItem(i+1, j+1, item)
-        item = LastGraphWidget(graph[-1])
-        self.ui.repositoryTableWidget.setCellWidget(len(graph), 0, item)
-        for i in range(len(commits[-1])):
-            item = QTableWidgetItem(commits[-1][i])
-            self.ui.repositoryTableWidget.setItem(len(graph), i+1, item)
-        self.ui.repositoryTableWidget.horizontalHeader().resizeSection(0, max_size)
+        print(len(commits))
+        if len(commits) > 0:
+            item = FirstGraphWidget(graph[0])
+            self.ui.repositoryTableWidget.setCellWidget(1, 0, item)
+            for i in range(len(commits[0])):
+                item = QTableWidgetItem(commits[0][i])
+                self.ui.repositoryTableWidget.setItem(1, i+1, item)
+            max_size = 30
+            for i in range(1, len(graph)-1):
+                item = GraphWidget(graph[i], None, graph[i-1])
+                self.ui.repositoryTableWidget.setCellWidget(i+1, 0, item)
+                if item.size > max_size:
+                    max_size = item.size
+                for j in range(len(commits[i])):
+                    item = QTableWidgetItem(commits[i][j])
+                    self.ui.repositoryTableWidget.setItem(i+1, j+1, item)
+            item = LastGraphWidget(graph[-1])
+            self.ui.repositoryTableWidget.setCellWidget(len(graph), 0, item)
+            for i in range(len(commits[-1])):
+                item = QTableWidgetItem(commits[-1][i])
+                self.ui.repositoryTableWidget.setItem(len(graph), i+1, item)
+            self.ui.repositoryTableWidget.horizontalHeader().resizeSection(0, max_size)
 
     def refresh_graph(self):
         self.ui.repositoryTableWidget.clearContents()
@@ -244,9 +251,26 @@ class MainWindowWrapper(QMainWindow):
     def stage_files(self):
         git_add(MainWindowWrapper.move_files(self.ui.Unstaged_listwidget, self.ui.Staged_listWidget))
 
-
     def unstage_files(self):
-        git_check_out(MainWindowWrapper.move_files(self.ui.Staged_listWidget, self.ui.Unstaged_listwidget))
+        selected = []
+        for item in self.ui.Staged_listWidget.selectedItems():
+            selected.append(item.text().split()[1])
+        if self.ui.repositoryTableWidget.rowCount() > 1:
+            git_reset_head(selected)
+        else:
+            git_rm_cached(selected)
+        self.view_current_changes()
+
+    def discard_files(self):
+        reply = QMessageBox.question(self, 'Discard', 'Do you want to discard changes?', QMessageBox.Yes, QMessageBox.No)
+        if reply == QMessageBox.Yes:
+            for item in self.ui.Unstaged_listwidget.selectedItems():
+                splited_item = item.text().split()
+                if splited_item[0] == '??':
+                    clean(splited_item[1])
+                else:
+                    git_check_out(splited_item[1])
+            self.view_current_changes()
 
     def commit_files(self):
         message = self.ui.Commit_textEdit.toPlainText()
@@ -255,3 +279,18 @@ class MainWindowWrapper(QMainWindow):
         else:
             QMessageBox.information(self, "Commit", commit(message), QMessageBox.Ok)
             self.ui.Commit_textEdit.clear()
+
+    def cherry_pick_menu(self, position):
+        if self.ui.repositoryTableWidget.currentRow() > 0:
+            print(self.ui.repositoryTableWidget.currentRow())
+            menu = QMenu()
+            cherry_pick_action = menu.addAction('Cherry pick') 
+            QObject.connect(cherry_pick_action, SIGNAL('triggered()'), self.cherry_pick)
+            #menu.addAction(cherry_pick_action)
+            menu.exec_(self.ui.repositoryTableWidget.mapToGlobal(position))
+
+    def cherry_pick(self):
+        print(self.ui.repositoryTableWidget.item(self.ui.repositoryTableWidget.currentRow(), 1).text())
+        self.cpdw = CherryPickDialogWrapper(self.ui.repositoryTableWidget.item(self.ui.repositoryTableWidget.currentRow(), 1).text(), self)
+        self.cpdw.exec_()
+        QObject.connect(self.cpdw, SIGNAL('accepted()'), self.refresh_graph)
