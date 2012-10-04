@@ -107,13 +107,13 @@ class MainWindowWrapper(QMainWindow):
         self.ui.repositoryTableWidget.setCellWidget(0, 0, item)
         self.ui.repositoryTableWidget.setItem(0, 2, QTableWidgetItem('Current local changes'))
         print(len(commits))
+        max_size = 30
         if len(commits) > 0:
             item = FirstGraphWidget(graph[0])
             self.ui.repositoryTableWidget.setCellWidget(1, 0, item)
             for i in range(len(commits[0])):
                 item = QTableWidgetItem(commits[0][i])
                 self.ui.repositoryTableWidget.setItem(1, i+1, item)
-            max_size = 30
             for i in range(1, len(graph)-1):
                 item = GraphWidget(graph[i], None, graph[i-1])
                 self.ui.repositoryTableWidget.setCellWidget(i+1, 0, item)
@@ -127,7 +127,7 @@ class MainWindowWrapper(QMainWindow):
             for i in range(len(commits[-1])):
                 item = QTableWidgetItem(commits[-1][i])
                 self.ui.repositoryTableWidget.setItem(len(graph), i+1, item)
-            self.ui.repositoryTableWidget.horizontalHeader().resizeSection(0, max_size)
+        self.ui.repositoryTableWidget.horizontalHeader().resizeSection(0, max_size)
 
     def refresh_graph(self):
         self.ui.repositoryTableWidget.clearContents()
@@ -258,7 +258,13 @@ class MainWindowWrapper(QMainWindow):
         return selected
 
     def stage_files(self):
-        git_add(MainWindowWrapper.move_files(self.ui.Unstaged_listwidget, self.ui.Staged_listWidget))
+        for item in self.ui.Unstaged_listwidget.selectedItems():
+            splited_item = item.text().split()
+            if splited_item[0] == 'D':
+                git_rm(splited_item[1])
+            else:
+                git_add(splited_item[1])
+        self.view_current_changes()
 
     def unstage_files(self):
         selected = []

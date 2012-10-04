@@ -79,9 +79,6 @@ def get_graph():
             graph_commit = []
         graph_commit.append(graph_output[i])
     graph.append(graph_commit)
-    for commit in graph:
-        for line in commit:
-            print(line)
     return graph
 
 def diff(filename):
