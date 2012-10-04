@@ -35,7 +35,6 @@ class GraphWidget(QWidget):
             for f in range(len(self.previous_commit[-1])):
                 if self.previous_commit[-1][f] == '\\':
                     ral_place.append(f)
-            #print(ral_place)
         i = 0
         for j in range(len(self.commit[0])):
             if self.commit[0][j] == '*':
@@ -45,14 +44,9 @@ class GraphWidget(QWidget):
                 if len(self.commit) > 1 and len(self.commit[1]) > j+1 and self.commit[1][j+1] == '\\':
                     x = 15
                 painter.drawLine(i+15, 0, i+15, x)
-                #x = 15
-                #if len(self.commit) == 1:
-                #    x = 30
-                #painter.drawLine(i+15, 0, i+15, x)
             elif self.commit[0][j] == '\\':
                 if right_as_line == True and j-1 in ral_place:
                     painter.drawLine(i+15, 0, i+15, 15)
-                    print('Bijcie masterczulki')
                 else:
                     painter.drawLine(i+15, 15, i+30, 15+(15/len(self.commit)))
             elif self.commit[0][j] == '/':
@@ -77,13 +71,11 @@ class GraphWidget(QWidget):
                     up = 2
                     left = True
                 elif self.commit[j][k] == '/':
-                    #painter.drawLine(i+1, (30/len(self.commit))*(j+1)-up, i+27, down+(15/len(self.commit))*(j+1))
                     if left == True:
                         painter.drawLine(i+2, 15+(13/len(self.commit))*(j+1), i+29, 15+(15/len(self.commit))*j)
                     else:
                         painter.drawLine(i+1, (30/len(self.commit))*(j+1)-up, i+27, down+(30/len(self.commit))*j)
                 elif self.commit[j][k] == '_':
-                    #painter.drawImage(QPoint(i,0), QImage(dirname(__file__)+'/icons/line-flipped.png'))
                     painter.drawLine(i, 15+(15/len(self.commit))*j, i+30, 15+(15/len(self.commit))*j)
                 i += self.char_size
         painter.end()

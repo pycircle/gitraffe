@@ -106,7 +106,6 @@ class MainWindowWrapper(QMainWindow):
         item = DefinedGraphWidget('current.png')
         self.ui.repositoryTableWidget.setCellWidget(0, 0, item)
         self.ui.repositoryTableWidget.setItem(0, 2, QTableWidgetItem('Current local changes'))
-        print(len(commits))
         max_size = 30
         if len(commits) > 0:
             item = FirstGraphWidget(graph[0])
@@ -136,8 +135,8 @@ class MainWindowWrapper(QMainWindow):
     def view_repository(self):
         path = self.ui.listWidget.currentItem().data(Qt.UserRole)
         open_repository(path)
-        self.ui.repositoryTableWidget.selectRow(0)
         self.refresh_graph()
+        self.ui.repositoryTableWidget.selectRow(0)
 
     def clone_respoitory(self):
         cwd = CloneWindowWrapper(self)
@@ -297,15 +296,12 @@ class MainWindowWrapper(QMainWindow):
 
     def cherry_pick_menu(self, position):
         if self.ui.repositoryTableWidget.currentRow() > 0:
-            print(self.ui.repositoryTableWidget.currentRow())
             menu = QMenu()
             cherry_pick_action = menu.addAction('Cherry pick') 
             QObject.connect(cherry_pick_action, SIGNAL('triggered()'), self.cherry_pick)
-            #menu.addAction(cherry_pick_action)
             menu.exec_(self.ui.repositoryTableWidget.mapToGlobal(position))
 
     def cherry_pick(self):
-        print(self.ui.repositoryTableWidget.item(self.ui.repositoryTableWidget.currentRow(), 1).text())
         self.cpdw = CherryPickDialogWrapper(self.ui.repositoryTableWidget.item(self.ui.repositoryTableWidget.currentRow(), 1).text(), self)
         self.cpdw.exec_()
         QObject.connect(self.cpdw, SIGNAL('accepted()'), self.refresh_graph)
