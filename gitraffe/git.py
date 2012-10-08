@@ -100,7 +100,7 @@ def commit(message):
     save_log(command, output)
     return output
 
-def push(window):
+def push(window, args):
     from wrappers.authorization_wrapper import AuthorizationWrapper
     command = "git config --get remote.origin.url"
     output = getoutput(command)
@@ -108,8 +108,8 @@ def push(window):
     url = ""
     if '@' in output:
         dialog = AuthorizationWrapper(window)
-        dialog.Username_lineEdit.setText("Not needed")
-        dialog.Username_lineEdit.setReadOnly(True)
+        dialog.ui.Username_lineEdit.setText("Not needed")
+        dialog.ui.Username_lineEdit.setReadOnly(True)
         dialog.exec_()
         splited = output.split('@')
         url = "%s:%s@%s" % (splited[0], dialog.password, splited[1])
@@ -118,7 +118,7 @@ def push(window):
         dialog = AuthorizationWrapper(window)
         dialog.exec_()
         url = "%s//%s:%s@%s" % (splited[0], dialog.username, dialog.password, splited[1])
-    args = ['git', 'push', url]
+    #args = ['git', 'push', url]
     child = Popen(args, stdout=PIPE, stderr=STDOUT)
     child.wait()
     info = ""
@@ -128,6 +128,9 @@ def push(window):
         info = "Everything up-to-date"
     save_log(" ".join(args[:-1]), info)
     return info
+
+def normal_push(window):
+    push(window, ['git', 'push'])
 
 def get_splited(output):
     files = []
@@ -147,10 +150,11 @@ def get_unstaged_files():
     output = get_output_lines(command)
     files = output[1]
     j = 0
-    for i in range(len(files)):
-        if files[i-j][0] != ' ' and files[i-j][0] != '?':
-            del files[i-j]
-            j += 1
+    if len(files) > 0 and files[0] != '':
+        for i in range(len(files)):
+            if files[i-j][0] != ' ' and files[i-j][0] != '?':
+                del files[i-j]
+                j += 1
     save_log(command, output[0])
     return get_splited(output)
 
@@ -207,9 +211,10 @@ def delete_branch(branch):
     command = 'git branch -d ' + branch
     save_log(command, getoutput(command))
 
-def create_branch(branch):
-    command = 'git checkout -b %s && git push origin %s' % (branch, branch)
+def create_branch(window, branch):
+    command = 'git checkout -b ' + branch
     save_log(command, getoutput(command))
+    push(window, ['git', 'push', 'origin', branch])
 
 def get_settings():
     command_username = 'git config --global user.name'
