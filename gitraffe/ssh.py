@@ -9,10 +9,15 @@ def get_ssh_key():
         return output
     return 'You don\'t have SSH key. Click \"Generate new key\"!'
 
-# TODO -> HERE WE MUST HANDLE PASS REQUEST
-def generate_new_ssh_key(email):
-    if exists((expanduser('~/.ssh/id_rsa.pub'))) or exists((expanduser('~/.ssh/id_rsa.pub'))):
-        system('mkdir ~/.ssh/backup')
-        system('cp ~/.ssh/id_rsa* ~/.ssh/backup')
-    output = getoutput('ssh-keygen -t rsa -C "' + email + '"')
+def backup():
+    system('mkdir ~/.ssh/backup')
+    system('cp ~/.ssh/id_rsa* ~/.ssh/backup')
+    system('rm -f ~/.ssh/id_rsa*')
+    
+
+def generate_new_ssh_key(email, password):
+    print(type(email))
+    print(type(password))
+    #if exists((expanduser('~/.ssh/id_rsa.pub'))) or exists((expanduser('~/.ssh/id_rsa.pub'))):
+    output = getoutput('ssh-keygen -t rsa -C "%s" -f ~/.ssh/id_rsa -N %s' % (email, password))
     return output
