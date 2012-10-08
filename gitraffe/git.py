@@ -138,11 +138,12 @@ def get_splited(output):
         files.append(line.split())
     return files
 
-def cherry_pick(branch, commit):
+def cherry_pick(window, branch, commit):
     change_branch(branch)
     command = 'git cherry-pick ' + commit
     output = getoutput(command)
     save_log(command, output)
+    normal_push(window)
     return output
 
 def get_unstaged_files():

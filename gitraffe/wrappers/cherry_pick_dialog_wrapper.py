@@ -29,5 +29,5 @@ class CherryPickDialogWrapper(QDialog):
         elif get_current_branch() == item.text():
             QMessageBox.critical(self, "Error", "You can't cherry pick on currently used branch! You must choose another branch.", QMessageBox.Ok)
         else:
-            cherry_pick(item.text(), self.commit)
+            cherry_pick(self.parent, item.text(), self.commit)
 
