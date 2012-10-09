@@ -105,7 +105,7 @@ def push(window):
     command = "git config --get remote.origin.url"
     output = getoutput(command)
     save_log(command, output)
-    url = ""
+    url = None
     if output.startswith("git@"):
         pass
     elif '@' in output:
@@ -124,7 +124,11 @@ def push(window):
         url = "%s//%s:%s@%s" % (splited[0], dialog.username, dialog.password, splited[1])
         if dialog.username == "" or dialog.password == "":
             return "Password or username is needed"
-    args = ['git', 'push', url]
+    if url == None:
+        args = ['git', 'push']
+    else:
+        args = ['git', 'push', url]
+    print('|%s|' % (' '.join(args)))
     child = Popen(args, stdout=PIPE, stderr=STDOUT)
     child.wait()
     info = ""
