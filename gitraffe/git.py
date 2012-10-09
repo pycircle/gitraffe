@@ -106,18 +106,24 @@ def push(window):
     output = getoutput(command)
     save_log(command, output)
     url = ""
-    if '@' in output:
+    if output.startswith("git@"):
+        pass
+    elif '@' in output:
         dialog = AuthorizationWrapper(window)
         dialog.ui.Username_lineEdit.setText("Not needed")
         dialog.ui.Username_lineEdit.setReadOnly(True)
         dialog.exec_()
         splited = output.split('@')
         url = "%s:%s@%s" % (splited[0], dialog.password, splited[1])
+        if dialog.password == "":
+            return "Password is needed"
     else:
         splited = output.split('//')
         dialog = AuthorizationWrapper(window)
         dialog.exec_()
         url = "%s//%s:%s@%s" % (splited[0], dialog.username, dialog.password, splited[1])
+        if dialog.username == "" or dialog.password == "":
+            return "Password or username is needed"
     args = ['git', 'push', url]
     child = Popen(args, stdout=PIPE, stderr=STDOUT)
     child.wait()
@@ -140,7 +146,7 @@ def cherry_pick(window, branch, commit):
     command = 'git cherry-pick ' + commit
     output = getoutput(command)
     save_log(command, output)
-    normal_push(window)
+    push(window)
     return output
 
 def get_unstaged_files():
