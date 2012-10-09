@@ -100,7 +100,7 @@ def commit(message):
     save_log(command, output)
     return output
 
-def push(window, args):
+def push(window):
     from wrappers.authorization_wrapper import AuthorizationWrapper
     command = "git config --get remote.origin.url"
     output = getoutput(command)
@@ -118,7 +118,7 @@ def push(window, args):
         dialog = AuthorizationWrapper(window)
         dialog.exec_()
         url = "%s//%s:%s@%s" % (splited[0], dialog.username, dialog.password, splited[1])
-    #args = ['git', 'push', url]
+    args = ['git', 'push', url]
     child = Popen(args, stdout=PIPE, stderr=STDOUT)
     child.wait()
     info = ""
@@ -128,9 +128,6 @@ def push(window, args):
         info = "Everything up-to-date"
     save_log(" ".join(args[:-1]), info)
     return info
-
-def normal_push(window):
-    push(window, ['git', 'push'])
 
 def get_splited(output):
     files = []
@@ -215,7 +212,7 @@ def delete_branch(branch):
 def create_branch(window, branch):
     command = 'git checkout -b ' + branch
     save_log(command, getoutput(command))
-    push(window, ['git', 'push', 'origin', branch])
+    push(window, ['origin', branch])
 
 def get_settings():
     command_username = 'git config --global user.name'
