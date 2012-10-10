@@ -100,14 +100,18 @@ def commit(message):
     save_log(command, output)
     return output
 
-def push(window):
-    from wrappers.authorization_wrapper import AuthorizationWrapper
+def get_url():
     command = "git config --get remote.origin.url"
     output = getoutput(command)
     save_log(command, output)
-    url = ''
+    return output
+
+def push(window, additional_args=None):
+    from wrappers.authorization_wrapper import AuthorizationWrapper
+    output = get_url()
+    args = ['git', 'push']
     if output.startswith("git@"):
-        args = ['git', 'push']
+        pass
     elif '@' in output:
         dialog = AuthorizationWrapper(window)
         dialog.ui.Username_lineEdit.setText("Not needed")
@@ -126,6 +130,9 @@ def push(window):
         if dialog.username == "" or dialog.password == "":
             return "Password or username is needed"
         args.append(url)
+    if additional_args != None:
+        for arg in additional_args:
+            args.append(arg)
     child = Popen(args, stdout=PIPE, stderr=STDOUT)
     child.wait()
     info = ""
@@ -219,7 +226,12 @@ def delete_branch(branch):
 def create_branch(window, branch):
     command = 'git checkout -b ' + branch
     save_log(command, getoutput(command))
-    push(window, ['origin', branch])
+    url = get_url()
+    additional_args = []
+    if url.startswith("git@"):
+        additional_args.append('origin')
+    additional_args.append(branch)
+    return push(window, additional_args)
 
 def get_settings():
     command_username = 'git config --global user.name'

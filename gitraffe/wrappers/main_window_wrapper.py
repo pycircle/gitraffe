@@ -215,7 +215,7 @@ class MainWindowWrapper(QMainWindow):
         if self.ui.listWidget.currentItem().isSelected() == True:
             name = QInputDialog.getText(self, 'Name', 'Put your new branch name:')
             if name[1]:
-                create_branch(self, name[0])
+                QMessageBox.information(self, 'Create branch', create_branch(self, name[0]), QMessageBox.Ok)
         else:
             QMessageBox.critical(self, "Error", "You must choose repository before creating branch!", QMessageBox.Ok)
 
