@@ -1,4 +1,4 @@
-from PyQt4.QtGui import QMainWindow, QFileDialog, qApp, QListWidgetItem, QMessageBox, QInputDialog, QIcon ,QTableWidgetItem, QAbstractItemView, QWidget, QMenu, QAction
+from PyQt4.QtGui import QMainWindow, QFileDialog, qApp, QListWidgetItem, QMessageBox, QInputDialog, QIcon ,QTableWidgetItem, QAbstractItemView, QWidget, QMenu, QAction, QHeaderView
 from PyQt4.QtCore import QDir, QObject, SIGNAL, Qt, QPoint
 from PyQt4 import QtGui
 from layouts.main_window import Ui_MainWindow
@@ -48,6 +48,7 @@ class MainWindowWrapper(QMainWindow):
         QObject.connect(self.ui.actionDelete_branch, SIGNAL('triggered()'), self.delete_branch_dialog)
         QObject.connect(self.ui.actionCreate_branch, SIGNAL('triggered()'), self.create_branch)
         QObject.connect(self.ui.actionAbout_Gitraffe, SIGNAL('triggered()'), self.about_dialog)
+        QObject.connect(self.ui.actionRefresh, SIGNAL('triggered()'), self.view_repository)
         # Buttons
         QObject.connect(self.ui.pullButton, SIGNAL('clicked()'), self.pull)
         QObject.connect(self.ui.pullButton_2, SIGNAL('clicked()'), self.pull)
@@ -59,6 +60,9 @@ class MainWindowWrapper(QMainWindow):
         # Widgets
         self.ui.repositoryTableWidget.setContextMenuPolicy(Qt.CustomContextMenu)
         self.ui.repositoryTableWidget.customContextMenuRequested.connect(self.cherry_pick_menu)
+        header = self.ui.repositoryTableWidget.horizontalHeader()
+        #header.setStretchLastSection(True)
+        header.setResizeMode(QHeaderView.Stretch)
 
     def list_all_repositories(self):
         repositories = db_adapter.get_repositories()
@@ -305,3 +309,4 @@ class MainWindowWrapper(QMainWindow):
         self.cpdw = CherryPickDialogWrapper(self.ui.repositoryTableWidget.item(self.ui.repositoryTableWidget.currentRow(), 1).text(), self)
         self.cpdw.exec_()
         QObject.connect(self.cpdw, SIGNAL('accepted()'), self.refresh_graph)
+
