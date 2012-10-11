@@ -21,13 +21,11 @@ class CherryPickDialogWrapper(QDialog):
 
     def cherry_pick(self):
         item = self.ui.branches2delListWidget.currentItem()
-        print(get_current_branch())
-        print(item.text())
-        print(get_current_branch() == item.text())
         if item == None:
             QMessageBox.critical(self, "Error", "You must choose branch to cherry pick on!", QMessageBox.Ok)
         elif get_current_branch() == item.text():
             QMessageBox.critical(self, "Error", "You can't cherry pick on currently used branch! You must choose another branch.", QMessageBox.Ok)
         else:
-            cherry_pick(self.parent, item.text(), self.commit)
+            QMessageBox.information(self, 'Cherry pick', cherry_pick(self.parent, item.text(), self.commit), QMessageBox.Ok)
+            self.parent.refresh_graph()
 

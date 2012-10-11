@@ -2,7 +2,7 @@ from PyQt4.QtGui import QMainWindow, QFileDialog, qApp, QListWidgetItem, QMessag
 from PyQt4.QtCore import QDir, QObject, SIGNAL, Qt, QPoint
 from PyQt4 import QtGui
 from layouts.main_window import Ui_MainWindow
-from git import check_repository, open_repository, get_commits, get_graph, get_files, git_add, git_rm, git_reset_head, git_rm_cached, git_check_out, clean, change_local_branch, change_remote_branch, create_branch, pull, commit, push, get_file_changes, get_current_branch, get_unstaged_files, get_staged_files
+from git import check_repository, open_repository, get_commits, get_graph, get_files, git_add, git_rm, git_reset_head, git_rm_cached, git_check_out, clean, change_local_branch, change_remote_branch, create_branch, pull, commit, push, get_file_changes, get_current_branch, get_unstaged_files, get_staged_files, cherry_pick
 import db_adapter
 from os.path import dirname, basename
 from layouts import main_window
@@ -28,6 +28,7 @@ class MainWindowWrapper(QMainWindow):
         self.ui.repositoryTableWidget.setSelectionMode(QAbstractItemView.SingleSelection)
         self.ui.repositoryTableWidget.verticalHeader().setVisible(False)
         self.ui.repositoryTableWidget.itemSelectionChanged.connect(self.check_table_line)
+        self.ui.repositoryTableWidget.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Expanding)
         #Files List
         self.ui.files_listWidget.itemSelectionChanged.connect(self.view_file_changes)
         #Un/staged_listWidget
@@ -101,6 +102,7 @@ class MainWindowWrapper(QMainWindow):
                                            QMessageBox.Ok, QMessageBox.Cancel)
             if respond==QMessageBox.Ok:
                 db_adapter.delete_repository(self.ui.listWidget.currentItem().data(Qt.UserRole))
+                self.ui.repositoryTableWidget.setRowCount(0)
                 self.ui.listWidget.takeItem(self.ui.listWidget.currentRow())
 
     def graph(self):
@@ -137,10 +139,12 @@ class MainWindowWrapper(QMainWindow):
         self.graph()
 
     def view_repository(self):
-        path = self.ui.listWidget.currentItem().data(Qt.UserRole)
-        open_repository(path)
-        self.refresh_graph()
-        self.ui.repositoryTableWidget.selectRow(0)
+        item = self.ui.listWidget.currentItem()
+        if item != None:
+            path = item.data(Qt.UserRole)
+            open_repository(path)
+            self.refresh_graph()
+            self.ui.repositoryTableWidget.selectRow(0)
 
     def clone_respoitory(self):
         cwd = CloneWindowWrapper(self)
@@ -308,5 +312,9 @@ class MainWindowWrapper(QMainWindow):
     def cherry_pick(self):
         self.cpdw = CherryPickDialogWrapper(self.ui.repositoryTableWidget.item(self.ui.repositoryTableWidget.currentRow(), 1).text(), self)
         self.cpdw.exec_()
+<<<<<<< HEAD
         QObject.connect(self.cpdw, SIGNAL('accepted()'), self.refresh_graph)
 
+=======
+        #QObject.connect(self.cpdw, SIGNAL('accepted()'), self.cherry_pick)
+>>>>>>> cherry pick fixed

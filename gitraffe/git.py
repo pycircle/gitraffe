@@ -154,7 +154,6 @@ def cherry_pick(window, branch, commit):
     command = 'git cherry-pick ' + commit
     output = getoutput(command)
     save_log(command, output)
-    push(window)
     return output
 
 def get_unstaged_files():
