@@ -6,9 +6,19 @@ import sys
 from threading import Thread
 from queue import Queue, Empty
 
+def ext_getoutput(command):
+    execute = True
+    while(execute):
+        try:
+            output = getoutput(command)
+        except IOError:
+            pass
+        else:
+            execute = False
+    return output
 
 def get_output_lines(command):
-    output = getoutput(command)
+    output = ext_getoutput(command)
     lines = output.split('\n')
     return [output, lines]
 
