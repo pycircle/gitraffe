@@ -312,9 +312,3 @@ class MainWindowWrapper(QMainWindow):
     def cherry_pick(self):
         self.cpdw = CherryPickDialogWrapper(self.ui.repositoryTableWidget.item(self.ui.repositoryTableWidget.currentRow(), 1).text(), self)
         self.cpdw.exec_()
-<<<<<<< HEAD
-        QObject.connect(self.cpdw, SIGNAL('accepted()'), self.refresh_graph)
-
-=======
-        #QObject.connect(self.cpdw, SIGNAL('accepted()'), self.cherry_pick)
->>>>>>> cherry pick fixed
