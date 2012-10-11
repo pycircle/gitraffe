@@ -28,7 +28,6 @@ class MainWindowWrapper(QMainWindow):
         self.ui.repositoryTableWidget.setSelectionMode(QAbstractItemView.SingleSelection)
         self.ui.repositoryTableWidget.verticalHeader().setVisible(False)
         self.ui.repositoryTableWidget.itemSelectionChanged.connect(self.check_table_line)
-        self.ui.repositoryTableWidget.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Expanding)
         #Files List
         self.ui.files_listWidget.itemSelectionChanged.connect(self.view_file_changes)
         #Un/staged_listWidget
