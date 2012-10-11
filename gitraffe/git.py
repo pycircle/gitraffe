@@ -271,11 +271,12 @@ def get_file_changes(flag, path ,commit, comparsion=None):
             save_log(command, output[0])
             for line in output[1][4:]:
                 line = remove_html(line)
-                if line[0]=='-':
-                    line = '<font color="RED"> %s</font>' % (line)
-                elif line[0]=='+':
-                    line = '<font color="GREEN"> %s</font>' % (line)
-                out += line + '\n'
+                if len(line) > 0:
+                    if line[0]=='-':
+                        line = '<font color="RED"> %s</font>' % (line)
+                    elif line[0]=='+':
+                        line = '<font color="GREEN"> %s</font>' % (line)
+                    out += line + '\n'
             out += '</pre>'
             return out
         elif flag=='A':
