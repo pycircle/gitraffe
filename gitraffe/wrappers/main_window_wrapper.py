@@ -62,7 +62,8 @@ class MainWindowWrapper(QMainWindow):
         self.ui.repositoryTableWidget.customContextMenuRequested.connect(self.cherry_pick_menu)
         header = self.ui.repositoryTableWidget.horizontalHeader()
         #header.setStretchLastSection(True)
-        header.setResizeMode(QHeaderView.Stretch)
+        for i in range(1, 5):
+            header.setResizeMode(i, QHeaderView.Stretch)
 
     def list_all_repositories(self):
         repositories = db_adapter.get_repositories()
