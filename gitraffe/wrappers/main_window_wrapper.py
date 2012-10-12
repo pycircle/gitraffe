@@ -143,7 +143,7 @@ class MainWindowWrapper(QMainWindow):
         if item != None:
             path = item.data(Qt.UserRole)
             open_repository(path)
-            self.refresh_graph()
+            self.graph()
             self.ui.repositoryTableWidget.selectRow(0)
 
     def clone_respoitory(self):
@@ -173,8 +173,11 @@ class MainWindowWrapper(QMainWindow):
         commit = self.ui.repositoryTableWidget.item(self.ui.repositoryTableWidget.currentRow(), 1)
         if commit != None:
             files = get_files(commit.text())
-            for flag, file in files:
-                QListWidgetItem(flag+" "+file, self.ui.files_listWidget)
+            try:
+                for flag, file in files:
+                    QListWidgetItem(flag+" "+file, self.ui.files_listWidget)
+            except ValueError:
+                pass
         self.ui.files_listWidget.setCurrentRow(0)
 
 
