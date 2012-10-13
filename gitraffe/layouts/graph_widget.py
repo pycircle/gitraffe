@@ -61,9 +61,11 @@ class GraphWidget(QWidget):
             i = 0
             for k in range(len(self.commit[j])):
                 if self.commit[j][k] == '|':
-                    x = 0
+                    x = (30/len(self.commit))*j
                     if len(self.commit[0]) > k and self.commit[0][k] == '*':
-                        x = 15
+                        x += 15
+                    if len(self.commit[j-1]) > k and self.commit[j-1][k-1] == '\\':
+                        x += (30/len(self.commit))/2
                     painter.drawLine(i+15, x, i+15, (30/len(self.commit))*(j+1))
                 elif self.commit[j][k] == '\\':
                     painter.drawLine(i+1, 15, i+29, 15+(15/len(self.commit))*(j+1))
