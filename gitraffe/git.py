@@ -7,15 +7,11 @@ from threading import Thread
 from queue import Queue, Empty
 
 def ext_getoutput(command):
-    execute = True
-    while(execute):
-        try:
-            output = getoutput(command)
-        except IOError:
-            pass
-        else:
-            execute = False
-    return output
+    try:
+        output = getoutput(command)
+        return output
+    except IOError:
+        ext_getoutput(command)
 
 def get_output_lines(command):
     output = ext_getoutput(command)
