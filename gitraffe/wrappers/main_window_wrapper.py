@@ -144,6 +144,8 @@ class MainWindowWrapper(QMainWindow):
             path = item.data(Qt.UserRole)
             open_repository(path)
             self.graph()
+            if self.ui.repositoryTableWidget.currentRow() == 0:
+                self.view_current_changes()
             self.ui.repositoryTableWidget.selectRow(0)
 
     def clone_respoitory(self):
@@ -303,6 +305,7 @@ class MainWindowWrapper(QMainWindow):
             QMessageBox.critical(self, "Error", "You must write some commit message!", QMessageBox.Ok)
         else:
             QMessageBox.information(self, "Commit", commit(message), QMessageBox.Ok)
+            self.view_repository()
             self.ui.Commit_textEdit.clear()
 
     def cherry_pick_menu(self, position):

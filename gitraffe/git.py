@@ -11,7 +11,7 @@ def ext_getoutput(command):
         output = getoutput(command)
         return output
     except IOError:
-        ext_getoutput(command)
+        return ext_getoutput(command)
 
 def get_output_lines(command):
     output = ext_getoutput(command)
@@ -21,7 +21,7 @@ def get_output_lines(command):
 def check_repository(path):
     chdir(path)
     command = 'git rev-parse --git-dir'
-    output = getoutput(command)
+    output = ext_getoutput(command)
     save_log(command, output)
     if output == '.git':
         return (True, path)
@@ -70,7 +70,7 @@ def get_commits():
     i = 0
     while i < len(commits):
         command = 'git branch -r --contains ' + commits[i][0]
-        output = getoutput(command)
+        output = ext_getoutput(command)
         if output != '':
             break
         commits[i][1] = '[not pushed] ' + commits[i][1]
@@ -97,26 +97,26 @@ def get_graph():
 
 def diff(filename):
     command = 'git diff ' + filename
-    output = getoutput(command)
+    output = ext_getoutput(command)
     save_log(command, output)
     return output
 
 # TODO -> HERE WE HAVE TO HANDLE PASS REQUESTS
 def pull():
     command = 'git pull'
-    output = getoutput(command)
+    output = ext_getoutput(command)
     save_log(command, output)
     return output
 
 def commit(message):
     command = 'git commit -m "%s"' % message
-    output = getoutput(command)
+    output = ext_getoutput(command)
     save_log(command, output)
     return output
 
 def get_url():
     command = "git config --get remote.origin.url"
-    output = getoutput(command)
+    output = ext_getoutput(command)
     save_log(command, output)
     return output
 
@@ -166,7 +166,7 @@ def get_splited(output):
 def cherry_pick(window, branch, commit):
     change_branch(branch)
     command = 'git cherry-pick ' + commit
-    output = getoutput(command)
+    output = ext_getoutput(command)
     save_log(command, output)
     return output
 
@@ -226,19 +226,19 @@ def get_current_branch():
 
 def change_local_branch(branch):
     command = 'git checkout ' + branch
-    save_log(command, getoutput(command))
+    save_log(command, ext_getoutput(command))
 
 def change_remote_branch(branch, new_name):
     command = 'git checkout -b %s %s' % (new_name, branch)
-    save_log(command, getoutput(command))
+    save_log(command, ext_getoutput(command))
 
 def delete_branch(branch):
     command = 'git branch -d ' + branch
-    save_log(command, getoutput(command))
+    save_log(command, ext_getoutput(command))
 
 def create_branch(window, branch):
     command = 'git checkout -b ' + branch
-    save_log(command, getoutput(command))
+    save_log(command, ext_getoutput(command))
     url = get_url()
     additional_args = []
     if url.startswith("git@"):
@@ -250,8 +250,8 @@ def get_settings():
     command_username = 'git config --global user.name'
     command_email = 'git config --global user.email'
     settings = []
-    output_username = getoutput(command_username)
-    output_email = getoutput(command_email)
+    output_username = ext_getoutput(command_username)
+    output_email = ext_getoutput(command_email)
     save_log(command_username, output_username)
     save_log(command_email, output_email)
     settings.append(output_username)
@@ -309,17 +309,17 @@ def get_file_changes(flag, path ,commit, comparsion=None):
 def to_string(files, command):
     strfiles = " ".join(files)
     command += strfiles
-    output = getoutput(command)
+    output = ext_getoutput(command)
     save_log(command, output)
 
 def git_add(file):
     command = 'git add ' + file
-    output = getoutput(command)
+    output = ext_getoutput(command)
     save_log(command, output)
 
 def git_rm(files):
     command = 'git rm ' + file
-    output = getoutput(command)
+    output = ext_getoutput(command)
     save_log(command, output)
 
 def git_reset_head(files):
@@ -330,10 +330,10 @@ def git_rm_cached(files):
 
 def git_check_out(file):
     command = 'git checkout -- ' + file
-    output = getoutput(command)
+    output = ext_getoutput(command)
     save_log(command, output)
 
 def clean(file):
     command = 'git clean -f ' + file
-    output = getoutput(command)
+    output = ext_getoutput(command)
     save_log(command, output)
