@@ -381,8 +381,6 @@
      <string>Repository</string>
     </property>
     <addaction name="actionPull"/>
-    <addaction name="actionCommit"/>
-    <addaction name="actionStash"/>
     <addaction name="actionPush"/>
     <addaction name="separator"/>
     <addaction name="actionChange_branch"/>

@@ -2,8 +2,8 @@
 
 # Form implementation generated from reading ui file 'main_window.ui'
 #
-# Created: Thu Sep 27 22:11:52 2012
-#      by: PyQt4 UI code generator 4.9.1
+# Created: Sat Oct 13 19:42:35 2012
+#      by: PyQt4 UI code generator 4.9.4
 #
 # WARNING! All changes made in this file will be lost!
 
@@ -297,8 +297,6 @@ class Ui_MainWindow(object):
         self.menuFile.addAction(self.actionExit)
         self.menuView.addAction(self.actionRefresh)
         self.menuRepository.addAction(self.actionPull)
-        self.menuRepository.addAction(self.actionCommit)
-        self.menuRepository.addAction(self.actionStash)
         self.menuRepository.addAction(self.actionPush)
         self.menuRepository.addSeparator()
         self.menuRepository.addAction(self.actionChange_branch)

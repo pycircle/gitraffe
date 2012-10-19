@@ -67,6 +67,14 @@ def get_commits():
             i = 0
             commits.append(commit)
             commit = []
+    i = 0
+    while i < len(commits):
+        command = 'git branch -r --contains ' + commits[i][0]
+        output = getoutput(command)
+        if output != '':
+            break
+        commits[i][1] = '[not pushed] ' + commits[i][1]
+        i += 1
     return commits
 
 def get_graph():
