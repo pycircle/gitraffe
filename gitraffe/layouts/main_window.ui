@@ -71,7 +71,7 @@
       <item>
        <widget class="QStackedWidget" name="bottomwidgets">
         <property name="currentIndex">
-         <number>1</number>
+         <number>0</number>
         </property>
         <widget class="QWidget" name="Page1">
          <layout class="QHBoxLayout" name="changesetLayout" stretch="0">
@@ -154,6 +154,9 @@
               </item>
               <item>
                <widget class="QPushButton" name="stashButton">
+                <property name="enabled">
+                 <bool>false</bool>
+                </property>
                 <property name="text">
                  <string>Stash</string>
                 </property>
@@ -166,7 +169,7 @@
               <item>
                <widget class="QPushButton" name="pushButton">
                 <property name="enabled">
-                 <bool>false</bool>
+                 <bool>true</bool>
                 </property>
                 <property name="text">
                  <string>Push</string>
@@ -383,6 +386,8 @@
     <addaction name="actionPull"/>
     <addaction name="actionPush"/>
     <addaction name="separator"/>
+    <addaction name="actionStashes"/>
+    <addaction name="separator"/>
     <addaction name="actionChange_branch"/>
     <addaction name="actionDelete_branch"/>
     <addaction name="actionCreate_branch"/>
@@ -573,6 +578,11 @@
   <action name="actionCreate_branch">
    <property name="text">
     <string>Create branch</string>
+   </property>
+  </action>
+  <action name="actionStashes">
+   <property name="text">
+    <string>Stashes</string>
    </property>
   </action>
  </widget>

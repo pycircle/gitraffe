@@ -12,6 +12,7 @@ from wrappers.delete_branch_dialog_wrapper import DeleteBranchDialogWrapper
 from wrappers.about_dialog_wrapper import AboutDialogWrapper
 from wrappers.settings_dialog_wrapper import SettingsDialogWrapper
 from wrappers.cherry_pick_dialog_wrapper import CherryPickDialogWrapper
+from wrappers.stashes_dialog_wrapper import StashesDialogWrapper
 from layouts.graph_widget import GraphWidget, FirstGraphWidget, LastGraphWidget
 from layouts.defined_graph_widget import DefinedGraphWidget
 
@@ -49,9 +50,11 @@ class MainWindowWrapper(QMainWindow):
         QObject.connect(self.ui.actionCreate_branch, SIGNAL('triggered()'), self.create_branch)
         QObject.connect(self.ui.actionAbout_Gitraffe, SIGNAL('triggered()'), self.about_dialog)
         QObject.connect(self.ui.actionRefresh, SIGNAL('triggered()'), self.view_repository)
+        QObject.connect(self.ui.actionStashes, SIGNAL('triggered()'), self.stashes)
         # Buttons
         QObject.connect(self.ui.pullButton, SIGNAL('clicked()'), self.pull)
         QObject.connect(self.ui.pullButton_2, SIGNAL('clicked()'), self.pull)
+        QObject.connect(self.ui.pushButton, SIGNAL('clicked()'), self.push)
         QObject.connect(self.ui.pushButton_2, SIGNAL('clicked()'), self.push)
         QObject.connect(self.ui.stageButton_2, SIGNAL('clicked()'), self.stage_files)
         QObject.connect(self.ui.unstageButton_2, SIGNAL('clicked()'), self.unstage_files)
@@ -318,3 +321,6 @@ class MainWindowWrapper(QMainWindow):
     def cherry_pick(self):
         self.cpdw = CherryPickDialogWrapper(self.ui.repositoryTableWidget.item(self.ui.repositoryTableWidget.currentRow(), 1).text(), self)
         self.cpdw.exec_()
+
+    def stashes(self):
+        StashesDialogWrapper(self).exec_()

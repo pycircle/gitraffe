@@ -337,3 +337,19 @@ def clean(file):
     command = 'git clean -f ' + file
     output = ext_getoutput(command)
     save_log(command, output)
+
+def stashes_list():
+    command = 'git stash list'
+    output = get_output_lines(command)
+    save_log(command, output[0])
+    return output[1]
+
+def apply_stash(stash):
+    command = 'git stash apply ' + stash 
+    save_log(command, ext_getoutput(command))
+
+def drop_stash(stash):
+    command = 'git stash drop ' + stash
+    output = ext_getoutput(command)
+    save_log(command, output)
+    return output
