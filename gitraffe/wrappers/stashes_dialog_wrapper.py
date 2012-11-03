@@ -25,16 +25,21 @@ class StashesDialogWrapper(QDialog):
         item  = self.ui.stashesListWidget.currentItem()
         if item == None:
             self.error()
-        else:
+        elif item.isSelected() == True:
             stash = item.text().split()[0][:-1]
             apply_stash(stash)
             QMessageBox.information(self, 'Apply stash', 'Stash %s applied' % (stash), QMessageBox.Ok)
+        else:
+            self.error()
 
     def drop(self):
         item = self.ui.stashesListWidget.currentItem()
         if item == None:
             self.error()
-        else:
+        elif item.isSelected() == True:
             QMessageBox.information(self, 'Drop stash', drop_stash(item.text().split()[0][:-1]), QMessageBox.Ok)
             self.ui.stashesListWidget.clear()
             self.list_stashes()
+        else:
+            self.error()
+           

@@ -338,6 +338,12 @@ def clean(file):
     output = ext_getoutput(command)
     save_log(command, output)
 
+def stash():
+    command = 'git stash'
+    output = ext_getoutput(command)
+    save_log(command, output)
+    return output
+
 def stashes_list():
     command = 'git stash list'
     output = get_output_lines(command)

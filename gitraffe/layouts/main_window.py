@@ -1,19 +1,16 @@
 # -*- coding: utf-8 -*-
-
 # Form implementation generated from reading ui file 'main_window.ui'
 #
 # Created: Fri Nov  2 18:51:58 2012
 #      by: PyQt4 UI code generator 4.9.4
 #
 # WARNING! All changes made in this file will be lost!
-
 from PyQt4 import QtCore, QtGui
-
+from os.path import dirname
 try:
     _fromUtf8 = QtCore.QString.fromUtf8
 except AttributeError:
     _fromUtf8 = lambda s: s
-
 class Ui_MainWindow(object):
     def setupUi(self, MainWindow):
         MainWindow.setObjectName(_fromUtf8("MainWindow"))
@@ -65,14 +62,14 @@ class Ui_MainWindow(object):
         self.stageButton = QtGui.QPushButton(self.Page1)
         self.stageButton.setEnabled(False)
         icon = QtGui.QIcon()
-        icon.addPixmap(QtGui.QPixmap(_fromUtf8("icons/stage.png")), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        icon.addPixmap(QtGui.QPixmap(_fromUtf8(dirname(__file__) + "/icons/stage.png")), QtGui.QIcon.Normal, QtGui.QIcon.Off)
         self.stageButton.setIcon(icon)
         self.stageButton.setObjectName(_fromUtf8("stageButton"))
         self.changesetButtonsLayout.addWidget(self.stageButton)
         self.unstageButton = QtGui.QPushButton(self.Page1)
         self.unstageButton.setEnabled(False)
         icon1 = QtGui.QIcon()
-        icon1.addPixmap(QtGui.QPixmap(_fromUtf8("icons/unstage.png")), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        icon1.addPixmap(QtGui.QPixmap(_fromUtf8(dirname(__file__) + "/icons/unstage.png")), QtGui.QIcon.Normal, QtGui.QIcon.Off)
         self.unstageButton.setIcon(icon1)
         self.unstageButton.setObjectName(_fromUtf8("unstageButton"))
         self.changesetButtonsLayout.addWidget(self.unstageButton)
@@ -87,28 +84,28 @@ class Ui_MainWindow(object):
         self.changesetButtonsLayout.addWidget(self.separator)
         self.pullButton = QtGui.QPushButton(self.Page1)
         icon2 = QtGui.QIcon()
-        icon2.addPixmap(QtGui.QPixmap(_fromUtf8("icons/pull.png")), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        icon2.addPixmap(QtGui.QPixmap(_fromUtf8(dirname(__file__) + "/icons/pull.png")), QtGui.QIcon.Normal, QtGui.QIcon.Off)
         self.pullButton.setIcon(icon2)
         self.pullButton.setObjectName(_fromUtf8("pullButton"))
         self.changesetButtonsLayout.addWidget(self.pullButton)
         self.commitButton = QtGui.QPushButton(self.Page1)
         self.commitButton.setEnabled(False)
         icon3 = QtGui.QIcon()
-        icon3.addPixmap(QtGui.QPixmap(_fromUtf8("icons/commit_icon.png")), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        icon3.addPixmap(QtGui.QPixmap(_fromUtf8(dirname(__file__) + "/icons/commit_icon.png")), QtGui.QIcon.Normal, QtGui.QIcon.Off)
         self.commitButton.setIcon(icon3)
         self.commitButton.setObjectName(_fromUtf8("commitButton"))
         self.changesetButtonsLayout.addWidget(self.commitButton)
         self.stashButton = QtGui.QPushButton(self.Page1)
         self.stashButton.setEnabled(False)
         icon4 = QtGui.QIcon()
-        icon4.addPixmap(QtGui.QPixmap(_fromUtf8("icons/stash.png")), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        icon4.addPixmap(QtGui.QPixmap(_fromUtf8(dirname(__file__) + "/icons/stash.png")), QtGui.QIcon.Normal, QtGui.QIcon.Off)
         self.stashButton.setIcon(icon4)
         self.stashButton.setObjectName(_fromUtf8("stashButton"))
         self.changesetButtonsLayout.addWidget(self.stashButton)
         self.pushButton = QtGui.QPushButton(self.Page1)
         self.pushButton.setEnabled(True)
         icon5 = QtGui.QIcon()
-        icon5.addPixmap(QtGui.QPixmap(_fromUtf8("icons/push.png")), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        icon5.addPixmap(QtGui.QPixmap(_fromUtf8(dirname(__file__) + "/icons/push.png")), QtGui.QIcon.Normal, QtGui.QIcon.Off)
         self.pushButton.setIcon(icon5)
         self.pushButton.setObjectName(_fromUtf8("pushButton"))
         self.changesetButtonsLayout.addWidget(self.pushButton)
@@ -231,14 +228,14 @@ class Ui_MainWindow(object):
         MainWindow.addToolBar(QtCore.Qt.TopToolBarArea, self.toolBar)
         self.actionClone_repository = QtGui.QAction(MainWindow)
         icon6 = QtGui.QIcon()
-        icon6.addPixmap(QtGui.QPixmap(_fromUtf8("icons/clone.png")), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        icon6.addPixmap(QtGui.QPixmap(_fromUtf8(dirname(__file__) + "/icons/clone.png")), QtGui.QIcon.Normal, QtGui.QIcon.Off)
         self.actionClone_repository.setIcon(icon6)
         self.actionClone_repository.setObjectName(_fromUtf8("actionClone_repository"))
         self.actionExit = QtGui.QAction(MainWindow)
         self.actionExit.setObjectName(_fromUtf8("actionExit"))
         self.actionRefresh = QtGui.QAction(MainWindow)
         icon7 = QtGui.QIcon()
-        icon7.addPixmap(QtGui.QPixmap(_fromUtf8("icons/refresh.png")), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        icon7.addPixmap(QtGui.QPixmap(_fromUtf8(dirname(__file__) + "/icons/refresh.png")), QtGui.QIcon.Normal, QtGui.QIcon.Off)
         self.actionRefresh.setIcon(icon7)
         self.actionRefresh.setObjectName(_fromUtf8("actionRefresh"))
         self.actionAbout_PyGitGui = QtGui.QAction(MainWindow)
@@ -268,7 +265,7 @@ class Ui_MainWindow(object):
         self.actionAdd_existing_repository.setObjectName(_fromUtf8("actionAdd_existing_repository"))
         self.actionSettings = QtGui.QAction(MainWindow)
         icon8 = QtGui.QIcon()
-        icon8.addPixmap(QtGui.QPixmap(_fromUtf8("icons/settings.png")), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        icon8.addPixmap(QtGui.QPixmap(_fromUtf8(dirname(__file__) + "/icons/settings.png")), QtGui.QIcon.Normal, QtGui.QIcon.Off)
         self.actionSettings.setIcon(icon8)
         self.actionSettings.setObjectName(_fromUtf8("actionSettings"))
         self.actionAbout_Gitraffe = QtGui.QAction(MainWindow)
@@ -314,11 +311,9 @@ class Ui_MainWindow(object):
         self.toolBar.addAction(self.actionClone_repository_3)
         self.toolBar.addAction(self.actionAdd_existing_repository_2)
         self.toolBar.addAction(self.actionDelete_repository)
-
         self.retranslateUi(MainWindow)
         self.bottomwidgets.setCurrentIndex(0)
         QtCore.QMetaObject.connectSlotsByName(MainWindow)
-
     def retranslateUi(self, MainWindow):
         MainWindow.setWindowTitle(QtGui.QApplication.translate("MainWindow", "Gitraffe", None, QtGui.QApplication.UnicodeUTF8))
         item = self.repositoryTableWidget.horizontalHeaderItem(1)
@@ -374,4 +369,3 @@ class Ui_MainWindow(object):
         self.actionDelete_branch.setText(QtGui.QApplication.translate("MainWindow", "Delete branch", None, QtGui.QApplication.UnicodeUTF8))
         self.actionCreate_branch.setText(QtGui.QApplication.translate("MainWindow", "Create branch", None, QtGui.QApplication.UnicodeUTF8))
         self.actionStashes.setText(QtGui.QApplication.translate("MainWindow", "Stashes", None, QtGui.QApplication.UnicodeUTF8))
-
