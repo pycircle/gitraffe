@@ -3,7 +3,7 @@ from PyQt4.QtCore import QObject, SIGNAL
 from os.path import exists, expanduser
 from layouts.settings_dialog import Ui_SettingsDialog
 from wrappers.authorization_wrapper import AuthorizationWrapper
-from git import get_settings, set_settings
+from git.settings import get_settings, set_settings
 from ssh import get_ssh_key, backup, generate_new_ssh_key
 
 class SettingsDialogWrapper(QDialog):

@@ -1,7 +1,7 @@
 from PyQt4.QtGui import QDialog, QMessageBox, QInputDialog, QListWidgetItem
 from PyQt4.QtCore import QObject, SIGNAL
 from layouts.branches_dialog import Ui_BranchesDialog
-from git import get_local_branches, get_remote_branches, change_local_branch, change_remote_branch
+from git.branches import get_local_branches, get_remote_branches, change_local_branch, change_remote_branch
 
 class BranchesDialogWrapper(QDialog):
     def __init__(self, parent=None):
@@ -11,6 +11,7 @@ class BranchesDialogWrapper(QDialog):
         self.ui.setupUi(self)
         self.list_local_branches()
         self.list_remote_branches()
+        QObject.connect(self, SIGNAL('accepted()'), self.change_branch)
 
     def list_local_branches(self):
         branches = get_local_branches()
@@ -43,7 +44,7 @@ class BranchesDialogWrapper(QDialog):
         else:
             name = QInputDialog().getText(self, 'Name', 'Put your branch name:', text=self.get_default_branch_name(item.text()))
             if name[1]:
-                change_remote_branch(item.text(), name[0])
+                QMessageBox.information(self, 'Change branch', change_remote_branch(item.text(), name[0]), QMessageBox.Ok)
 
     def change_branch(self):
         if self.ui.branchesTabWidget.currentIndex() == 0:

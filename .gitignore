@@ -7,3 +7,5 @@ gitraffe/wrappers/__pycache__/
 gitraffe/.DS_Store
 gitraffe/layouts/.DS_Store
 *.pyc
+
+*.py~

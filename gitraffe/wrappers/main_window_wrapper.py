@@ -2,7 +2,13 @@ from PyQt4.QtGui import QMainWindow, QFileDialog, qApp, QListWidgetItem, QMessag
 from PyQt4.QtCore import QDir, QObject, SIGNAL, Qt, QPoint
 from PyQt4 import QtGui
 from layouts.main_window import Ui_MainWindow
-from git import check_repository, open_repository, get_commits, get_graph, get_files, git_add, git_rm, git_reset_head, git_rm_cached, git_check_out, clean, change_local_branch, change_remote_branch, create_branch, pull, commit, push, get_file_changes, get_current_branch, get_unstaged_files, get_staged_files, cherry_pick, stash
+from git.repository import check_repository, open_repository
+from git.commit_history import get_commits, get_graph, get_files
+from git.commit import git_add, git_rm, git_reset_head, git_rm_cached, git_check_out, clean, get_unstaged_files, get_staged_files, commit
+from git.branches import create_branch
+from git.remote import pull, push
+from git.file_diff import get_file_changes
+from git.stash import stash
 import db_adapter
 from os.path import dirname, basename
 from layouts import main_window
@@ -186,38 +192,10 @@ class MainWindowWrapper(QMainWindow):
                 pass
         self.ui.files_listWidget.setCurrentRow(0)
 
-
-    def get_default_branch_name(self, name):
-        name = name.split('/')
-        return name[1]
-
-    def change_lcl_branch(self):
-        item = self.bdw.ui.localBranchesListWidget.currentItem()
-        if item == None:
-            self.error()
-        else:
-            change_local_branch(item.text())
-
-    def change_rmt_branch(self):
-        item = self.bdw.ui.remoteBranchesListWidget.currentItem()
-        if item == None:
-            self.error()
-        else:
-            name = QInputDialog().getText(self, 'Name', 'Put your branch name:', text=self.get_default_branch_name(item.text()))
-            if name[1]:
-                change_remote_branch(item.text(), name[0])
-
-    def change_branch(self):
-        if self.bdw.ui.branchesTabWidget.currentIndex() == 0:
-            self.change_lcl_branch()
-        else:
-            self.change_rmt_branch()
-        self.refresh_graph()
-
     def change_branch_dialog(self):
         if self.ui.listWidget.currentItem().isSelected() == True:
             self.bdw = BranchesDialogWrapper(self)
-            QObject.connect(self.bdw, SIGNAL('accepted()'), self.change_branch)
+            QObject.connect(self.bdw, SIGNAL('accepted()'), self.refresh_graph)
             self.bdw.exec_()
         else:
             QMessageBox.critical(self, "Error", "You must choose repository before changing branch!", QMessageBox.Ok)

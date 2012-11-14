@@ -1,7 +1,7 @@
 from PyQt4.QtGui import QDialog, QListWidgetItem, QMessageBox
 from PyQt4.QtCore import QObject, SIGNAL
 from layouts.stashes_dialog import Ui_StashesDialog
-from git import stashes_list, apply_stash, drop_stash
+from git.stash import stashes_list, apply_stash, drop_stash
 
 class StashesDialogWrapper(QDialog):
     def __init__(self, parent=None):

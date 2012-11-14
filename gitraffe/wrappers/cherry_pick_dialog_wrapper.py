@@ -1,7 +1,7 @@
 from PyQt4.QtGui import QDialog, QListWidgetItem, QMessageBox
 from PyQt4.QtCore import QObject, SIGNAL
 from layouts.delete_branch_dialog import Ui_DeleteBranchDialog
-from git import get_local_branches, get_current_branch, cherry_pick
+from git.branches import get_local_branches, get_current_branch, cherry_pick
 
 class CherryPickDialogWrapper(QDialog):
     def __init__(self, commit, parent=None):
