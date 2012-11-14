@@ -122,39 +122,34 @@ def get_url():
 
 def push(window, additional_args=None):
     from wrappers.authorization_wrapper import AuthorizationWrapper
+    import pexpect
     output = get_url()
-    args = ['git', 'push']
-    if output.startswith("git@"):
-        pass
-    elif '@' in output:
-        dialog = AuthorizationWrapper(window)
-        dialog.ui.Username_lineEdit.setText("Not needed")
-        dialog.ui.Username_lineEdit.setReadOnly(True)
-        dialog.exec_()
-        splited = output.split('@')
-        url = "%s:%s@%s" % (splited[0], dialog.password, splited[1])
-        if dialog.password == "":
-            return "Password is needed"
-        args.append(url)
-    else:
-        splited = output.split('//')
+    child = pexpect.spawn('git push')
+    notUser = False
+    try:
+        child.expect("Username*", timeout=2)
         dialog = AuthorizationWrapper(window)
         dialog.exec_()
-        url = "%s//%s:%s@%s" % (splited[0], dialog.username, dialog.password, splited[1])
-        if dialog.username == "" or dialog.password == "":
-            return "Password or username is needed"
-        args.append(url)
-    if additional_args != None:
-        for arg in additional_args:
-            args.append(arg)
-    child = Popen(args, stdout=PIPE, stderr=STDOUT)
-    child.wait()
-    info = ""
-    for x in child.stdout.readlines()[1:]:
-        info += x.decode("utf-8")
-    if info == "":
-        info = "Everything up-to-date"
-    save_log(" ".join(args[:-1]), info)
+        child.sendline(dialog.username)
+        child.expect("Password*", timeout=2)
+        child.sendline(dialog.password)
+        child.expect(pexpect.EOF)
+        info = child.before
+    except pexpect.TIMEOUT:
+       notUser = True
+    if notUser:
+        try:
+            child.expect("Password*", timeout=2)
+            dialog = AuthorizationWrapper(window)
+            dialog.ui.Username_lineEdit.setText("Not needed")
+            dialog.ui.Username_lineEdit.setReadOnly(True)
+            dialog.exec_()
+            child.sendline(dialog.password)
+            child.expect(pexpect.EOF)
+            info = child.before
+        except pexpect.TIMEOUT:
+            info = "Timeout Error"
+    save_log('git push', info)
     return info
 
 def get_splited(output):
