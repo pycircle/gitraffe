@@ -20,7 +20,7 @@ def get_unstaged_files():
     j = 0
     if len(files) > 0 and files[0] != '':
         for i in range(len(files)):
-            if files[i-j][0] != ' ' and files[i-j][0] != '?':
+            if files[i-j][0] != ' ' and files[i-j][0] != '?' and files[i-j][0] != 'U':
                 del files[i-j]
                 j += 1
     save_log(command, output[0])

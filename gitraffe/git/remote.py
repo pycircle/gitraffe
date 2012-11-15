@@ -11,9 +11,12 @@ def get_url():
 
 def pull():
     command = 'git pull'
-    output = ext_getoutput(command)
+    output = getoutput(command)
     save_log(command, output)
     return output
+
+def push_ssh():
+    return getoutput('git push')
 
 def push(window, additional_args=None):
     from wrappers.authorization_wrapper import AuthorizationWrapper
@@ -30,19 +33,24 @@ def push(window, additional_args=None):
         child.sendline(dialog.password)
         child.expect(pexpect.EOF)
         info = child.before
+    except pexpect.EOF:
+        info = push_ssh()
     except pexpect.TIMEOUT:
        notUser = True
-    if notUser:
-        try:
-            child.expect("Password*", timeout=2)
-            dialog = AuthorizationWrapper(window)
-            dialog.ui.Username_lineEdit.setText("Not needed")
-            dialog.ui.Username_lineEdit.setReadOnly(True)
-            dialog.exec_()
-            child.sendline(dialog.password)
-            child.expect(pexpect.EOF)
-            info = child.before
-        except pexpect.TIMEOUT:
-            info = "Timeout Error"
+       if notUser:
+           try:
+               child.expect("Password*", timeout=2)
+               dialog = AuthorizationWrapper(window)
+               dialog.ui.Username_lineEdit.setText("Not needed")
+               dialog.ui.Username_lineEdit.setReadOnly(True)
+               dialog.exec_()
+               child.sendline(dialog.password)
+               child.expect(pexpect.EOF)
+               info = child.before
+           except pexpect.EOF:
+               info = push_ssh()
+           except pexpect.TIMEOUT:
+               #info = "Timeout Error"
+               info = push_ssh()
     save_log('git push', info)
     return info
