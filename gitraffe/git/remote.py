@@ -33,24 +33,19 @@ def push(window, additional_args=None):
         child.sendline(dialog.password)
         child.expect(pexpect.EOF)
         info = child.before
-    except pexpect.EOF:
-        info = push_ssh()
-    except pexpect.TIMEOUT:
-       notUser = True
-       if notUser:
-           try:
-               child.expect("Password*", timeout=2)
-               dialog = AuthorizationWrapper(window)
-               dialog.ui.Username_lineEdit.setText("Not needed")
-               dialog.ui.Username_lineEdit.setReadOnly(True)
-               dialog.exec_()
-               child.sendline(dialog.password)
-               child.expect(pexpect.EOF)
-               info = child.before
-           except pexpect.EOF:
-               info = push_ssh()
-           except pexpect.TIMEOUT:
-               #info = "Timeout Error"
-               info = push_ssh()
+    except (pexpect.TIMEOUT, pexpect.EOF):
+        notUser = True
+        if notUser:
+            try:
+                child.expect("Password*", timeout=2)
+                dialog = AuthorizationWrapper(window)
+                dialog.ui.Username_lineEdit.setText("Not needed")
+                dialog.ui.Username_lineEdit.setReadOnly(True)
+                dialog.exec_()
+                child.sendline(dialog.password)
+                child.expect(pexpect.EOF)
+                info = child.before
+            except (pexpect.TIMEOUT, pexpect.EOF):
+                info = push_ssh()
     save_log('git push', info)
     return info
