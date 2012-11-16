@@ -6,11 +6,12 @@ def remove_html(line):
     new = new.replace('>', '&gt;')
     return new
 
-def get_file_changes(flag, path ,commit, comparsion=None):
+def get_file_changes(flag, path ,commit=None, comparsion=None):
     try:
         out = '<pre>'
         if flag == 'M' or flag == 'MM':
-            command = 'git diff %s:%s %s:%s' % (comparsion, path, commit, path)
+            if commit: command = 'git diff %s:%s %s:%s' % (comparsion, path, commit, path)
+            else: command = 'git diff ' + path
             output = getoutput_lines(command)
             save_log(command, output[0])
             for line in output[1][4:]:
@@ -23,10 +24,15 @@ def get_file_changes(flag, path ,commit, comparsion=None):
                     out += line + '\n'
             out += '</pre>'
             return out
-        elif flag=='A':
-            command = 'git show %s:%s' % (commit, path)
-            output = getoutput_lines(command)
-            save_log(command, output[0])
+        elif flag == 'A' or flag == '??':
+            if commit: 
+                command = 'git show %s:%s' % (commit, path)
+                output = getoutput_lines(command)
+                save_log(command, output[0])
+            else:
+                output = open(path).read()
+                save_log("open(path).read()", output)
+                output = [None, output.split("\n")]
             for line in output[1]:
                 line = remove_html(line)
                 line = '<font color="GREEN"> + %s </font>' % (line)

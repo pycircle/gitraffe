@@ -37,7 +37,7 @@ def git_add(file):
     output = getoutput(command)
     save_log(command, output)
 
-def git_rm(files):
+def git_rm(file):
     command = 'git rm ' + file
     output = getoutput(command)
     save_log(command, output)

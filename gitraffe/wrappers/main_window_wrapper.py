@@ -37,6 +37,8 @@ class MainWindowWrapper(QMainWindow):
         self.ui.repositoryTableWidget.itemSelectionChanged.connect(self.check_table_line)
         #Files List
         self.ui.files_listWidget.itemSelectionChanged.connect(self.view_file_changes)
+        self.ui.Unstaged_listwidget.itemSelectionChanged.connect(self.view_current_file_changes)
+        self.ui.Staged_listWidget.itemSelectionChanged.connect(self.view_current_file_changes)
         #Un/staged_listWidget
         self.ui.Staged_listWidget.setSelectionMode(QAbstractItemView.MultiSelection)
         self.ui.Unstaged_listwidget.setSelectionMode(QAbstractItemView.MultiSelection)
@@ -225,7 +227,7 @@ class MainWindowWrapper(QMainWindow):
             QMessageBox.critical(self, "Error", "You must choose repository before pulling!", QMessageBox.Ok)
 
     def push(self):
-        if self.ui.listWidget.currentItem().isSelected() == True:
+        if self.ui.listWidget.currentItem().isSelected():
             QMessageBox.information(self, "Push", push(self), QMessageBox.Ok)
             self.view_repository()
         else:
@@ -233,6 +235,18 @@ class MainWindowWrapper(QMainWindow):
 
     def settings_dialog(self):
         SettingsDialogWrapper(self).exec_()
+    
+    def view_current_file_changes(self):
+        self.ui.diff_local_textBrowser.clear()
+        unstaged = self.ui.Unstaged_listwidget.currentItem()
+        staged = self.ui.Staged_listWidget.currentItem()
+        comparsion = self.ui.repositoryTableWidget.item(1,1).text()
+        if unstaged and unstaged.isSelected():
+            flag, path = self.ui.Unstaged_listwidget.currentItem().text().split()
+            self.ui.diff_local_textBrowser.setText(get_file_changes(flag, path, comparsion = comparsion))
+        elif staged and staged.isSelected():
+            flag, path = self.ui.Staged_listWidget.currentItem().text().split()
+            self.ui.diff_local_textBrowser.setText(get_file_changes(flag, path, comparsion = comparsion))   
 
     def view_file_changes(self):
         self.ui.diff_textBrowser.clear()
@@ -282,13 +296,13 @@ class MainWindowWrapper(QMainWindow):
             self.view_current_changes()
 
     def commit_files(self):
-        message = self.ui.Commit_textEdit.toPlainText()
+        message = self.ui.commit_lineEdit.text()
         if message == "":
             QMessageBox.critical(self, "Error", "You must write some commit message!", QMessageBox.Ok)
         else:
             QMessageBox.information(self, "Commit", commit(message), QMessageBox.Ok)
             self.view_repository()
-            self.ui.Commit_textEdit.clear()
+            self.ui.commit_lineEdit.clear()
 
     def cherry_pick_menu(self, position):
         if self.ui.repositoryTableWidget.currentRow() > 0:
