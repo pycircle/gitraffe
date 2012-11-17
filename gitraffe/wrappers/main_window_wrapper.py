@@ -220,7 +220,7 @@ class MainWindowWrapper(QMainWindow):
 
     def pull(self):
         if self.ui.listWidget.currentItem().isSelected() == True:
-            QMessageBox.information(self, "Pull", pull(), QMessageBox.Ok)
+            QMessageBox.information(self, "Pull", pull(self), QMessageBox.Ok)
             self.refresh_graph()
         else:
             QMessageBox.critical(self, "Error", "You must choose repository before pulling!", QMessageBox.Ok)
