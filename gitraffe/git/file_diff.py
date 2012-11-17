@@ -1,3 +1,4 @@
+from os.path import isdir
 from output import getoutput_lines
 from log import save_log
 
@@ -30,6 +31,9 @@ def get_file_changes(flag, path ,commit=None, comparsion=None):
                 output = getoutput_lines(command)
                 save_log(command, output[0])
             else:
+                if isdir(path):
+                    save_log('isdir(path)', 'True')
+                    return '<pre>This is a directory</pre>'
                 output = open(path).read()
                 save_log("open(path).read()", output)
                 output = [None, output.split("\n")]

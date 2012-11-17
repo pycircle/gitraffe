@@ -73,7 +73,6 @@ class MainWindowWrapper(QMainWindow):
         self.ui.repositoryTableWidget.setContextMenuPolicy(Qt.CustomContextMenu)
         self.ui.repositoryTableWidget.customContextMenuRequested.connect(self.cherry_pick_menu)
         header = self.ui.repositoryTableWidget.horizontalHeader()
-        #header.setStretchLastSection(True)
         for i in range(1, 5):
             header.setResizeMode(i, QHeaderView.Stretch)
 
@@ -266,34 +265,43 @@ class MainWindowWrapper(QMainWindow):
         return selected
 
     def stage_files(self):
-        for item in self.ui.Unstaged_listwidget.selectedItems():
-            splited_item = item.text().split()
-            if splited_item[0] == 'D':
-                git_rm(splited_item[1])
-            else:
-                git_add(splited_item[1])
-        self.view_current_changes()
-
-    def unstage_files(self):
-        selected = []
-        for item in self.ui.Staged_listWidget.selectedItems():
-            selected.append(item.text().split()[1])
-        if self.ui.repositoryTableWidget.rowCount() > 1:
-            git_reset_head(selected)
-        else:
-            git_rm_cached(selected)
-        self.view_current_changes()
-
-    def discard_files(self):
-        reply = QMessageBox.question(self, 'Discard', 'Do you want to discard changes?', QMessageBox.Yes, QMessageBox.No)
-        if reply == QMessageBox.Yes:
+        if len(self.ui.Unstaged_listwidget.selectedItems()) > 0:
             for item in self.ui.Unstaged_listwidget.selectedItems():
                 splited_item = item.text().split()
-                if splited_item[0] == '??':
-                    clean(splited_item[1])
+                if splited_item[0] == 'D':
+                    git_rm(splited_item[1])
                 else:
-                    git_check_out(splited_item[1])
+                    git_add(splited_item[1])
             self.view_current_changes()
+        else:
+            QMessageBox.critical(self, "Error", "You must select unstaged file(s) to stage!", QMessageBox.Ok)
+
+    def unstage_files(self):
+        if len(self.ui.Staged_listwidget.selectedItems()) > 0:
+            selected = []
+            for item in self.ui.Staged_listWidget.selectedItems():
+                selected.append(item.text().split()[1])
+                if self.ui.repositoryTableWidget.rowCount() > 1:
+                    git_reset_head(selected)
+                else:
+                    git_rm_cached(selected)
+            self.view_current_changes()
+        else:
+            QMessageBox.critical(self, "Error", "You must select staged file(s) to unstage!", QMessageBox.Ok)
+
+    def discard_files(self):
+        if len(self.ui.Unstaged_listwidget.selectedItems()) > 0:
+            reply = QMessageBox.question(self, 'Discard', 'Do you want to discard changes?', QMessageBox.Yes, QMessageBox.No)
+            if reply == QMessageBox.Yes:
+                for item in self.ui.Unstaged_listwidget.selectedItems():
+                    splited_item = item.text().split()
+                    if splited_item[0] == '??':
+                        clean(splited_item[1])
+                    else:
+                        git_check_out(splited_item[1])
+                self.view_current_changes()
+        else:
+            QMessageBox.critical(self, "Error", "You must select unstaged file(s) to discard!", QMessageBox.Ok)
 
     def commit_files(self):
         message = self.ui.commit_lineEdit.text()
