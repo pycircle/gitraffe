@@ -277,7 +277,7 @@ class MainWindowWrapper(QMainWindow):
             QMessageBox.critical(self, "Error", "You must select unstaged file(s) to stage!", QMessageBox.Ok)
 
     def unstage_files(self):
-        if len(self.ui.Staged_listwidget.selectedItems()) > 0:
+        if len(self.ui.Staged_listWidget.selectedItems()) > 0:
             selected = []
             for item in self.ui.Staged_listWidget.selectedItems():
                 selected.append(item.text().split()[1])
