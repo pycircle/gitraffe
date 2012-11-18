@@ -17,6 +17,7 @@ Which packages do you need?
 ===========================
 
 **Gentoo / Sabayon**
+
 If you have USE_PYTHON and PYTHON_TARGETS variables defined in your /etc/make.conf file, you should include 3.2 version to get all packages and Python libraries working.
 - >=dev-lang/python-3.2.3
 - dev-python/PyQt4
