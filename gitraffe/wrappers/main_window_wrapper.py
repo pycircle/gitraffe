@@ -217,18 +217,28 @@ class MainWindowWrapper(QMainWindow):
         AboutDialogWrapper(self).exec_()
 
     def pull(self):
-        if self.ui.listWidget.currentItem().isSelected() == True:
-            QMessageBox.information(self, "Pull", pull(self), QMessageBox.Ok)
-            self.refresh_graph()
-        else:
+        def error():
             QMessageBox.critical(self, "Error", "You must choose repository before pulling!", QMessageBox.Ok)
+        if self.ui.listWidget.currentItem() != None:
+            if self.ui.listWidget.currentItem().isSelected() == True:
+                QMessageBox.information(self, "Pull", pull(self), QMessageBox.Ok)
+                self.refresh_graph()
+            else:
+                error()
+        else:
+            error()
 
     def push(self):
-        if self.ui.listWidget.currentItem().isSelected():
-            QMessageBox.information(self, "Push", push(self), QMessageBox.Ok)
-            self.view_repository()
+        def error():
+            QMessageBox.critical(self, "Error", "You must choose repository before pushing!", QMessageBox.Ok)
+        if self.ui.listWidget.currentItem() != None:
+            if self.ui.listWidget.currentItem().isSelected():
+                QMessageBox.information(self, "Push", push(self), QMessageBox.Ok)
+                self.view_repository()
+            else:
+                error()
         else:
-            QMessageBox.critical(self, "Error", "You must choose repository before commiting!", QMessageBox.Ok)
+            error()
 
     def settings_dialog(self):
         SettingsDialogWrapper(self).exec_()
