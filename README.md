@@ -10,7 +10,10 @@ How to run Gitraffe?
 
 1. Ensure that you have Python 3.2, PyQT4 for Py 3.2 and Python Setuptools. If you're not sure, see the next section.
 2. Go to gitraffe/libraries/ directory and do as root:
-easy_install-3.2 pexpect_u-2.5.1-py3.2.egg
+<pre>easy_install-python3.2 pexpect_u-2.5.1-py3.2.egg</pre>
+or
+<pre>easy_install-3.2 pexpect_u-2.5.1-py3.2.egg</pre>
+It depends, which command works on your OS.
 3. Just run gitraffe/main.py :)
 
 Which packages do you need?
