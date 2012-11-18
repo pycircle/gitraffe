@@ -16,11 +16,17 @@ easy_install-3.2 pexpect_u-2.5.1-py3.2.egg
 Which packages do you need?
 ===========================
 
-Ubuntu
+**Gentoo / Sabayon**
+If you have USE_PYTHON and PYTHON_TARGETS variables defined in your /etc/make.conf file, you should include 3.2 version to get all packages and Python libraries working.
+- >=dev-lang/python-3.2.3
+- dev-python/PyQt4
+- dev-python/setuptools
+
+**Ubuntu / Debian**
 - python3
 - python3-pyqt4
 - python3-setuptools
 
-Mac OS X (MacPorts)
+**Mac OS X (MacPorts)**
 - python32
 - py32-pyqt4
