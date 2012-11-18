@@ -84,10 +84,8 @@ class MainWindowWrapper(QMainWindow):
     def browse(self):
         directory = QFileDialog.getExistingDirectory(self, QDir.homePath(), QDir.homePath())
         if directory!="":
-            path = check_repository(directory)
-            if path[0]:
+            if check_repository(directory):
                 if not db_adapter.exists_repository(directory):
-                    directory = path[1]
                     name = QInputDialog().getText(self, 'Name', 'Put your repository name:', text=basename(directory))
                     if name[1]:
                         self.add_to_database(name[0], directory)
