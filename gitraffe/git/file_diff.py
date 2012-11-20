@@ -24,7 +24,7 @@ def get_file_changes(flag, path ,commit=None, comparsion=None):
                     out += line + '\n'
             out += '</pre>'
             return out
-        elif flag == 'A' or flag == '??':
+        elif flag == 'A' or flag == '??' or flag == 'AA':
             if commit: 
                 command = 'git show %s:%s' % (commit, path)
                 output = getoutput_lines(command)
