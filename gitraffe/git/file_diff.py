@@ -39,7 +39,7 @@ def get_file_changes(flag, path ,commit=None, comparsion=None):
                 out += line + '\n'
             out += '</pre>'
             return out
-        elif flag=='D':
+        elif flag=='D' or flag == 'DD':
             command = 'git show %s:%s' % (comparsion, path)
             output = getoutput_lines(command)
             save_log(command, output[0])
