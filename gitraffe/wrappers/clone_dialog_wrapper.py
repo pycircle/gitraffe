@@ -17,8 +17,9 @@ class CloneWindowWrapper(QDialog):
     def clone(self):
         source = self.ui.Source_lineEdit.text()
         destination = self.ui.Destination_lineEdit.text()
-        info = clone_repository(source, destination)
+        info = clone_repository(self, source, destination)
         if info[0]:
+            QMessageBox.information(self, "Clone", info[1], QMessageBox.Ok)
             name = QInputDialog().getText(self, 'Name', 'Put your repository name:', text=basename(destination))
             if name[1]:
                 self.parent.add_to_database(name[0], destination)

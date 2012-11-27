@@ -73,7 +73,6 @@ class MainWindowWrapper(QMainWindow):
         self.ui.repositoryTableWidget.setContextMenuPolicy(Qt.CustomContextMenu)
         self.ui.repositoryTableWidget.customContextMenuRequested.connect(self.cherry_pick_menu)
         header = self.ui.repositoryTableWidget.horizontalHeader()
-        #header.setStretchLastSection(True)
         for i in range(1, 5):
             header.setResizeMode(i, QHeaderView.Stretch)
 
@@ -85,10 +84,8 @@ class MainWindowWrapper(QMainWindow):
     def browse(self):
         directory = QFileDialog.getExistingDirectory(self, QDir.homePath(), QDir.homePath())
         if directory!="":
-            path = check_repository(directory)
-            if path[0]:
+            if check_repository(directory):
                 if not db_adapter.exists_repository(directory):
-                    directory = path[1]
                     name = QInputDialog().getText(self, 'Name', 'Put your repository name:', text=basename(directory))
                     if name[1]:
                         self.add_to_database(name[0], directory)
@@ -220,18 +217,28 @@ class MainWindowWrapper(QMainWindow):
         AboutDialogWrapper(self).exec_()
 
     def pull(self):
-        if self.ui.listWidget.currentItem().isSelected() == True:
-            QMessageBox.information(self, "Pull", pull(), QMessageBox.Ok)
-            self.refresh_graph()
-        else:
+        def error():
             QMessageBox.critical(self, "Error", "You must choose repository before pulling!", QMessageBox.Ok)
+        if self.ui.listWidget.currentItem() != None:
+            if self.ui.listWidget.currentItem().isSelected() == True:
+                QMessageBox.information(self, "Pull", pull(self), QMessageBox.Ok)
+                self.refresh_graph()
+            else:
+                error()
+        else:
+            error()
 
     def push(self):
-        if self.ui.listWidget.currentItem().isSelected():
-            QMessageBox.information(self, "Push", push(self), QMessageBox.Ok)
-            self.view_repository()
+        def error():
+            QMessageBox.critical(self, "Error", "You must choose repository before pushing!", QMessageBox.Ok)
+        if self.ui.listWidget.currentItem() != None:
+            if self.ui.listWidget.currentItem().isSelected():
+                QMessageBox.information(self, "Push", push(self), QMessageBox.Ok)
+                self.view_repository()
+            else:
+                error()
         else:
-            QMessageBox.critical(self, "Error", "You must choose repository before commiting!", QMessageBox.Ok)
+            error()
 
     def settings_dialog(self):
         SettingsDialogWrapper(self).exec_()
@@ -266,34 +273,43 @@ class MainWindowWrapper(QMainWindow):
         return selected
 
     def stage_files(self):
-        for item in self.ui.Unstaged_listwidget.selectedItems():
-            splited_item = item.text().split()
-            if splited_item[0] == 'D':
-                git_rm(splited_item[1])
-            else:
-                git_add(splited_item[1])
-        self.view_current_changes()
-
-    def unstage_files(self):
-        selected = []
-        for item in self.ui.Staged_listWidget.selectedItems():
-            selected.append(item.text().split()[1])
-        if self.ui.repositoryTableWidget.rowCount() > 1:
-            git_reset_head(selected)
-        else:
-            git_rm_cached(selected)
-        self.view_current_changes()
-
-    def discard_files(self):
-        reply = QMessageBox.question(self, 'Discard', 'Do you want to discard changes?', QMessageBox.Yes, QMessageBox.No)
-        if reply == QMessageBox.Yes:
+        if len(self.ui.Unstaged_listwidget.selectedItems()) > 0:
             for item in self.ui.Unstaged_listwidget.selectedItems():
                 splited_item = item.text().split()
-                if splited_item[0] == '??':
-                    clean(splited_item[1])
+                if splited_item[0] == 'D':
+                    git_rm(splited_item[1])
                 else:
-                    git_check_out(splited_item[1])
+                    git_add(splited_item[1])
             self.view_current_changes()
+        else:
+            QMessageBox.critical(self, "Error", "You must select unstaged file(s) to stage!", QMessageBox.Ok)
+
+    def unstage_files(self):
+        if len(self.ui.Staged_listWidget.selectedItems()) > 0:
+            selected = []
+            for item in self.ui.Staged_listWidget.selectedItems():
+                selected.append(item.text().split()[1])
+                if self.ui.repositoryTableWidget.rowCount() > 1:
+                    git_reset_head(selected)
+                else:
+                    git_rm_cached(selected)
+            self.view_current_changes()
+        else:
+            QMessageBox.critical(self, "Error", "You must select staged file(s) to unstage!", QMessageBox.Ok)
+
+    def discard_files(self):
+        if len(self.ui.Unstaged_listwidget.selectedItems()) > 0:
+            reply = QMessageBox.question(self, 'Discard', 'Do you want to discard changes?', QMessageBox.Yes, QMessageBox.No)
+            if reply == QMessageBox.Yes:
+                for item in self.ui.Unstaged_listwidget.selectedItems():
+                    splited_item = item.text().split()
+                    if splited_item[0] == '??':
+                        clean(splited_item[1])
+                    else:
+                        git_check_out(splited_item[1])
+                self.view_current_changes()
+        else:
+            QMessageBox.critical(self, "Error", "You must select unstaged file(s) to discard!", QMessageBox.Ok)
 
     def commit_files(self):
         message = self.ui.commit_lineEdit.text()
