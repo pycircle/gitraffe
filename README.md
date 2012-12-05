@@ -9,6 +9,7 @@ How to run Gitraffe?
 ====================
 
 1) Ensure that you have Python 3.2, PyQT4 for Py 3.2 and Python Setuptools. If you're not sure, see the next section.
+
 2) Go to gitraffe/libraries/ directory and do:
 
 **Ubuntu**
@@ -16,6 +17,7 @@ How to run Gitraffe?
 sudo easy_install3 pexpect_u-2.5.1-py3.2.egg</pre>
 
 **Gentoo / Sabayon**
+
 as root:
 <pre>easy_install-python3.2 setproctitle
 easy_install-python3.2 pexpect_u-2.5.1-py3.2.egg</pre>
