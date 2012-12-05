@@ -7,7 +7,7 @@ from git.commit_history import get_commits, get_graph, get_files
 from git.commit import git_add, git_rm, git_reset_head, git_rm_cached, git_check_out, clean, get_unstaged_files, get_staged_files, commit
 from git.branches import create_branch
 from git.remote import pull, push
-from git.file_diff import get_file_changes
+from git.file_diff import get_staged_file_changes, get_unstaged_file_changes
 from git.stash import stash
 import db_adapter
 from os.path import dirname, basename
@@ -37,8 +37,8 @@ class MainWindowWrapper(QMainWindow):
         self.ui.repositoryTableWidget.itemSelectionChanged.connect(self.check_table_line)
         #Files List
         self.ui.files_listWidget.itemSelectionChanged.connect(self.view_file_changes)
-        self.ui.Unstaged_listwidget.itemSelectionChanged.connect(self.view_current_file_changes)
-        self.ui.Staged_listWidget.itemSelectionChanged.connect(self.view_current_file_changes)
+        self.ui.Unstaged_listwidget.itemSelectionChanged.connect(self.view_current_unstaged_file_changes)
+        self.ui.Staged_listWidget.itemSelectionChanged.connect(self.view_current_staged_file_changes)
         #Un/staged_listWidget
         self.ui.Staged_listWidget.setSelectionMode(QAbstractItemView.MultiSelection)
         self.ui.Unstaged_listwidget.setSelectionMode(QAbstractItemView.MultiSelection)
@@ -242,21 +242,25 @@ class MainWindowWrapper(QMainWindow):
 
     def settings_dialog(self):
         SettingsDialogWrapper(self).exec_()
-    
-    def view_current_file_changes(self):
+
+    def view_current_staged_file_changes(self):
         self.ui.diff_local_textBrowser.clear()
-        unstaged = self.ui.Unstaged_listwidget.currentItem()
         staged = self.ui.Staged_listWidget.currentItem()
         comparsion = self.ui.repositoryTableWidget.item(1,1).text()
-        if unstaged and unstaged.isSelected():
-            flag, path = self.ui.Unstaged_listwidget.currentItem().text().split(None, 1)
+        if staged and staged.isSelected():
+            flag, path = staged.text().split(None, 1)
             path = "\ ".join(path.split())
-            self.ui.diff_local_textBrowser.setText(get_file_changes(flag, path, comparsion = comparsion))
-        elif staged and staged.isSelected():
-            flag, path = self.ui.Staged_listWidget.currentItem().text().split(None, 1)
-            path = "\ ".join(path.split())
-            self.ui.diff_local_textBrowser.setText(get_file_changes(flag, path, comparsion = comparsion))   
+            self.ui.diff_local_textBrowser.setText(get_staged_file_changes(flag, path, comparsion = comparsion))
 
+    def view_current_unstaged_file_changes(self):
+        self.ui.diff_local_textBrowser.clear()
+        unstaged = self.ui.Unstaged_listwidget.currentItem()
+        comparsion = self.ui.repositoryTableWidget.item(1,1).text()
+        if unstaged and unstaged.isSelected():
+            flag, path = unstaged.text().split(None, 1)
+            path = "\ ".join(path.split())
+            self.ui.diff_local_textBrowser.setText(get_unstaged_file_changes(flag, path, comparsion = comparsion))
+    
     def view_file_changes(self):
         self.ui.diff_textBrowser.clear()
         commit = self.ui.repositoryTableWidget.item(self.ui.repositoryTableWidget.currentRow(), 1).text()

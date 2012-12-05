@@ -7,12 +7,14 @@ def remove_html(line):
     new = new.replace('>', '&gt;')
     return new
 
-def get_file_changes(flag, path ,commit=None, comparsion=None):
+def get_file_changes(base_command, flag, path, commit=None, comparsion=None):
     try:
         out = '<pre>'
         if flag == 'M' or flag == 'MM':
-            if commit: command = 'git diff %s:%s %s:%s' % (comparsion, path, commit, path)
-            else: command = 'git diff ' + path
+            if commit:
+                command = base_command + '%s:%s %s:%s' % (comparsion, path, commit, path)
+            else:
+                command = base_command + path
             output = getoutput_lines(command)
             save_log(command, output[0])
             for line in output[1][4:]:
@@ -55,3 +57,9 @@ def get_file_changes(flag, path ,commit=None, comparsion=None):
             return out
     except UnicodeDecodeError:
         return "Cannot decode this file"
+
+def get_staged_file_changes(flag, path, commit=None, comparsion=None):
+    return get_file_changes('git diff --cached ', flag, path, commit, comparsion)
+
+def get_unstaged_file_changes(flag, path, commit=None, comparsion=None):
+    return get_file_changes('git diff ', flag, path, commit, comparsion)
