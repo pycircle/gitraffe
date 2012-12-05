@@ -269,7 +269,7 @@ class MainWindowWrapper(QMainWindow):
             comparsion = self.ui.repositoryTableWidget.item(self.ui.repositoryTableWidget.currentRow()+1, 1).text()
         flag, path = self.ui.files_listWidget.currentItem().text().split(None, 1)
         path = "\ ".join(path.split())
-        self.ui.diff_textBrowser.setText(get_file_changes(flag, path, commit, comparsion))
+        self.ui.diff_textBrowser.setText(get_unstaged_file_changes(flag, path, commit, comparsion))
 
     def move_files(fwidget, twidget):
         selected = []
