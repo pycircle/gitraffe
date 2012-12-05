@@ -2,7 +2,9 @@
 
 import sys
 import os
+import setproctitle
 
+setproctitle.setproctitle("Gitraffe")
 config_dir = '~/.gitraffe'
 
 if __name__ == '__main__':
