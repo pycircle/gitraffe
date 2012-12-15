@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 # Form implementation generated from reading ui file 'main_window.ui'
 #
-# Created: Sat Dec 15 15:40:24 2012
+# Created: Sat Dec 15 15:44:08 2012
 #      by: PyQt4 UI code generator 4.9.3
 #
 # WARNING! All changes made in this file will be lost!
@@ -203,6 +203,9 @@ class Ui_MainWindow(object):
         self.commit_lineEdit.setObjectName(_fromUtf8("commit_lineEdit"))
         self.horizontalLayout_9.addWidget(self.commit_lineEdit)
         self.verticalLayout_2.addLayout(self.horizontalLayout_9)
+        self.amendCheckBox = QtGui.QCheckBox(self.Page2)
+        self.amendCheckBox.setObjectName(_fromUtf8("amendCheckBox"))
+        self.verticalLayout_2.addWidget(self.amendCheckBox)
         self.horizontalLayout_10 = QtGui.QHBoxLayout()
         self.horizontalLayout_10.setObjectName(_fromUtf8("horizontalLayout_10"))
         self.verticalLayout_5 = QtGui.QVBoxLayout()
@@ -368,6 +371,7 @@ class Ui_MainWindow(object):
         self.stashButton_2.setText(QtGui.QApplication.translate("MainWindow", "Stash", None, QtGui.QApplication.UnicodeUTF8))
         self.pushButton_2.setText(QtGui.QApplication.translate("MainWindow", "Push", None, QtGui.QApplication.UnicodeUTF8))
         self.label_3.setText(QtGui.QApplication.translate("MainWindow", "Commit message:", None, QtGui.QApplication.UnicodeUTF8))
+        self.amendCheckBox.setText(QtGui.QApplication.translate("MainWindow", "Amend commit", None, QtGui.QApplication.UnicodeUTF8))
         self.label_5.setText(QtGui.QApplication.translate("MainWindow", "Unstaged:", None, QtGui.QApplication.UnicodeUTF8))
         self.label_6.setText(QtGui.QApplication.translate("MainWindow", "Staged:", None, QtGui.QApplication.UnicodeUTF8))
         self.label_4.setText(QtGui.QApplication.translate("MainWindow", "Diff:", None, QtGui.QApplication.UnicodeUTF8))

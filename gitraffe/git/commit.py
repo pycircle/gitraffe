@@ -63,3 +63,9 @@ def commit(message):
     output = getoutput(command)
     save_log(command, output)
     return output
+
+def commit_amend(message):
+    command = 'git commit --amend -m "%s"' % message
+    output = getoutput(command)
+    save_log(command, output)
+    return output
