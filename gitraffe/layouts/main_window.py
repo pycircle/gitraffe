@@ -1,8 +1,8 @@
 # -*- coding: utf-8 -*-
-# Form implementation generated from reading ui file 'main_window.ui'
+# Form implementation generated from reading ui file 'layouts/main_window.ui'
 #
-# Created: Fri Nov 16 15:51:30 2012
-#      by: PyQt4 UI code generator 4.9.4
+# Created: Sat Dec 15 12:23:16 2012
+#      by: PyQt4 UI code generator 4.9.5
 #
 # WARNING! All changes made in this file will be lost!
 from PyQt4 import QtCore, QtGui
@@ -21,17 +21,33 @@ class Ui_MainWindow(object):
         self.centralwidget.setObjectName(_fromUtf8("centralwidget"))
         self.horizontalLayout = QtGui.QHBoxLayout(self.centralwidget)
         self.horizontalLayout.setObjectName(_fromUtf8("horizontalLayout"))
-        self.listWidget = QtGui.QListWidget(self.centralwidget)
-        sizePolicy = QtGui.QSizePolicy(QtGui.QSizePolicy.Maximum, QtGui.QSizePolicy.Expanding)
-        sizePolicy.setHorizontalStretch(200)
+        self.splitter_2 = QtGui.QSplitter(self.centralwidget)
+        sizePolicy = QtGui.QSizePolicy(QtGui.QSizePolicy.Expanding, QtGui.QSizePolicy.Preferred)
+        sizePolicy.setHorizontalStretch(0)
+        sizePolicy.setVerticalStretch(0)
+        sizePolicy.setHeightForWidth(self.splitter_2.sizePolicy().hasHeightForWidth())
+        self.splitter_2.setSizePolicy(sizePolicy)
+        self.splitter_2.setOrientation(QtCore.Qt.Horizontal)
+        self.splitter_2.setOpaqueResize(False)
+        self.splitter_2.setChildrenCollapsible(False)
+        self.splitter_2.setObjectName(_fromUtf8("splitter_2"))
+        self.listWidget = QtGui.QListWidget(self.splitter_2)
+        sizePolicy = QtGui.QSizePolicy(QtGui.QSizePolicy.Ignored, QtGui.QSizePolicy.Expanding)
+        sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(0)
         sizePolicy.setHeightForWidth(self.listWidget.sizePolicy().hasHeightForWidth())
         self.listWidget.setSizePolicy(sizePolicy)
         self.listWidget.setObjectName(_fromUtf8("listWidget"))
-        self.horizontalLayout.addWidget(self.listWidget)
-        self.repositoryLayout = QtGui.QVBoxLayout()
-        self.repositoryLayout.setObjectName(_fromUtf8("repositoryLayout"))
-        self.repositoryTableWidget = QtGui.QTableWidget(self.centralwidget)
+        self.splitter = QtGui.QSplitter(self.splitter_2)
+        sizePolicy = QtGui.QSizePolicy(QtGui.QSizePolicy.Preferred, QtGui.QSizePolicy.Expanding)
+        sizePolicy.setHorizontalStretch(0)
+        sizePolicy.setVerticalStretch(0)
+        sizePolicy.setHeightForWidth(self.splitter.sizePolicy().hasHeightForWidth())
+        self.splitter.setSizePolicy(sizePolicy)
+        self.splitter.setOrientation(QtCore.Qt.Vertical)
+        self.splitter.setHandleWidth(7)
+        self.splitter.setObjectName(_fromUtf8("splitter"))
+        self.repositoryTableWidget = QtGui.QTableWidget(self.splitter)
         self.repositoryTableWidget.setEditTriggers(QtGui.QAbstractItemView.NoEditTriggers)
         self.repositoryTableWidget.setSelectionBehavior(QtGui.QAbstractItemView.SelectRows)
         self.repositoryTableWidget.setObjectName(_fromUtf8("repositoryTableWidget"))
@@ -47,8 +63,7 @@ class Ui_MainWindow(object):
         self.repositoryTableWidget.setHorizontalHeaderItem(3, item)
         item = QtGui.QTableWidgetItem()
         self.repositoryTableWidget.setHorizontalHeaderItem(4, item)
-        self.repositoryLayout.addWidget(self.repositoryTableWidget)
-        self.bottomwidgets = QtGui.QStackedWidget(self.centralwidget)
+        self.bottomwidgets = QtGui.QStackedWidget(self.splitter)
         self.bottomwidgets.setObjectName(_fromUtf8("bottomwidgets"))
         self.Page1 = QtGui.QWidget()
         self.Page1.setObjectName(_fromUtf8("Page1"))
@@ -208,10 +223,7 @@ class Ui_MainWindow(object):
         self.horizontalLayout_2.addLayout(self.verticalLayout_2)
         self.horizontalLayout_3.addLayout(self.horizontalLayout_2)
         self.bottomwidgets.addWidget(self.Page2)
-        self.repositoryLayout.addWidget(self.bottomwidgets)
-        self.repositoryLayout.setStretch(0, 8)
-        self.repositoryLayout.setStretch(1, 7)
-        self.horizontalLayout.addLayout(self.repositoryLayout)
+        self.horizontalLayout.addWidget(self.splitter_2)
         MainWindow.setCentralWidget(self.centralwidget)
         self.menubar = QtGui.QMenuBar(MainWindow)
         self.menubar.setGeometry(QtCore.QRect(0, 0, 857, 22))
