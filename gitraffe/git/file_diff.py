@@ -10,13 +10,16 @@ def remove_html(line):
 def get_file_changes(base_command, flag, path, commit=None, comparsion=None):
     try:
         out = '<pre>'
-        if flag == 'M' or flag == 'MM':
+        if 'M' in flag:
             if commit:
                 command = base_command + '%s:%s %s:%s' % (comparsion, path, commit, path)
             else:
                 command = base_command + path
+            #print(base_command, flag, path, commit, comparsion)
             output = getoutput_lines(command)
             save_log(command, output[0])
+            if not output[1][4:] and 'Binary' in "".join(output[1]): return "Cannot decode this file"
+            #print(output[1][2])
             for line in output[1][4:]:
                 line = remove_html(line)
                 if len(line) > 0:
@@ -27,7 +30,7 @@ def get_file_changes(base_command, flag, path, commit=None, comparsion=None):
                     out += line + '\n'
             out += '</pre>'
             return out
-        elif flag == 'A' or flag == '??' or flag == 'AA':
+        elif 'A' in flag or flag == '??':
             if commit: 
                 command = 'git show %s:%s' % (commit, path)
                 output = getoutput_lines(command)
@@ -45,7 +48,7 @@ def get_file_changes(base_command, flag, path, commit=None, comparsion=None):
                 out += line + '\n'
             out += '</pre>'
             return out
-        elif flag=='D' or flag == 'DD':
+        elif 'D' in flag:
             command = 'git show %s:%s' % (comparsion, path)
             output = getoutput_lines(command)
             save_log(command, output[0])

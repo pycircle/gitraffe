@@ -171,12 +171,12 @@ class MainWindowWrapper(QMainWindow):
         self.ui.bottomwidgets.setCurrentIndex(1)
         self.ui.Unstaged_listwidget.clear()
         self.ui.Staged_listWidget.clear()
-        for file in get_unstaged_files():
-            if len(file)!=0:
-                QListWidgetItem(' '.join(file), self.ui.Unstaged_listwidget)
-        for file in get_staged_files():
-            if len(file)!=0:
-                QListWidgetItem(' '.join(file), self.ui.Staged_listWidget)
+        for un_file in get_unstaged_files():
+            if len(un_file)!=0:
+                QListWidgetItem(' '.join(un_file), self.ui.Unstaged_listwidget)
+        for s_file in get_staged_files():
+            if len(s_file)!=0:
+                QListWidgetItem(' '.join(s_file), self.ui.Staged_listWidget)
 
     def view_files(self):
         self.ui.bottomwidgets.setCurrentIndex(0)
@@ -185,11 +185,12 @@ class MainWindowWrapper(QMainWindow):
         if commit != None:
             files = get_files(commit.text())
             try:
-                for flag, file in files:
-                    QListWidgetItem(flag+" "+file, self.ui.files_listWidget)
+                for flag, com_file in files:
+                    QListWidgetItem(flag + " " + com_file, self.ui.files_listWidget)
             except ValueError:
                 pass
-        self.ui.files_listWidget.setCurrentRow(0)
+        if self.ui.files_listWidget.count(): self.ui.files_listWidget.setCurrentRow(0)
+        else: self.view_file_changes()
 
     def change_branch_dialog(self):
         if self.ui.listWidget.currentItem().isSelected() == True:
@@ -263,13 +264,14 @@ class MainWindowWrapper(QMainWindow):
     
     def view_file_changes(self):
         self.ui.diff_textBrowser.clear()
-        commit = self.ui.repositoryTableWidget.item(self.ui.repositoryTableWidget.currentRow(), 1).text()
-        comparsion = None
-        if self.ui.repositoryTableWidget.currentRow()+1 != self.ui.repositoryTableWidget.rowCount():
-            comparsion = self.ui.repositoryTableWidget.item(self.ui.repositoryTableWidget.currentRow()+1, 1).text()
-        flag, path = self.ui.files_listWidget.currentItem().text().split(None, 1)
-        path = "\ ".join(path.split())
-        self.ui.diff_textBrowser.setText(get_unstaged_file_changes(flag, path, commit, comparsion))
+        if self.ui.files_listWidget.count():
+            commit = self.ui.repositoryTableWidget.item(self.ui.repositoryTableWidget.currentRow(), 1).text()
+            comparsion = None
+            if self.ui.repositoryTableWidget.currentRow()+1 != self.ui.repositoryTableWidget.rowCount():
+                comparsion = self.ui.repositoryTableWidget.item(self.ui.repositoryTableWidget.currentRow()+1, 1).text()
+            flag, path = self.ui.files_listWidget.currentItem().text().split(None, 1)
+            path = "\ ".join(path.split())
+            self.ui.diff_textBrowser.setText(get_unstaged_file_changes(flag, path, commit, comparsion))
 
     def move_files(fwidget, twidget):
         selected = []

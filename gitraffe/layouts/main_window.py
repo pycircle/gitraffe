@@ -1,8 +1,8 @@
 # -*- coding: utf-8 -*-
-# Form implementation generated from reading ui file 'layouts/main_window.ui'
+# Form implementation generated from reading ui file 'main_window.ui'
 #
-# Created: Sat Dec 15 12:23:16 2012
-#      by: PyQt4 UI code generator 4.9.5
+# Created: Sat Dec 15 15:40:24 2012
+#      by: PyQt4 UI code generator 4.9.3
 #
 # WARNING! All changes made in this file will be lost!
 from PyQt4 import QtCore, QtGui
@@ -34,20 +34,25 @@ class Ui_MainWindow(object):
         self.listWidget = QtGui.QListWidget(self.splitter_2)
         sizePolicy = QtGui.QSizePolicy(QtGui.QSizePolicy.Ignored, QtGui.QSizePolicy.Expanding)
         sizePolicy.setHorizontalStretch(0)
-        sizePolicy.setVerticalStretch(0)
+        sizePolicy.setVerticalStretch(1)
         sizePolicy.setHeightForWidth(self.listWidget.sizePolicy().hasHeightForWidth())
         self.listWidget.setSizePolicy(sizePolicy)
         self.listWidget.setObjectName(_fromUtf8("listWidget"))
         self.splitter = QtGui.QSplitter(self.splitter_2)
         sizePolicy = QtGui.QSizePolicy(QtGui.QSizePolicy.Preferred, QtGui.QSizePolicy.Expanding)
         sizePolicy.setHorizontalStretch(0)
-        sizePolicy.setVerticalStretch(0)
+        sizePolicy.setVerticalStretch(123)
         sizePolicy.setHeightForWidth(self.splitter.sizePolicy().hasHeightForWidth())
         self.splitter.setSizePolicy(sizePolicy)
         self.splitter.setOrientation(QtCore.Qt.Vertical)
         self.splitter.setHandleWidth(7)
         self.splitter.setObjectName(_fromUtf8("splitter"))
         self.repositoryTableWidget = QtGui.QTableWidget(self.splitter)
+        sizePolicy = QtGui.QSizePolicy(QtGui.QSizePolicy.Expanding, QtGui.QSizePolicy.Expanding)
+        sizePolicy.setHorizontalStretch(200)
+        sizePolicy.setVerticalStretch(200)
+        sizePolicy.setHeightForWidth(self.repositoryTableWidget.sizePolicy().hasHeightForWidth())
+        self.repositoryTableWidget.setSizePolicy(sizePolicy)
         self.repositoryTableWidget.setEditTriggers(QtGui.QAbstractItemView.NoEditTriggers)
         self.repositoryTableWidget.setSelectionBehavior(QtGui.QAbstractItemView.SelectRows)
         self.repositoryTableWidget.setObjectName(_fromUtf8("repositoryTableWidget"))
@@ -64,13 +69,18 @@ class Ui_MainWindow(object):
         item = QtGui.QTableWidgetItem()
         self.repositoryTableWidget.setHorizontalHeaderItem(4, item)
         self.bottomwidgets = QtGui.QStackedWidget(self.splitter)
+        sizePolicy = QtGui.QSizePolicy(QtGui.QSizePolicy.Preferred, QtGui.QSizePolicy.Preferred)
+        sizePolicy.setHorizontalStretch(200)
+        sizePolicy.setVerticalStretch(1)
+        sizePolicy.setHeightForWidth(self.bottomwidgets.sizePolicy().hasHeightForWidth())
+        self.bottomwidgets.setSizePolicy(sizePolicy)
         self.bottomwidgets.setObjectName(_fromUtf8("bottomwidgets"))
         self.Page1 = QtGui.QWidget()
         self.Page1.setObjectName(_fromUtf8("Page1"))
         self.changesetLayout = QtGui.QHBoxLayout(self.Page1)
         self.changesetLayout.setObjectName(_fromUtf8("changesetLayout"))
         self.horizontalLayout_4 = QtGui.QHBoxLayout()
-        self.horizontalLayout_4.setContentsMargins(0, -1, -1, -1)
+        self.horizontalLayout_4.setContentsMargins(0, 0, -1, -1)
         self.horizontalLayout_4.setObjectName(_fromUtf8("horizontalLayout_4"))
         self.changesetButtonsLayout = QtGui.QVBoxLayout()
         self.changesetButtonsLayout.setObjectName(_fromUtf8("changesetButtonsLayout"))
