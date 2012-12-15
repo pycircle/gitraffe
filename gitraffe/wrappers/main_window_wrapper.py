@@ -4,7 +4,7 @@ from PyQt4 import QtGui
 from layouts.main_window import Ui_MainWindow
 from git.repository import check_repository, open_repository
 from git.commit_history import get_commits, get_graph, get_files
-from git.commit import git_add, git_rm, git_reset_head, git_rm_cached, git_check_out, clean, get_unstaged_files, get_staged_files, commit
+from git.commit import git_add, git_rm, git_reset_head, git_rm_cached, git_check_out, clean, get_unstaged_files, get_staged_files, commit, commit_amend
 from git.branches import create_branch
 from git.remote import pull, push
 from git.file_diff import get_staged_file_changes, get_unstaged_file_changes
@@ -323,7 +323,10 @@ class MainWindowWrapper(QMainWindow):
         if message == "":
             QMessageBox.critical(self, "Error", "You must write some commit message!", QMessageBox.Ok)
         else:
-            QMessageBox.information(self, "Commit", commit(message), QMessageBox.Ok)
+            if self.ui.amendCheckBox.isChecked():
+                QMessageBox.information(self, "Commit", commit_amend(message), QMessageBox.Ok)
+            else:
+                QMessageBox.information(self, "Commit", commit(message), QMessageBox.Ok)
             self.view_repository()
             self.ui.commit_lineEdit.clear()
 
