@@ -50,6 +50,6 @@ If you have USE_PYTHON and PYTHON_TARGETS variables defined in your /etc/make.co
 Screenshots
 ===========
 
-![](https://raw.github.com/v4d0r/gitraffe/master/screenshots/1.png)
+![](https://raw.github.com/pycircle/gitraffe/master/screenshots/1.png)
 
-![](https://raw.github.com/v4d0r/gitraffe/master/screenshots/2.png)
+![](https://raw.github.com/pycircle/gitraffe/master/screenshots/2.png)
